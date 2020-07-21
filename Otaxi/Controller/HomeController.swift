@@ -56,8 +56,22 @@ class HomeController : UIViewController{
         Service.shared.fetchDrivers(location: location) { (driver) in
             guard let coordinate = driver.location?.coordinate else {return}
             let annotation =  DriverAnnotation(uid: driver.uid, coordinate: coordinate)
-            self.mapView.addAnnotation(annotation)
-            
+            print("DEBUG: Driver location \(coordinate)")
+            var driverIsVisible : Bool {
+                return self.mapView.annotations.contains { (anno) -> Bool in
+                    guard let annotation = anno as? DriverAnnotation else {return false}
+                    
+                    if annotation.uid == driver.uid{
+                        print("DEBUG: handle update driver location")
+                        annotation.updateAnnotationLocations(withLocations: coordinate)
+                        return true
+                    }
+                    return false
+                }
+            }
+            if !driverIsVisible{
+                self.mapView.addAnnotation(annotation)
+            }
         }
     }
     
@@ -101,6 +115,7 @@ class HomeController : UIViewController{
         mapView.frame = view.bounds
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        mapView.delegate = self
     }
     
     func configureLocationInputView(){
@@ -151,6 +166,17 @@ class HomeController : UIViewController{
         }
     }
     
+}
+//MARK:-MapViewDelegates
+extension HomeController: MKMapViewDelegate{
+     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? DriverAnnotation{
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: DRIVER_ANNO_REUSE_ID)
+            view.image = #imageLiteral(resourceName: "chevron-sign-to-right.png")
+            return view
+        }
+        return nil
+    }
 }
 
 

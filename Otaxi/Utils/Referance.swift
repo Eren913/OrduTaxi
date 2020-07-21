@@ -13,3 +13,5 @@ let PASSWORD_FREF = "Password"
 let ACCOUNT_TYPE_FREF = "AccountType"
 
 
+let DRIVER_ANNO_REUSE_ID = "DriverAnnotation"
+
