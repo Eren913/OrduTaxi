@@ -1,0 +1,6 @@
+framework module Pods_Otaxi {
+  umbrella header "Pods-Otaxi-umbrella.h"
+
+  export *
+  module * { export * }
+}

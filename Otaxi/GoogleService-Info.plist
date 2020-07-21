@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>317707411387-0u4tbsf96ggimaespn52np8kh8tvordh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.317707411387-0u4tbsf96ggimaespn52np8kh8tvordh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAAJ3GJ-V8wkHWYHHrU5T8w0ufRTS6qFFA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>317707411387</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.erencelik.Otaxi</string>
+	<key>PROJECT_ID</key>
+	<string>otaxi-3d524</string>
+	<key>STORAGE_BUCKET</key>
+	<string>otaxi-3d524.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:317707411387:ios:a1143dd254bc9e89666e9e</string>
+	<key>DATABASE_URL</key>
+	<string>https://otaxi-3d524.firebaseio.com</string>
+</dict>
+</plist>
