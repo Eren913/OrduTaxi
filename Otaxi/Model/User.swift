@@ -12,8 +12,10 @@ struct User {
     let email  : String
     let accountType : Int
     var location : CLLocation?
+    let uid : String
     
-    init(dictinoary : [String : Any]) {
+    init(uid: String,dictinoary : [String : Any]) {
+        self.uid = uid
         self.fullname = dictinoary[FULLNAME_FREF] as? String ?? ""
         self.email = dictinoary[EMAİL_FREF] as? String ?? ""
         self.accountType = dictinoary[ACCOUNT_TYPE_FREF] as? Int ?? 0

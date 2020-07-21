@@ -25,6 +25,7 @@
 		22438E1224C5E13D0001D289 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1024C5E13D0001D289 /* Main.storyboard */; };
 		22438E1424C5E1400001D289 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1324C5E1400001D289 /* Assets.xcassets */; };
 		22438E1724C5E1400001D289 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1524C5E1400001D289 /* LaunchScreen.storyboard */; };
+		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
 		3AE041D90371F3F813EEDA28 /* Pods_Otaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA98B7F4BEECD6D5E9D24434 /* Pods_Otaxi.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		22438E1324C5E1400001D289 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22438E1624C5E1400001D289 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22438E1824C5E1400001D289 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		CA98B7F4BEECD6D5E9D24434 /* Pods_Otaxi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Otaxi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				22044BFF24C5E2A2001FC245 /* User.swift */,
+				2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */,
 				22044C0C24C5E2AC001FC245 /* SignUpController.swift in Sources */,
 				22044C0A24C5E2AC001FC245 /* HomeController.swift in Sources */,
+				2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */,
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
