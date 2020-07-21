@@ -5,12 +5,13 @@
 //  Created by lil ero on 20.07.2020.
 //  Copyright © 2020 lil ero. All rights reserved.
 //
-
+import CoreLocation
 struct User {
     
     let fullname : String
     let email  : String
     let accountType : Int
+    var location : CLLocation?
     
     init(dictinoary : [String : Any]) {
         self.fullname = dictinoary[FULLNAME_FREF] as? String ?? ""

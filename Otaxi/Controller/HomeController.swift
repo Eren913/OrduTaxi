@@ -36,11 +36,11 @@ class HomeController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         //signOut()
-        
         checkUserLoggedIn()
         configureUI()
         enableLocationServices()
         fetchUserData()
+        fetchDriverData()
         
     }
     //MARK:-Api
@@ -53,7 +53,9 @@ class HomeController : UIViewController{
     }
     func fetchDriverData(){
         guard let location = locationMeneger?.location else {return}
-        Service.shared.fetchDrivers(location: location)
+        Service.shared.fetchDrivers(location: location) { (user) in
+            print("DEBUG: Driver is \(user)")
+        }
     }
     
     

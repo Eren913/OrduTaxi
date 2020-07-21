@@ -24,13 +24,16 @@ struct Service {
             completion(user)
         }
     }
-    func fetchDrivers(location: CLLocation){
+    func fetchDrivers(location: CLLocation, completion: @escaping(User) -> Void){
         let geoFire = GeoFire(firebaseRef: DRIVER_LOC_FREF)
         
         DRIVER_LOC_FREF.observe(.value){ (snapshot) in
             geoFire.query(at: location, withRadius: 50).observe(.keyEntered, with: { (uid, location) in
-                print("DEBUG: \(uid)")
-                 print("DEBUG: \(location)")
+                self.fetchUserData(uid: uid) { (user) in
+                    var driver = user
+                    driver.location = location
+                    completion(driver)
+                }
             })
         }
     }
