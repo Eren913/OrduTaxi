@@ -32,10 +32,15 @@ class HomeController : UIViewController{
     private let locationInputView = LocationInputView()
     private let tableView = UITableView()
     
+    private let rideAction = RideActionView()
+    
     private final let locationInputViewHeight: CGFloat = 200
+    
     
     private var searchResults = [MKPlacemark]()
     private var actionButtonConfig = ActionbuttonConfiguration()
+    
+    private var route: MKRoute?
     
     
     private let actionButton : UIButton = {
@@ -67,12 +72,8 @@ class HomeController : UIViewController{
             print("DEBUG: HANDELE SHOW MENU")
             
         case .dissmissActionView:
-            
-            mapView.annotations.forEach { (annotation) in
-                if let anno = annotation as? MKPointAnnotation{
-                    mapView.removeAnnotation(anno)
-                }
-            }
+            removeAnnotationsAndPolyline()
+            mapView.showAnnotations(mapView.annotations, animated: true)
             
             UIView.animate(withDuration: 0.5) {
                 self.inputActivationView.alpha = 1
@@ -137,7 +138,7 @@ class HomeController : UIViewController{
         fetchUserData()
         fetchDriverData()
     }
-   fileprivate func configureActionbutton(configure config : ActionbuttonConfiguration){
+    fileprivate func configureActionbutton(configure config : ActionbuttonConfiguration){
         switch config {
         case .showMenu:
             self.actionButton.setImage(#imageLiteral(resourceName: "baseline_menu_black_36dp.png").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -150,6 +151,8 @@ class HomeController : UIViewController{
     
     func configureUI(){
         configureMapView()
+        configureRideActionView()
+        
         navigationController?.navigationBar.isHidden = true
         
         view.addSubview(actionButton)
@@ -218,6 +221,13 @@ class HomeController : UIViewController{
                                  height: height)
         view.addSubview(tableView)
     }
+    func configureRideActionView(){
+        view.addSubview(rideAction)
+        rideAction.frame = CGRect(x: 0,
+                                  y: view.frame.height - 300,
+                                  width: view.frame.width,
+                                  height: 300)
+    }
     func signOut(){
         do{
             try Auth.auth().signOut()
@@ -238,6 +248,9 @@ class HomeController : UIViewController{
             self.tableView.frame.origin.y = self.view.frame.height
             self.locationInputView.removeFromSuperview()
         }, completion: completion)
+    }
+    func presentRideActionView(){
+        
     }
 }
 //MARK:- MapViewHelper
@@ -261,6 +274,34 @@ private extension HomeController{
             completion(results)
         }
     }
+    
+    func generatePolyline(toDestination destination:MKMapItem){
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = destination
+        request.transportType = .automobile
+        
+        let directionRequest = MKDirections(request: request)
+        directionRequest.calculate { (response, error) in
+            guard let response = response else { return }
+            self.route = response.routes[0]
+            
+            guard let polyline = self.route?.polyline else {return}
+            self.mapView.addOverlay(polyline)
+            
+        }
+    }
+    func removeAnnotationsAndPolyline(){
+        mapView.annotations.forEach { (annotation) in
+            if let anno = annotation as? MKPointAnnotation{
+                mapView.removeAnnotation(anno)
+            }
+        }
+        
+        if mapView.overlays.count > 0 {
+            mapView.removeOverlay(mapView.overlays[0])
+        }
+    }
 }
 
 
@@ -274,6 +315,16 @@ extension HomeController: MKMapViewDelegate{
             return view
         }
         return nil
+    }
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let rotue = self.route{
+            let polyline = rotue.polyline
+            let lineRenderer = MKPolylineRenderer(polyline: polyline)
+            lineRenderer.strokeColor = .mainBlueTint
+            lineRenderer.lineWidth = 3
+            return lineRenderer
+        }
+        return MKOverlayRenderer()
     }
 }
 
@@ -380,14 +431,22 @@ extension HomeController : UITableViewDataSource,UITableViewDelegate{
         let selectedPlaceMarks = searchResults[indexPath.row]
         
         configureActionbutton(configure: .dissmissActionView)
+        
+        let destionation = MKMapItem(placemark: selectedPlaceMarks)
+        generatePolyline(toDestination: destionation)
+        
         dissmisLocationView { _ in
             let annotation = MKPointAnnotation()
             annotation.coordinate = selectedPlaceMarks.coordinate
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
             
+            let annotations = self.mapView.annotations.filter({!$0.isKind(of: DriverAnnotation.self)})
+            
+            self.mapView.showAnnotations(annotations, animated: true)
         }
+     
+        
     }
-    
 }
 

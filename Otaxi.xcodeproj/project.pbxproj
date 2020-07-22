@@ -26,6 +26,7 @@
 		22438E1424C5E1400001D289 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1324C5E1400001D289 /* Assets.xcassets */; };
 		22438E1724C5E1400001D289 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1524C5E1400001D289 /* LaunchScreen.storyboard */; };
 		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
+		22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7E91524C84F8900F59FDE /* RideActionView.swift */; };
 		3AE041D90371F3F813EEDA28 /* Pods_Otaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA98B7F4BEECD6D5E9D24434 /* Pods_Otaxi.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		22438E1624C5E1400001D289 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22438E1824C5E1400001D289 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
+		22E7E91524C84F8900F59FDE /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		CA98B7F4BEECD6D5E9D24434 /* Pods_Otaxi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Otaxi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -110,6 +112,7 @@
 				22044C0E24C5E2B4001FC245 /* LocationInputView.swift */,
 				22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */,
 				22044C1024C5E2B4001FC245 /* LocationCell.swift */,
+				22E7E91524C84F8900F59FDE /* RideActionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */,
 				22044C1624C5E2B9001FC245 /* Referance.swift in Sources */,
 				22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */,
+				22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */,
 				22044C0B24C5E2AC001FC245 /* LoginController.swift in Sources */,
 				22044BFD24C5E298001FC245 /* Extensions+UIView.swift in Sources */,
 				22044C0924C5E2AC001FC245 /* ContainerController.swift in Sources */,
