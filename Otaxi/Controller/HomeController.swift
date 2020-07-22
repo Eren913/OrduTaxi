@@ -17,7 +17,7 @@ class HomeController : UIViewController{
     //MARK:- Properties
     private let mapView = MKMapView()
     private let locationMeneger = LocationHandler.shared.locationManager
-
+    
     
     private let inputActivationView = LocationInputViewActivationView()
     private let locationInputView = LocationInputView()
@@ -172,6 +172,16 @@ class HomeController : UIViewController{
         }
     }
     
+    func dissmisLocationView(completion: ((Bool) -> Void)? = nil){
+        UIView.animate(withDuration: 0.5, animations: {
+            self.locationInputView.alpha = 0
+            self.tableView.frame.origin.y = self.view.frame.height
+            self.locationInputView.removeFromSuperview()
+            UIView.animate(withDuration: 0.3) {
+                self.inputActivationView.alpha = 1
+            }
+        }, completion: completion)
+    }
 }
 //MARK:- MapViewHelper
 private extension HomeController{
@@ -200,7 +210,7 @@ private extension HomeController{
 
 //MARK:-MapViewDelegates
 extension HomeController: MKMapViewDelegate{
-     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? DriverAnnotation{
             let view = MKAnnotationView(annotation: annotation, reuseIdentifier: DRIVER_ANNO_REUSE_ID)
             view.image = #imageLiteral(resourceName: "chevron-sign-to-right.png")
@@ -215,47 +225,47 @@ extension HomeController: MKMapViewDelegate{
 extension HomeController {
     func enableLocationServices(){
         switch CLLocationManager.authorizationStatus() {
-            case .notDetermined:
+        case .notDetermined:
             print("DEBUG: Not Determined Location")
-                locationMeneger?.requestWhenInUseAuthorization()
+            locationMeneger?.requestWhenInUseAuthorization()
             break
-            case .restricted,.denied:
+        case .restricted,.denied:
             print("DEBUG: Denied Location")
             break
-            case .authorizedAlways:
+        case .authorizedAlways:
             print("DEBUG: authorizedAlways Location")
-                locationMeneger?.startUpdatingLocation()
-                locationMeneger?.desiredAccuracy = kCLLocationAccuracyBest
+            locationMeneger?.startUpdatingLocation()
+            locationMeneger?.desiredAccuracy = kCLLocationAccuracyBest
             break
-            case .authorizedWhenInUse:
+        case .authorizedWhenInUse:
             print("DEBUG: authorizedWhenInUse Location")
-                locationMeneger?.requestAlwaysAuthorization()
+            locationMeneger?.requestAlwaysAuthorization()
             break
-                
-            @unknown default:
+            
+        @unknown default:
             break
-            }
+        }
         
         /*
-        if #available(iOS 14.0, *) {
-            func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-                let accuracyAuthorization = manager.accuracyAuthorization
-                switch accuracyAuthorization {
-                case .fullAccuracy:
-                    locationMeneger?.desiredAccuracy = kCLLocationAccuracyBest
-                    locationMeneger?.startUpdatingLocation()
-                    print("DEBUG: fullAccuracy location")
-                    break
-                case .reducedAccuracy:
-                    print("DEBUG: reducedAccuracy location")
-                    locationMeneger?.requestWhenInUseAuthorization()
-                    break
-                default:
-                    break
-                }
-            }
-        }
-  */
+         if #available(iOS 14.0, *) {
+         func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+         let accuracyAuthorization = manager.accuracyAuthorization
+         switch accuracyAuthorization {
+         case .fullAccuracy:
+         locationMeneger?.desiredAccuracy = kCLLocationAccuracyBest
+         locationMeneger?.startUpdatingLocation()
+         print("DEBUG: fullAccuracy location")
+         break
+         case .reducedAccuracy:
+         print("DEBUG: reducedAccuracy location")
+         locationMeneger?.requestWhenInUseAuthorization()
+         break
+         default:
+         break
+         }
+         }
+         }
+         */
         
     }
 }
@@ -280,17 +290,9 @@ extension HomeController: LocationInputViewDelegate{
     
     
     func dismissLocationInputView() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.locationInputView.alpha = 0
-            self.tableView.frame.origin.y = self.view.frame.height
-        }) {  _ in
-            self.locationInputView.removeFromSuperview()
-            UIView.animate(withDuration: 0.3) {
-                self.inputActivationView.alpha = 1
-            }
-        }
-        
+        dissmisLocationView()
     }
+    
 }
 //MARK:-UITableviewDelegates/DataSoruce
 extension HomeController : UITableViewDataSource,UITableViewDelegate{
@@ -312,6 +314,16 @@ extension HomeController : UITableViewDataSource,UITableViewDelegate{
         }
         
         return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPlaceMarks = searchResults[indexPath.row]
+        dissmisLocationView { _ in
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = selectedPlaceMarks.coordinate
+            self.mapView.addAnnotation(annotation)
+            self.mapView.selectAnnotation(annotation, animated: true)
+            
+        }
     }
     
 }
