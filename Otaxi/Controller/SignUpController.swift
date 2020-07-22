@@ -179,10 +179,9 @@ class SignUpController : UIViewController{
     func updateValues(uid: String, values: [String : Any] ){
         USER_REF.child(uid).updateChildValues(values) { (error, ref) in
             let home = HomeController()
-            home.configureUI()
+            home.configure()
             let nav = UINavigationController(rootViewController: home)
             nav.modalPresentationStyle = .fullScreen
-            nav.hidesBarsOnTap = true
             self.navigationController?.navigationBar.isHidden = true
             self.present(nav, animated: true, completion: nil)
             

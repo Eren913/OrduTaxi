@@ -25,6 +25,8 @@ class HomeController : UIViewController{
     
     private final let locationInputViewHeight: CGFloat = 200
     
+    private var searchResults = [MKPlacemark]()
+    
     private var user : User? {
         didSet{
             locationInputView.user = user
@@ -39,8 +41,7 @@ class HomeController : UIViewController{
         checkUserLoggedIn()
         configureUI()
         enableLocationServices()
-        fetchUserData()
-        fetchDriverData()
+        
         
     }
     //MARK:-Api
@@ -88,11 +89,16 @@ class HomeController : UIViewController{
                 self.present(nav, animated: true, completion: nil)
             }
         }else {
-            configureUI()
+            configure()
         }
         
     }
     //MARK:- Helper Functions
+    func configure(){
+        configureUI()
+        fetchUserData()
+        fetchDriverData()
+    }
     
     func configureUI(){
         configureMapView()
@@ -167,6 +173,31 @@ class HomeController : UIViewController{
     }
     
 }
+//MARK:- MapViewHelper
+private extension HomeController{
+    func searchBy(naturalLanguageQuery: String,completion: @escaping([ MKPlacemark ]) -> Void){
+        var results = [MKPlacemark]()
+        
+        let request = MKLocalSearch.Request()
+        request.region = mapView.region
+        request.naturalLanguageQuery = naturalLanguageQuery
+        
+        
+        let search = MKLocalSearch(request: request)
+        
+        search.start { (response , error) in
+            guard let response = response else {return}
+            
+            response.mapItems.forEach { (mapitem) in
+                results.append(mapitem.placemark)
+            }
+            completion(results)
+        }
+    }
+}
+
+
+
 //MARK:-MapViewDelegates
 extension HomeController: MKMapViewDelegate{
      func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -240,6 +271,13 @@ extension HomeController : LocationInputViewActivationViewDelegate{
 }
 //MARK:- LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate{
+    func excuteSearch(query: String) {
+        searchBy(naturalLanguageQuery: query) { (placemarks) in
+            self.searchResults = placemarks
+            self.tableView.reloadData()
+        }
+    }
+    
     
     func dismissLocationInputView() {
         UIView.animate(withDuration: 0.5, animations: {
@@ -263,13 +301,18 @@ extension HomeController : UITableViewDataSource,UITableViewDelegate{
         return 2
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : 5
+        return section == 0 ? 2 : searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifer,for: indexPath) as! LocationCell
         
+        if indexPath.section == 1 {
+            cell.placemark = searchResults[indexPath.row]
+        }
+        
         return cell
     }
+    
 }
 
