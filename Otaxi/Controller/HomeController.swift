@@ -35,7 +35,7 @@ class HomeController : UIViewController{
     private let rideAction = RideActionView()
     
     private final let locationInputViewHeight: CGFloat = 200
-    
+    private final let rideActionViewHeight: CGFloat = 300
     
     private var searchResults = [MKPlacemark]()
     private var actionButtonConfig = ActionbuttonConfiguration()
@@ -67,17 +67,17 @@ class HomeController : UIViewController{
     }
     //MARK:- Selectors
     @objc func actionButtonPressed(){
+        //MENU Button
         switch actionButtonConfig {
         case .showMenu:
             print("DEBUG: HANDELE SHOW MENU")
-            
         case .dissmissActionView:
             removeAnnotationsAndPolyline()
             mapView.showAnnotations(mapView.annotations, animated: true)
-            
             UIView.animate(withDuration: 0.5) {
                 self.inputActivationView.alpha = 1
                 self.configureActionbutton(configure: .showMenu)
+                self.presentRideActionView(shouldShow: false)
             }
         }
         
@@ -224,9 +224,9 @@ class HomeController : UIViewController{
     func configureRideActionView(){
         view.addSubview(rideAction)
         rideAction.frame = CGRect(x: 0,
-                                  y: view.frame.height - 300,
+                                  y: view.frame.height,
                                   width: view.frame.width,
-                                  height: 300)
+                                  height: rideActionViewHeight)
     }
     func signOut(){
         do{
@@ -249,8 +249,13 @@ class HomeController : UIViewController{
             self.locationInputView.removeFromSuperview()
         }, completion: completion)
     }
-    func presentRideActionView(){
+    func presentRideActionView(shouldShow: Bool){
         
+        let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
+        
+        UIView.animate(withDuration: 0.4) {
+            self.rideAction.frame.origin.y = yOrigin
+        }
     }
 }
 //MARK:- MapViewHelper
@@ -444,6 +449,7 @@ extension HomeController : UITableViewDataSource,UITableViewDelegate{
             let annotations = self.mapView.annotations.filter({!$0.isKind(of: DriverAnnotation.self)})
             
             self.mapView.showAnnotations(annotations, animated: true)
+            self.presentRideActionView(shouldShow: true)
         }
      
         
