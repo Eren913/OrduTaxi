@@ -25,6 +25,8 @@
 		221CE74D24D0228F006085D6 /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74C24D0228F006085D6 /* UserInfoHeader.swift */; };
 		221CE74F24D022BB006085D6 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74E24D022BB006085D6 /* LocationCell.swift */; };
 		221CE75524D06239006085D6 /* TaksiDurakları.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75424D06239006085D6 /* TaksiDurakları.swift */; };
+		221CE75924D06728006085D6 /* BestTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75824D06728006085D6 /* BestTaxi.swift */; };
+		221CE75B24D06EB2006085D6 /* BestTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75A24D06EB1006085D6 /* BestTaxiCell.swift */; };
 		2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240024824C6DD340086DA98 /* LocationHandler.swift */; };
 		22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0A24C5E13D0001D289 /* AppDelegate.swift */; };
 		22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0C24C5E13D0001D289 /* SceneDelegate.swift */; };
@@ -57,6 +59,8 @@
 		221CE74C24D0228F006085D6 /* UserInfoHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
 		221CE74E24D022BB006085D6 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationCell.swift; path = ../../../../../Downloads/UberTutorial/UberTutorial/View/LocationCell.swift; sourceTree = "<group>"; };
 		221CE75424D06239006085D6 /* TaksiDurakları.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TaksiDurakları.swift"; sourceTree = "<group>"; };
+		221CE75824D06728006085D6 /* BestTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestTaxi.swift; sourceTree = "<group>"; };
+		221CE75A24D06EB1006085D6 /* BestTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestTaxiCell.swift; sourceTree = "<group>"; };
 		2240024824C6DD340086DA98 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		22438E0724C5E13D0001D289 /* Otaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Otaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22438E0A24C5E13D0001D289 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +118,7 @@
 				221CE75624D0668C006085D6 /* Auth */,
 				221CE74124D02120006085D6 /* SideMenu */,
 				22044C0624C5E2AC001FC245 /* HomeController.swift */,
+				221CE75824D06728006085D6 /* BestTaxi.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -121,9 +126,9 @@
 		22044C0D24C5E2B4001FC245 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				221CE75A24D06EB1006085D6 /* BestTaxiCell.swift */,
+				221CE75724D066B6006085D6 /* Side Menu View */,
 				221CE74E24D022BB006085D6 /* LocationCell.swift */,
-				221CE74C24D0228F006085D6 /* UserInfoHeader.swift */,
-				221CE74624D0214C006085D6 /* MenuHeader.swift */,
 				22044C0E24C5E2B4001FC245 /* LocationInputView.swift */,
 				22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */,
 				22E7E91524C84F8900F59FDE /* RideActionView.swift */,
@@ -158,6 +163,15 @@
 				22044C0824C5E2AC001FC245 /* SignUpController.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		221CE75724D066B6006085D6 /* Side Menu View */ = {
+			isa = PBXGroup;
+			children = (
+				221CE74624D0214C006085D6 /* MenuHeader.swift */,
+				221CE74C24D0228F006085D6 /* UserInfoHeader.swift */,
+			);
+			path = "Side Menu View";
 			sourceTree = "<group>";
 		};
 		22438DFE24C5E13D0001D289 = {
@@ -356,12 +370,14 @@
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
+				221CE75924D06728006085D6 /* BestTaxi.swift in Sources */,
 				22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */,
 				221CE74524D02120006085D6 /* MenuController.swift in Sources */,
 				22044C1624C5E2B9001FC245 /* Referance.swift in Sources */,
 				22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */,
 				22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */,
 				22044C0B24C5E2AC001FC245 /* LoginController.swift in Sources */,
+				221CE75B24D06EB2006085D6 /* BestTaxiCell.swift in Sources */,
 				221CE75524D06239006085D6 /* TaksiDurakları.swift in Sources */,
 				221CE74B24D0214D006085D6 /* AddLocationController.swift in Sources */,
 				221CE74424D02120006085D6 /* ContainerController.swift in Sources */,

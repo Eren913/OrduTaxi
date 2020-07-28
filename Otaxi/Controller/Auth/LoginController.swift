@@ -92,11 +92,11 @@ class LoginController: UIViewController {
                 print("DEBUG: error Sıgn In \(error.localizedDescription)")
             }
             
-            
-            let home = HomeController()
-            home.configureUI()
-            let nav = UINavigationController(rootViewController: home)
-            nav.pushViewController(home, animated: true)
+            let container = ContainerController()
+            let nav = UINavigationController(rootViewController: container)
+            container.configure()
+            nav.pushViewController(container, animated: true)
+            nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true, completion: nil)
         }
         

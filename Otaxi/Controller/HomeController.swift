@@ -69,6 +69,9 @@ class HomeController : UIViewController{
         configureUI()
         enableLocationServices()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
     //MARK:- Selectors
     @objc func actionButtonPressed(){
         //MENU Button
@@ -86,6 +89,7 @@ class HomeController : UIViewController{
         }
         
     }
+
     
     //MARK:-Api
     
@@ -333,9 +337,16 @@ extension HomeController: MKMapViewDelegate{
         }
         return annotationView
     }
+    //MARK:-MapView Selectors
     @objc func handleDetailDisclosure(){
-        
+        let nav = UINavigationController(rootViewController: BestTaxi())
+        let detail = BestTaxi()
+        //detail.configureTableView()
+        nav.isModalInPresentation = true
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
     }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let rotue = self.route{
             let polyline = rotue.polyline
