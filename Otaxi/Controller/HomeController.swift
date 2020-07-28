@@ -21,7 +21,9 @@ private enum ActionbuttonConfiguration{
     }
 }
 
-
+protocol HomeControllerDelegate: class {
+    func handleMenuToggle()
+}
 class HomeController : UIViewController{
     //MARK:- Properties
     private let mapView = MKMapView()
@@ -38,6 +40,7 @@ class HomeController : UIViewController{
     private final let rideActionViewHeight: CGFloat = 300
     
     private var searchResults = [MKPlacemark]()
+    private var savedLocations = [MKPlacemark]()
     private var actionButtonConfig = ActionbuttonConfiguration()
     
     private var route: MKRoute?
@@ -50,17 +53,18 @@ class HomeController : UIViewController{
         return button
     }()
     
-    private var user : User? {
+     var user : User? {
         didSet{
             locationInputView.user = user
+            configureSavedUserLocations()
         }
     }
-    
+     weak var delegate: HomeControllerDelegate?
     
     //MARK:- Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        //signOut()
+        savedLocations.removeAll()
         checkUserLoggedIn()
         configureUI()
         enableLocationServices()
@@ -70,9 +74,9 @@ class HomeController : UIViewController{
         //MENU Button
         switch actionButtonConfig {
         case .showMenu:
-            print("DEBUG: HANDELE SHOW MENU")
+            delegate?.handleMenuToggle()
         case .dissmissActionView:
-            removeAnnotationsAndPolyline()
+            removeAnnotationsAndOverlays()
             mapView.showAnnotations(mapView.annotations, animated: true)
             UIView.animate(withDuration: 0.5) {
                 self.inputActivationView.alpha = 1
@@ -91,31 +95,6 @@ class HomeController : UIViewController{
             self.user = user
         }
     }
-    func fetchDriverData(){
-        guard let location = locationMeneger?.location else {return}
-        Service.shared.fetchDrivers(location: location) { (driver) in
-            guard let coordinate = driver.location?.coordinate else {return}
-            let annotation =  DriverAnnotation(uid: driver.uid, coordinate: coordinate)
-            print("DEBUG: Driver location \(coordinate)")
-            var driverIsVisible : Bool {
-                return self.mapView.annotations.contains { (anno) -> Bool in
-                    guard let annotation = anno as? DriverAnnotation else {return false}
-                    
-                    if annotation.uid == driver.uid{
-                        print("DEBUG: handle update driver location")
-                        annotation.updateAnnotationLocations(withLocations: coordinate)
-                        return true
-                    }
-                    return false
-                }
-            }
-            if !driverIsVisible{
-                self.mapView.addAnnotation(annotation)
-            }
-        }
-    }
-    
-    
     func checkUserLoggedIn(){
         presentLoginController()
     }
@@ -136,7 +115,7 @@ class HomeController : UIViewController{
     func configure(){
         configureUI()
         fetchUserData()
-        fetchDriverData()
+        fetchStadiumsOnMap(TaksiDurakları.shared.duraklar)
     }
     fileprivate func configureActionbutton(configure config : ActionbuttonConfiguration){
         switch config {
@@ -228,20 +207,26 @@ class HomeController : UIViewController{
                                   width: view.frame.width,
                                   height: rideActionViewHeight)
     }
-    func signOut(){
-        do{
-            try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.isModalInPresentation = true
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true, completion: nil)
-            }
-        }catch{
-            print("DEBUG: SignOut Error")
+    func configureSavedUserLocations() {
+        guard let user = user else { return }
+        savedLocations.removeAll()
+        if let homeLocation = user.homeLocation {
+            geocodeAddressString(address: homeLocation)
+        }
+        
+        if let workLocation = user.workLocation {
+            geocodeAddressString(address: workLocation)
         }
     }
-    
+    func geocodeAddressString(address: String) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            guard let clPlacemark = placemarks?.first else { return }
+            let placemark = MKPlacemark(placemark: clPlacemark)
+            self.savedLocations.append(placemark)
+            self.tableView.reloadData()
+        }
+    }    
     func dissmisLocationView(completion: ((Bool) -> Void)? = nil){
         UIView.animate(withDuration: 0.5, animations: {
             self.locationInputView.alpha = 0
@@ -260,6 +245,12 @@ class HomeController : UIViewController{
         
         UIView.animate(withDuration: 0.4) {
             self.rideAction.frame.origin.y = yOrigin
+        }
+    }
+    func fetchStadiumsOnMap(_ duraklar: [TaksiDurak]) {
+        for durak in duraklar {
+            let annotations = CustomAnnotation(title: durak.name, subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: durak.lattitude, longitude: durak.longtitude))
+            mapView.addAnnotation(annotations)
         }
     }
 }
@@ -301,9 +292,9 @@ private extension HomeController{
             
         }
     }
-    func removeAnnotationsAndPolyline(){
+    func removeAnnotationsAndOverlays() {
         mapView.annotations.forEach { (annotation) in
-            if let anno = annotation as? MKPointAnnotation{
+            if let anno = annotation as? MKPointAnnotation {
                 mapView.removeAnnotation(anno)
             }
         }
@@ -319,12 +310,31 @@ private extension HomeController{
 //MARK:-MapViewDelegates
 extension HomeController: MKMapViewDelegate{
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    
         if let annotation = annotation as? DriverAnnotation{
             let view = MKAnnotationView(annotation: annotation, reuseIdentifier: DRIVER_ANNO_REUSE_ID)
             view.image = #imageLiteral(resourceName: "chevron-sign-to-right.png")
             return view
         }
-        return nil
+        
+        guard annotation is CustomAnnotation else { return nil }
+        let identifier = "Annotation"
+        let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        if annotationView == nil {
+            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView.image = UIImage(systemName: "mappin.circle.fill")
+            annotationView.canShowCallout = true
+            let button = UIButton(type: UIButton.ButtonType.detailDisclosure)
+            button.addTarget(self, action: #selector(handleDetailDisclosure), for: .touchUpInside)
+            annotationView.rightCalloutAccessoryView = button
+            return annotationView
+        } else {
+            annotationView!.annotation = annotation
+        }
+        return annotationView
+    }
+    @objc func handleDetailDisclosure(){
+        
     }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let rotue = self.route{
@@ -363,28 +373,6 @@ extension HomeController {
         @unknown default:
             break
         }
-        
-        /*
-         if #available(iOS 14.0, *) {
-         func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-         let accuracyAuthorization = manager.accuracyAuthorization
-         switch accuracyAuthorization {
-         case .fullAccuracy:
-         locationMeneger?.desiredAccuracy = kCLLocationAccuracyBest
-         locationMeneger?.startUpdatingLocation()
-         print("DEBUG: fullAccuracy location")
-         break
-         case .reducedAccuracy:
-         print("DEBUG: reducedAccuracy location")
-         locationMeneger?.requestWhenInUseAuthorization()
-         break
-         default:
-         break
-         }
-         }
-         }
-         */
-        
     }
 }
 
@@ -417,19 +405,26 @@ extension HomeController: LocationInputViewDelegate{
     
 }
 //MARK:-UITableviewDelegates/DataSoruce
-extension HomeController : UITableViewDataSource,UITableViewDelegate{
+extension HomeController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "eren"
+        return section == 0 ? "Saved Locations" : "Results"
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : searchResults.count
+        return section == 0 ? savedLocations.count : searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifer,for: indexPath) as! LocationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifer, for: indexPath) as! LocationCell
+        
+        if indexPath.section == 0 {
+            cell.placemark = savedLocations[indexPath.row]
+        }
         
         if indexPath.section == 1 {
             cell.placemark = searchResults[indexPath.row]
@@ -437,28 +432,25 @@ extension HomeController : UITableViewDataSource,UITableViewDelegate{
         
         return cell
     }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPlaceMarks = searchResults[indexPath.row]
-        
-        configureActionbutton(configure: .dissmissActionView)
-        
-        let destionation = MKMapItem(placemark: selectedPlaceMarks)
-        generatePolyline(toDestination: destionation)
-        
-        dissmisLocationView { _ in
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = selectedPlaceMarks.coordinate
-            self.mapView.addAnnotation(annotation)
-            self.mapView.selectAnnotation(annotation, animated: true)
-            
-            let annotations = self.mapView.annotations.filter({!$0.isKind(of: DriverAnnotation.self)})
-            self.mapView.zoomToFit(annotation: annotations)
-            
-            self.mapView.showAnnotations(annotations, animated: true)
-            self.presentRideActionView(shouldShow: true,destination: selectedPlaceMarks)
+     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+            self.savedLocations.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
-     
-        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPlacemark = indexPath.section == 0 ? savedLocations[indexPath.row] : searchResults[indexPath.row]
+        configureActionbutton(configure: .dissmissActionView)
+        let destination = MKMapItem(placemark: selectedPlacemark)
+        generatePolyline(toDestination: destination)
+        dissmisLocationView { _ in
+            self.mapView.addAnnotationAndSelect(forCoordinate: selectedPlacemark.coordinate)
+            
+            let annotations = self.mapView.annotations.filter({ !$0.isKind(of: DriverAnnotation.self) })
+            self.mapView.zoomToFit(annotations: annotations)
+            self.presentRideActionView(shouldShow: true, destination: selectedPlacemark)
+        }
     }
 }
-

@@ -5,7 +5,7 @@
 //  Created by Stephen Dowless on 9/22/19.
 //  Copyright © 2019 Stephan Dowless. All rights reserved.
 //
-/*
+
 import UIKit
 import Firebase
 
@@ -177,12 +177,12 @@ extension ContainerController: MenuControllerDelegate {
                 let controller = SettingsController(user: user)
                 controller.delegate = self
                 let nav = UINavigationController(rootViewController: controller)
+                nav.modalPresentationStyle = .fullScreen
                 self.present(nav, animated: true, completion: nil)
             case .logout:
                 let alert = UIAlertController(title: nil,
                                               message: "Are you sure you want to log out?",
                                               preferredStyle: .actionSheet)
-                
                 alert.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { _ in
                     self.signOut()
                 }))
@@ -193,4 +193,4 @@ extension ContainerController: MenuControllerDelegate {
             }
         }
     }
- }*/
+}

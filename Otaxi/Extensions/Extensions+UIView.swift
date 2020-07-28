@@ -24,8 +24,7 @@ extension UIColor {
 
 extension UIView {
     
-    func inputContainerView(image: UIImage,
-                            textField: UITextField? = nil,
+    func inputContainerView(image: UIImage, textField: UITextField? = nil,
                             segmentedControl: UISegmentedControl? = nil) -> UIView {
         let view = UIView()
         
@@ -37,10 +36,7 @@ extension UIView {
         
         if let textField = textField {
             imageView.centerY(inView: view)
-            imageView.anchor(left: view.leftAnchor,
-                             paddingLeft: 8,
-                             width: 24,
-                             height: 24)
+            imageView.anchor(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
             
             view.addSubview(textField)
             textField.centerY(inView: view)
@@ -54,7 +50,7 @@ extension UIView {
             
             view.addSubview(sc)
             sc.anchor(left: view.leftAnchor, right: view.rightAnchor,
-                      paddingLeft: 8, paddingRight: 8)
+                     paddingLeft: 8, paddingRight: 8)
             sc.centerY(inView: view, constant: 8)
         }
         
@@ -136,7 +132,6 @@ extension UIView {
 }
 
 extension UITextField {
-    
     func textField(withPlaceholder placeholder: String, isSecureTextEntry: Bool) -> UITextField {
         let tf = UITextField()
         tf.borderStyle = .none
@@ -148,31 +143,92 @@ extension UITextField {
         return tf
     }
 }
-extension MKPlacemark{
-    var address: String?{
-        get{
-            guard let subThoroughfare = subThoroughfare else {return nil}
-            guard let thoroughfare = thoroughfare else {return nil}
-            guard let locality = locality else {return nil}
-            guard let adminArea = administrativeArea else {return nil}
+
+extension MKPlacemark {
+    var address: String? {
+        get {
+            guard let subThoroughfare = subThoroughfare else { return nil }
+            guard let thoroughfare = thoroughfare else { return nil }
+            guard let locality = locality else { return nil }
+            guard let adminArea = administrativeArea else { return nil }
             
-            return "\(subThoroughfare) \(thoroughfare) \(locality) \(adminArea)"
+            return "\(subThoroughfare) \(thoroughfare), \(locality), \(adminArea) "
         }
     }
 }
-extension MKMapView{
-    func zoomToFit(annotation: [MKAnnotation]){
+
+extension MKMapView {
+    func zoomToFit(annotations: [MKAnnotation]) {
         var zoomRect = MKMapRect.null
         
-        annotation.forEach { (annotation) in
+        annotations.forEach { (annotation) in
             let annotationPoint = MKMapPoint(annotation.coordinate)
-            let pointRect = MKMapRect(x: annotationPoint.x,
-                                      y: annotationPoint.y,
-                                      width: 0.01,
-                                      height: 0.01)
+            let pointRect = MKMapRect(x: annotationPoint.x, y: annotationPoint.y,
+                                      width: 0.01, height: 0.01)
             zoomRect = zoomRect.union(pointRect)
         }
-        let insets = UIEdgeInsets(top: 70, left: 70, bottom: 250, right: 70)
+        
+        let insets = UIEdgeInsets(top: 100, left: 100, bottom: 300, right: 100)
         setVisibleMapRect(zoomRect, edgePadding: insets, animated: true)
     }
+    
+    func addAnnotationAndSelect(forCoordinate coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        addAnnotation(annotation)
+        selectAnnotation(annotation, animated: true)
+    }
 }
+
+extension UIViewController {
+    func presentAlertController(withTitle title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func shouldPresentLoadingView(_ present: Bool, message: String? = nil) {
+        if present {
+            let loadingView = UIView()
+            loadingView.frame = self.view.frame
+            loadingView.backgroundColor = .black
+            loadingView.alpha = 0
+            loadingView.tag = 1
+            
+            let indicator = UIActivityIndicatorView()
+            indicator.style = .large
+            indicator.center = view.center
+            
+            let label = UILabel()
+            label.text = message
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = .white
+            label.textAlignment = .center
+            label.alpha = 0.87
+            
+            view.addSubview(loadingView)
+            loadingView.addSubview(indicator)
+            loadingView.addSubview(label)
+            
+            label.centerX(inView: view)
+            label.anchor(top: indicator.bottomAnchor, paddingTop: 32)
+            
+            indicator.startAnimating()
+            
+            UIView.animate(withDuration: 0.3) {
+                loadingView.alpha = 0.7
+            }
+        } else {
+            view.subviews.forEach { (subview) in
+                if subview.tag == 1 {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        subview.alpha = 0
+                    }, completion: { _ in
+                        subview.removeFromSuperview()
+                    })
+                }
+            }
+        }
+    }
+}
+

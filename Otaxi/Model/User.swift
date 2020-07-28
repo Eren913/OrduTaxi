@@ -6,19 +6,39 @@
 //  Copyright © 2020 lil ero. All rights reserved.
 //
 import CoreLocation
+
+enum AccountType: Int {
+    case passenger
+    case driver
+}
+
 struct User {
+    let fullname: String
+    let email: String
+    var accountType: AccountType!
+    var location: CLLocation?
+    let uid: String
+    var homeLocation: String?
+    var workLocation: String?
     
-    let fullname : String
-    let email  : String
-    let accountType : Int
-    var location : CLLocation?
-    let uid : String
+    var firstInitial: String { return String(fullname.prefix(1)) }
     
-    init(uid: String,dictinoary : [String : Any]) {
+    init(uid: String, dictionary: [String: Any]) {
         self.uid = uid
-        self.fullname = dictinoary[FULLNAME_FREF] as? String ?? ""
-        self.email = dictinoary[EMAİL_FREF] as? String ?? ""
-        self.accountType = dictinoary[ACCOUNT_TYPE_FREF] as? Int ?? 0
+        self.fullname = dictionary[FULLNAME_FREF] as? String ?? ""
+        self.email = dictionary[EMAİL_FREF] as? String ?? ""
+        
+        if let home = dictionary["homeLocation"] as? String {
+            self.homeLocation = home
+        }
+        
+        if let work = dictionary["workLocation"] as? String {
+            self.workLocation = work
+        }
+        
+        if let index = dictionary[ACCOUNT_TYPE_FREF] as? Int {
+            self.accountType = AccountType(rawValue: index)
+        }
     }
 }
 

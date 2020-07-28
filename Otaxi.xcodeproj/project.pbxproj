@@ -10,15 +10,21 @@
 		22044BFD24C5E298001FC245 /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044BFC24C5E298001FC245 /* Extensions+UIView.swift */; };
 		22044C0024C5E2A2001FC245 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044BFF24C5E2A2001FC245 /* User.swift */; };
 		22044C0324C5E2A6001FC245 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0224C5E2A6001FC245 /* Service.swift */; };
-		22044C0924C5E2AC001FC245 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0524C5E2AC001FC245 /* ContainerController.swift */; };
 		22044C0A24C5E2AC001FC245 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0624C5E2AC001FC245 /* HomeController.swift */; };
 		22044C0B24C5E2AC001FC245 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0724C5E2AC001FC245 /* LoginController.swift */; };
 		22044C0C24C5E2AC001FC245 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0824C5E2AC001FC245 /* SignUpController.swift */; };
 		22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0E24C5E2B4001FC245 /* LocationInputView.swift */; };
 		22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */; };
-		22044C1324C5E2B4001FC245 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C1024C5E2B4001FC245 /* LocationCell.swift */; };
 		22044C1624C5E2B9001FC245 /* Referance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C1524C5E2B9001FC245 /* Referance.swift */; };
 		22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22044C1724C5E301001FC245 /* GoogleService-Info.plist */; };
+		221CE74424D02120006085D6 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74224D02120006085D6 /* ContainerController.swift */; };
+		221CE74524D02120006085D6 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74324D02120006085D6 /* MenuController.swift */; };
+		221CE74924D0214D006085D6 /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74624D0214C006085D6 /* MenuHeader.swift */; };
+		221CE74A24D0214D006085D6 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74724D0214C006085D6 /* SettingsController.swift */; };
+		221CE74B24D0214D006085D6 /* AddLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74824D0214D006085D6 /* AddLocationController.swift */; };
+		221CE74D24D0228F006085D6 /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74C24D0228F006085D6 /* UserInfoHeader.swift */; };
+		221CE74F24D022BB006085D6 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74E24D022BB006085D6 /* LocationCell.swift */; };
+		221CE75524D06239006085D6 /* TaksiDurakları.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75424D06239006085D6 /* TaksiDurakları.swift */; };
 		2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240024824C6DD340086DA98 /* LocationHandler.swift */; };
 		22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0A24C5E13D0001D289 /* AppDelegate.swift */; };
 		22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0C24C5E13D0001D289 /* SceneDelegate.swift */; };
@@ -36,15 +42,21 @@
 		22044BFC24C5E298001FC245 /* Extensions+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
 		22044BFF24C5E2A2001FC245 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		22044C0224C5E2A6001FC245 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
-		22044C0524C5E2AC001FC245 /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		22044C0624C5E2AC001FC245 /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		22044C0724C5E2AC001FC245 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		22044C0824C5E2AC001FC245 /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		22044C0E24C5E2B4001FC245 /* LocationInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
 		22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInputViewActivationView.swift; sourceTree = "<group>"; };
-		22044C1024C5E2B4001FC245 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		22044C1524C5E2B9001FC245 /* Referance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referance.swift; sourceTree = "<group>"; };
 		22044C1724C5E301001FC245 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		221CE74224D02120006085D6 /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
+		221CE74324D02120006085D6 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		221CE74624D0214C006085D6 /* MenuHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
+		221CE74724D0214C006085D6 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		221CE74824D0214D006085D6 /* AddLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationController.swift; sourceTree = "<group>"; };
+		221CE74C24D0228F006085D6 /* UserInfoHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
+		221CE74E24D022BB006085D6 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationCell.swift; path = ../../../../../Downloads/UberTutorial/UberTutorial/View/LocationCell.swift; sourceTree = "<group>"; };
+		221CE75424D06239006085D6 /* TaksiDurakları.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TaksiDurakları.swift"; sourceTree = "<group>"; };
 		2240024824C6DD340086DA98 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		22438E0724C5E13D0001D289 /* Otaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Otaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22438E0A24C5E13D0001D289 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +93,7 @@
 		22044BFE24C5E2A2001FC245 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				221CE75424D06239006085D6 /* TaksiDurakları.swift */,
 				22044BFF24C5E2A2001FC245 /* User.swift */,
 				2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */,
 			);
@@ -98,10 +111,9 @@
 		22044C0424C5E2AC001FC245 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				22044C0524C5E2AC001FC245 /* ContainerController.swift */,
+				221CE75624D0668C006085D6 /* Auth */,
+				221CE74124D02120006085D6 /* SideMenu */,
 				22044C0624C5E2AC001FC245 /* HomeController.swift */,
-				22044C0724C5E2AC001FC245 /* LoginController.swift */,
-				22044C0824C5E2AC001FC245 /* SignUpController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -109,9 +121,11 @@
 		22044C0D24C5E2B4001FC245 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				221CE74E24D022BB006085D6 /* LocationCell.swift */,
+				221CE74C24D0228F006085D6 /* UserInfoHeader.swift */,
+				221CE74624D0214C006085D6 /* MenuHeader.swift */,
 				22044C0E24C5E2B4001FC245 /* LocationInputView.swift */,
 				22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */,
-				22044C1024C5E2B4001FC245 /* LocationCell.swift */,
 				22E7E91524C84F8900F59FDE /* RideActionView.swift */,
 			);
 			path = View;
@@ -124,6 +138,26 @@
 				2240024824C6DD340086DA98 /* LocationHandler.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		221CE74124D02120006085D6 /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				221CE74824D0214D006085D6 /* AddLocationController.swift */,
+				221CE74724D0214C006085D6 /* SettingsController.swift */,
+				221CE74224D02120006085D6 /* ContainerController.swift */,
+				221CE74324D02120006085D6 /* MenuController.swift */,
+			);
+			path = SideMenu;
+			sourceTree = "<group>";
+		};
+		221CE75624D0668C006085D6 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				22044C0724C5E2AC001FC245 /* LoginController.swift */,
+				22044C0824C5E2AC001FC245 /* SignUpController.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		22438DFE24C5E13D0001D289 = {
@@ -313,21 +347,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				22044C0024C5E2A2001FC245 /* User.swift in Sources */,
+				221CE74D24D0228F006085D6 /* UserInfoHeader.swift in Sources */,
 				22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */,
 				22044C0C24C5E2AC001FC245 /* SignUpController.swift in Sources */,
 				22044C0A24C5E2AC001FC245 /* HomeController.swift in Sources */,
 				2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */,
+				221CE74F24D022BB006085D6 /* LocationCell.swift in Sources */,
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
-				22044C1324C5E2B4001FC245 /* LocationCell.swift in Sources */,
 				22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */,
+				221CE74524D02120006085D6 /* MenuController.swift in Sources */,
 				22044C1624C5E2B9001FC245 /* Referance.swift in Sources */,
 				22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */,
 				22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */,
 				22044C0B24C5E2AC001FC245 /* LoginController.swift in Sources */,
+				221CE75524D06239006085D6 /* TaksiDurakları.swift in Sources */,
+				221CE74B24D0214D006085D6 /* AddLocationController.swift in Sources */,
+				221CE74424D02120006085D6 /* ContainerController.swift in Sources */,
+				221CE74A24D0214D006085D6 /* SettingsController.swift in Sources */,
+				221CE74924D0214D006085D6 /* MenuHeader.swift in Sources */,
 				22044BFD24C5E298001FC245 /* Extensions+UIView.swift in Sources */,
-				22044C0924C5E2AC001FC245 /* ContainerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

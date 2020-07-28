@@ -31,7 +31,6 @@ class LocationInputView: UIView {
     }()
    private let titlelabel : UILabel = {
        let label = UILabel()
-        label.text = "ErenCelik"
         label.textColor = .darkGray
         label.font = UIFont.systemFont(ofSize: 16)
         return label

@@ -21,7 +21,7 @@ struct Service {
         USER_REF.child(uid).observeSingleEvent(of: .value) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }
             let uuid = snapshot.key
-            let user = User(uid: uuid, dictinoary: dictionary)
+            let user = User(uid: uuid, dictionary: dictionary)
             completion(user)
         }
     }
@@ -38,4 +38,9 @@ struct Service {
             })
         }
     }
+    func saveLocation(locationString: String, type: LocationType, completion: @escaping (Error?, DatabaseReference) -> Void) {
+          guard let uid = Auth.auth().currentUser?.uid else { return }
+          let key: String = type == .home ? "homeLocation" : "workLocation"
+          USER_REF.child(uid).child(key).setValue(locationString, withCompletionBlock: completion)
+      }
 }
