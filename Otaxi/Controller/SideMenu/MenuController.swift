@@ -59,6 +59,7 @@ class MenuController: UITableViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureTableView()
+        
 
     }
     
@@ -106,7 +107,6 @@ extension MenuController {
         }
         guard let option = MenuOptions(rawValue: indexPath.row) else { return UITableViewCell() }
         cell.textLabel?.text = option.description
-        
         return cell
     }
     

@@ -33,6 +33,10 @@ class ContainerController: UIViewController {
         super.viewDidLoad()
         checkIfUserIsLoggedIn()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     
     override var prefersStatusBarHidden: Bool {
         return isExpanded
