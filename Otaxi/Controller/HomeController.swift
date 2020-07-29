@@ -24,6 +24,7 @@ private enum ActionbuttonConfiguration{
 protocol HomeControllerDelegate: class {
     func handleMenuToggle()
 }
+
 class HomeController : UIViewController{
     //MARK:- Properties
     private let mapView = MKMapView()
@@ -44,6 +45,7 @@ class HomeController : UIViewController{
     private var actionButtonConfig = ActionbuttonConfiguration()
     
     private var route: MKRoute?
+    var selectedAnnotation: CustomAnnotation?
     
     
     private let actionButton : UIButton = {
@@ -59,7 +61,7 @@ class HomeController : UIViewController{
             configureSavedUserLocations()
         }
     }
-     weak var delegate: HomeControllerDelegate?
+    weak var delegate: HomeControllerDelegate?
     
     //MARK:- Lifecycles
     override func viewDidLoad() {
@@ -68,9 +70,15 @@ class HomeController : UIViewController{
         checkUserLoggedIn()
         configureUI()
         enableLocationServices()
+        
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+         navigationController?.navigationBar.isHidden = false
     }
     //MARK:- Selectors
     @objc func actionButtonPressed(){
@@ -135,9 +143,6 @@ class HomeController : UIViewController{
     func configureUI(){
         configureMapView()
         configureRideActionView()
-        
-        navigationController?.navigationBar.isHidden = true
-        
         view.addSubview(actionButton)
         actionButton.anchor(top: view.safeAreaLayoutGuide.topAnchor ,
                             left: view.leftAnchor,
@@ -307,10 +312,8 @@ private extension HomeController{
             mapView.removeOverlay(mapView.overlays[0])
         }
     }
+
 }
-
-
-
 //MARK:-MapViewDelegates
 extension HomeController: MKMapViewDelegate{
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -320,7 +323,6 @@ extension HomeController: MKMapViewDelegate{
             view.image = #imageLiteral(resourceName: "chevron-sign-to-right.png")
             return view
         }
-        
         guard annotation is CustomAnnotation else { return nil }
         let identifier = "Annotation"
         let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
@@ -337,14 +339,17 @@ extension HomeController: MKMapViewDelegate{
         }
         return annotationView
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        self.selectedAnnotation = view.annotation as? CustomAnnotation
+    }
     //MARK:-MapView Selectors
     @objc func handleDetailDisclosure(){
-        let nav = UINavigationController(rootViewController: BestTaxi())
+        guard let selectedtitle = selectedAnnotation?.title else {return}
         let detail = BestTaxi()
-        //detail.configureTableView()
-        nav.isModalInPresentation = true
-        nav.modalPresentationStyle = .fullScreen
-        self.present(nav, animated: true, completion: nil)
+        detail.navigationTitle = selectedtitle
+        detail.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.pushViewController(detail, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {

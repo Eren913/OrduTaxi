@@ -6,40 +6,34 @@
 //
 
 import UIKit
-let tableViewIdentifer = "identifier"
+let tableViewIdentifer = "id"
 
 class BestTaxi: UIViewController{
-    
+    //MARK: - Properties
     let tableView = UITableView()
+    var navigationTitle : String = ""
     
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .red
         configureTableView()
+        configureNavigation(title: navigationTitle)
     }
+    
     func configureTableView(){
         tableView.frame = view.bounds
-        tableView.delegate = self
-        tableView.dataSource = self
         view.addSubview(tableView)
     }
-}
-extension BestTaxi: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+    func configureNavigation(title: String){
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = title
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! BestTaxiCell
-        return cell
-    }
-     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print("Deleted")
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //MARK:Selectors
+    @objc func handleDismissal(){
+        navigationController?.popViewController(animated: true)
     }
 }
+
