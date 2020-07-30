@@ -10,18 +10,26 @@ class DetailInfoHeader: UIView {
     
     // MARK: - Properties
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.addSubview(initialLabel)
+        initialLabel.centerX(inView: iv)
+        initialLabel.centerY(inView: iv)
+        iv.backgroundColor = .black
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.image = UIImage(named: "ironman")
         return iv
     }()
     
+    lazy var initialLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 42)
+        label.textColor = .white
+        return label
+    }()
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tony Stark"
+        label.text = "Eren Stark"
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -29,7 +37,7 @@ class DetailInfoHeader: UIView {
     
     let emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "tony.stark@gmail.com"
+        label.text = "Erenn.stark@gmail.com"
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -40,8 +48,8 @@ class DetailInfoHeader: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        let profileImageDimension: CGFloat = 60
+        initialLabel.text = "E"
+        let profileImageDimension: CGFloat = 80
         
         addSubview(profileImageView)
         profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
