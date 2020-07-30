@@ -6,24 +6,39 @@
 //
 
 import UIKit
+import FirebaseDatabase
 let tableViewIdentifer = "id"
 
 class BestTaxi: UIViewController{
     //MARK: - Properties
     let tableView = UITableView()
     var navigationTitle : String = ""
-     var user: User? {
-        didSet {
-            guard let user = user else { return }
-            print("DEBUG: user is \(user.fullname)")
+    var user: User?{
+        didSet{
+            
         }
     }
-        //MARK: - Lifecycle
-        override func viewDidLoad() {
+    var us = [User]()
+    var er = [String]()
+    //MARK: - Lifecycle
+    override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
         configureTableView()
         configureNavigation(title: navigationTitle)
+        fetchAllUserData()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        print("DEBUG: -- \(er)")
+    }
+    func fetchAllUserData() {
+        let ref = Database.database().reference()
+        ref.child("Users").observe(.value) { (snapshot) in
+            let post = snapshot.value as? [String:Any]
+            if let actualPost = post{
+                print("DEBUG: eren -- \(actualPost)")
+            }
+        }
     }
     
     func configureTableView(){
@@ -49,17 +64,20 @@ extension BestTaxi: UITableViewDelegate,UITableViewDataSource{
         return 100
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! BestTaxiCell
         cell.accessoryType = .disclosureIndicator
-        cell.nameLabel.text = user?.fullname
-        cell.initialLabel.text = user?.firstInitial
         return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let homeDetail = BestTaxiDetail()
+        present(homeDetail, animated: true, completion: nil)
     }
     
     
+
 }
 

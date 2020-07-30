@@ -27,7 +27,6 @@ struct Service {
     }
     func fetchDrivers(location: CLLocation, completion: @escaping(User) -> Void){
         let geoFire = GeoFire(firebaseRef: DRIVER_LOC_FREF)
-        
         DRIVER_LOC_FREF.observe(.value){ (snapshot) in
             geoFire.query(at: location, withRadius: 50).observe(.keyEntered, with: { (uid, location) in
                 self.fetchUserData(uid: uid) { (user) in
@@ -39,8 +38,9 @@ struct Service {
         }
     }
     func saveLocation(locationString: String, type: LocationType, completion: @escaping (Error?, DatabaseReference) -> Void) {
-          guard let uid = Auth.auth().currentUser?.uid else { return }
-          let key: String = type == .home ? "homeLocation" : "workLocation"
-          USER_REF.child(uid).child(key).setValue(locationString, withCompletionBlock: completion)
-      }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let key: String = type == .home ? "homeLocation" : "workLocation"
+        USER_REF.child(uid).child(key).setValue(locationString, withCompletionBlock: completion)
+    }
 }
+
