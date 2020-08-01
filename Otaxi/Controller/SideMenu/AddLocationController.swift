@@ -41,7 +41,6 @@ class AddLocationController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        print("AddLocation Show")
         configureTableView()
         configureSearchBar()
         configureSearchCompleter()

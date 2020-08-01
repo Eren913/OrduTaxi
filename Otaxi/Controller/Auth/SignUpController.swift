@@ -15,6 +15,18 @@ import GeoFire
 class SignUpController : UIViewController{
     
     private let location = LocationHandler.shared.locationManager.location
+    let source = [
+        "Cumhuriyet Taksi",
+        "Çicek Taksi",
+        "Birlik Taksi",
+        "Sağlam Taksi",
+        "Bucak Taksi",
+        "Sağlık Taksi",
+        "Yonca Taksi",
+        "Başak Taksi",
+        "Otogar Taksi",
+        "Meydan Taksi",
+        "Akyazı Taksi"]
     
     //MARK: Properties
     private let titleLabel : UILabel = {
@@ -34,7 +46,7 @@ class SignUpController : UIViewController{
         return view
     }()
     private let fullNameTextField : UITextField = {
-        return UITextField().textField(withPlaceholder: "Full Name", isSecureTextEntry: false)
+        return UITextField().textField(withPlaceholder: "İsim Soyisim", isSecureTextEntry: false)
     }()
     private lazy var fullNameContainer : UIView = {
         let view = UIView().inputContainerView(image:#imageLiteral(resourceName: "ic_account_box_white_2x.png") , textField: fullNameTextField)
@@ -43,17 +55,26 @@ class SignUpController : UIViewController{
     }()
     
     private let passwordTextField : UITextField = {
-        return UITextField().textField(withPlaceholder: "Password", isSecureTextEntry: true)
+        return UITextField().textField(withPlaceholder: "Şifre", isSecureTextEntry: true)
     }()
     private lazy var passwordContainer : UIView = {
         let view = UIView().inputContainerView(image:#imageLiteral(resourceName: "ic_lock_outline_white_2x.png") , textField: passwordTextField)
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return view
     }()
+    private let telNoTextField : UITextField = {
+        return UITextField().textField(withPlaceholder: "Telefon Numarası", isSecureTextEntry: false)
+    }()
+    
+    private lazy var telNoContainer : UIView = {
+        let view = UIView().inputContainerView(image: (UIImage(systemName: "phone.fill")!.withTintColor(.white)), textField: telNoTextField)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return view
+    }()
     private let signUpButton  :UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Sıgn Up", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
+        button.setTitle("Kayıt Ol", for: .normal)
+        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
         button.backgroundColor = .mainBlueTint
         button.layer.cornerRadius = 5
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -63,7 +84,7 @@ class SignUpController : UIViewController{
         return button
     }()
     private let accountType : UISegmentedControl = {
-        let sgmntCntrl = UISegmentedControl(items: ["Rider","Driver"])
+        let sgmntCntrl = UISegmentedControl(items: ["Yolcu","Taksici"])
         sgmntCntrl.backgroundColor = .backgroundColor
         sgmntCntrl.tintColor = UIColor(white: 1, alpha: 0.8)
         sgmntCntrl.selectedSegmentIndex = 0
@@ -75,15 +96,23 @@ class SignUpController : UIViewController{
         view.heightAnchor.constraint(equalToConstant: 80).isActive = true
         return view
     }()
+    private let stops = UIPickerView()
+    private let stopsLabel : UILabel = {
+        let label = UILabel()
+        label.text = "Durak Seç:"
+        label.font = UIFont(name: "Avenir-Light", size: 20)
+        label.textColor = UIColor(white: 1, alpha: 1)
+        return label
+    }()
     
     
     private let alreadyHaveAccountButton : UIButton  = {
         let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Already Have A Accont ? ",attributes: [
+        let attributeTitle = NSMutableAttributedString(string: "Hesabınız Varmı ? ",attributes: [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
             NSAttributedString.Key.foregroundColor: UIColor.lightGray
         ])
-        attributeTitle.append(NSAttributedString(string: "Sign in",attributes: [
+        attributeTitle.append(NSAttributedString(string: "Giriş Yap",attributes: [
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
             NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
         ]))
@@ -99,7 +128,8 @@ class SignUpController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        
+        stops.delegate = self
+        stops.dataSource = self
         
         
     }
@@ -112,8 +142,11 @@ class SignUpController : UIViewController{
         
         let sv = UIStackView(arrangedSubviews: [emailContainer,
                                                 fullNameContainer,
+                                                telNoContainer,
                                                 passwordContainer,
                                                 accountTypeContainer,
+                                                stopsLabel,
+                                                stops,
                                                 signUpButton])
         sv.axis = .vertical
         sv.distribution = .fillEqually
@@ -157,16 +190,7 @@ class SignUpController : UIViewController{
                           FULLNAME_FREF:fullnameText,
                           ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
             if accountTypeIndex == 1 {
-                let geoFire = GeoFire(firebaseRef: DRIVER_LOC_FREF)
-                guard let loc = self.location else {return}
-                geoFire.setLocation(loc, forKey: uid) { (error) in
-                    if error != nil {
-                        print("DEBUG: Saved Loacation successfly")
-                        self.updateValues(uid: uid, values: values)
-                    }else {
-                        print("DEBUG: Error\(String(describing: error?.localizedDescription))")
-                    }
-                }
+                
             }
             self.updateValues(uid: uid, values: values)
         }
@@ -193,6 +217,24 @@ class SignUpController : UIViewController{
             self.present(nav, animated: true, completion: nil)
             
         }
+    }
+}
+extension SignUpController:  UIPickerViewDelegate, UIPickerViewDataSource{
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return source[row]
+    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return source.count
+    }
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 40
+    }
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        return NSAttributedString(string: source[row], attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
     }
 }
 

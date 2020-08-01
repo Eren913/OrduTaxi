@@ -35,12 +35,12 @@ class LoginController: UIViewController {
         return view
     }()
     private let passwordTextField : UITextField = {
-        return UITextField().textField(withPlaceholder: "Password", isSecureTextEntry: false)
+        return UITextField().textField(withPlaceholder: "Şifre", isSecureTextEntry: false)
     }()
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Log In", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
+        button.setTitle("Giriş Yap", for: .normal)
+        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
         button.backgroundColor = .mainBlueTint
         button.layer.cornerRadius = 5
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -50,11 +50,11 @@ class LoginController: UIViewController {
     }()
     private let dontHaveaAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Dont Have a Account? ",attributes: [
+        let attributeTitle = NSMutableAttributedString(string: "Hesabınız Yokmu ? ",attributes: [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
             NSAttributedString.Key.foregroundColor: UIColor.lightGray
         ])
-        attributeTitle.append(NSAttributedString(string: "SignUp",attributes: [
+        attributeTitle.append(NSAttributedString(string: "Kayıt Ol",attributes: [
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
             NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
         ]))
