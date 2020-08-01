@@ -139,7 +139,6 @@ class SignUpController : UIViewController{
         navigationController?.popViewController(animated: true)
     }
     @objc func signUpClicked(){
-        
         guard let emailtext = emailTextField.text else {return}
         guard let passwordtext = passwordTextField.text else {return}
         guard let fullnameText = fullNameTextField.text else {return}
@@ -157,11 +156,8 @@ class SignUpController : UIViewController{
             let values = [EMAİL_FREF:emailtext,
                           FULLNAME_FREF:fullnameText,
                           ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
-            
-            
             if accountTypeIndex == 1 {
                 let geoFire = GeoFire(firebaseRef: DRIVER_LOC_FREF)
-                
                 guard let loc = self.location else {return}
                 geoFire.setLocation(loc, forKey: uid) { (error) in
                     if error != nil {
@@ -177,6 +173,17 @@ class SignUpController : UIViewController{
     }
     //MARK:-HelperFunctions
     func updateValues(uid: String, values: [String : Any] ){
+        Firestore.firestore().collection("Users").document(uid).setData(values) { (error) in
+            if let error = error{
+                debugPrint("DEBUG: FireStore Updata Data Error -- \(error.localizedDescription)")
+            }
+            let home = ContainerController()
+            home.configure()
+            let nav = UINavigationController(rootViewController: home)
+            nav.modalPresentationStyle = .fullScreen
+            self.navigationController?.navigationBar.isHidden = true
+            self.present(nav, animated: true, completion: nil)
+        }
         USER_REF.child(uid).updateChildValues(values) { (error, ref) in
             let home = HomeController()
             home.configure()

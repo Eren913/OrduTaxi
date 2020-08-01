@@ -7,6 +7,7 @@
 //
 import CoreLocation
 import FirebaseDatabase
+import FirebaseFirestore
 
 enum AccountType: Int {
     case passenger
@@ -42,4 +43,11 @@ struct User {
         }
     }
 }
+struct Drivers{
+    let fullname: String?
+    let email: String?
+    var accountType: AccountType?
+    var firstInitial: String { return String((fullname?.prefix(1))!) }
+}
+
 

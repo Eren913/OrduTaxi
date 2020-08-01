@@ -97,8 +97,6 @@ class HomeController : UIViewController{
         }
         
     }
-
-    
     //MARK:-Api
     
     func fetchUserData(){

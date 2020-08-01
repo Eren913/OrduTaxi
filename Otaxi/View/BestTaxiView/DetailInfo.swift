@@ -29,7 +29,6 @@ class DetailInfoHeader: UIView {
     }()
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Eren Stark"
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -37,7 +36,6 @@ class DetailInfoHeader: UIView {
     
     let emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "Erenn.stark@gmail.com"
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +46,6 @@ class DetailInfoHeader: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        initialLabel.text = "E"
         let profileImageDimension: CGFloat = 80
         
         addSubview(profileImageView)

@@ -15,6 +15,9 @@ let DB_REF = Database.database().reference()
 let USER_REF = DB_REF.child(USER_FREF)
 let DRIVER_LOC_FREF = DB_REF.child("driver-locations")
 
+let FS_REF = Firestore.firestore()
+let USER_FSREF = FS_REF.collection(USER_FREF)
+
 struct Service {
     static let shared = Service()
     func fetchUserData(uid: String, completion: @escaping(User) -> Void) {
@@ -41,6 +44,14 @@ struct Service {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let key: String = type == .home ? "homeLocation" : "workLocation"
         USER_REF.child(uid).child(key).setValue(locationString, withCompletionBlock: completion)
+    }
+    func saveLocationFS(locationString: String, type: LocationType, completion: @escaping(Error?) -> Void){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let key: String = type == .home ? "homeLocation" : "workLocation"
+        let value = [
+            key: locationString
+        ]
+        USER_FSREF.document(uid).setData(value, merge: true, completion: completion)
     }
 }
 

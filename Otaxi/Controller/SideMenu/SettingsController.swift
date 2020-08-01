@@ -160,5 +160,17 @@ extension SettingsController: AddLocationControllerDelegate {
             }
             self.tableView.reloadData()
         }
+        Service.shared.saveLocationFS(locationString: locationString, type: type) { (error) in
+            self.dismiss(animated: true, completion: nil)
+            self.userInfoUpdated = true
+            switch type {
+            case .home:
+                self.user.homeLocation = locationString
+            case .work:
+                self.user.workLocation = locationString
+            }
+            self.tableView.reloadData()
+        }
+        self.tableView.reloadData()
     }
 }

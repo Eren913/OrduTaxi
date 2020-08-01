@@ -6,50 +6,52 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import FirebaseFirestore
 
 let tableViewIdentifer = "id"
 
 class BestTaxi: UIViewController{
     //MARK: - Properties
+    var driversArray : [Drivers] = []
     let tableView = UITableView()
     var navigationTitle : String = ""
-    var user: User?{
-        didSet{
-            
-        }
-    }
     
-    
-    let ref = Database.database().reference()
-    var us = [User]()
-    var er = [String]()
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.driversName.removeAll()
         view.backgroundColor = .red
         configureTableView()
         configureNavigation(title: navigationTitle)
         fetchAllUserData()
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("DEBUG: -- \(er)")
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     func fetchAllUserData() {
-        ref.child("Users").observe(.value) { (snapshot) in
-            let post = snapshot.ref.key
-            print("DEBUG: - - - \(post)")
+        USER_FSREF.addSnapshotListener { (snapshot, error) in
+            if error != nil {
+                print("DEBUG: errororooror")
+            } else {
+                if snapshot?.isEmpty == false && snapshot != nil {
+                    self.driversArray.removeAll(keepingCapacity: false)
+                    for document in snapshot!.documents {
+                        let documentId = document.documentID
+                        if let username = document.get(FULLNAME_FREF) as? String {
+                            if let email = document.get(EMAİL_FREF) as? String {
+                                let snap = Drivers(fullname: username, email: email, accountType: nil)
+                                self.driversArray.append(snap)
+                            }
+                        }
+                    }
+                    self.tableView.reloadData()
+                }
+            }
         }
     }
-    func fetch(uid: String, completion: @escaping(User) -> Void) {
-        USER_REF.child(uid).observeSingleEvent(of: .value) { snapshot in
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            let uuid = snapshot.key
-            let user = User(uid: uuid, dictionary: dictionary)
-            completion(user)
-        }
-    }
-    
     func configureTableView(){
         tableView.frame = view.bounds
         tableView.register(BestTaxiCell.self, forCellReuseIdentifier: tableViewIdentifer)
@@ -73,16 +75,19 @@ extension BestTaxi: UITableViewDelegate,UITableViewDataSource{
         return 100
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return driversArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! BestTaxiCell
+        cell.nameLabel.text = driversArray[indexPath.row].fullname
+        cell.initialLabel.text = driversArray[indexPath.row].firstInitial
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let homeDetail = BestTaxiDetail()
+        homeDetail.selectedDriver = driversArray[indexPath.row].self
         navigationController?.pushViewController(homeDetail, animated: true)
     }
 }
