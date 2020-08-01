@@ -41,17 +41,5 @@ struct User {
             self.accountType = AccountType(rawValue: index)
         }
     }
-    
-    func fetchAlldata(completion: @escaping([User]) -> Void){
-        USER_REF.observeSingleEvent(of: .value) { (snapshot) in
-            var users = [User]()
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            for child in dictionary {
-                let user = User(uid: child.key, dictionary: child.value as! [String : Any])
-                users.append(user)
-                completion(users)
-            }
-        }
-    }
 }
 

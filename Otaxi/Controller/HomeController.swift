@@ -127,7 +127,7 @@ class HomeController : UIViewController{
     func configure(){
         configureUI()
         fetchUserData()
-        fetchStadiumsOnMap(TaksiDurakları.shared.duraklar)
+        fetchDurakOnMap(TaksiDurakları.shared.duraklar)
     }
     fileprivate func configureActionbutton(configure config : ActionbuttonConfiguration){
         switch config {
@@ -256,7 +256,7 @@ class HomeController : UIViewController{
             self.rideAction.frame.origin.y = yOrigin
         }
     }
-    func fetchStadiumsOnMap(_ duraklar: [TaksiDurak]) {
+    func fetchDurakOnMap(_ duraklar: [TaksiDurak]) {
         for durak in duraklar {
             let annotations = CustomAnnotation(title: durak.name, subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: durak.lattitude, longitude: durak.longtitude))
             mapView.addAnnotation(annotations)

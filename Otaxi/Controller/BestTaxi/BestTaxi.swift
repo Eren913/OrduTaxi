@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseDatabase
+
 let tableViewIdentifer = "id"
 
 class BestTaxi: UIViewController{
@@ -18,6 +19,9 @@ class BestTaxi: UIViewController{
             
         }
     }
+    
+    
+    let ref = Database.database().reference()
     var us = [User]()
     var er = [String]()
     //MARK: - Lifecycle
@@ -32,12 +36,17 @@ class BestTaxi: UIViewController{
         print("DEBUG: -- \(er)")
     }
     func fetchAllUserData() {
-        let ref = Database.database().reference()
         ref.child("Users").observe(.value) { (snapshot) in
-            let post = snapshot.value as? [String:Any]
-            if let actualPost = post{
-                print("DEBUG: eren -- \(actualPost)")
-            }
+            let post = snapshot.ref.key
+            print("DEBUG: - - - \(post)")
+        }
+    }
+    func fetch(uid: String, completion: @escaping(User) -> Void) {
+        USER_REF.child(uid).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            let uuid = snapshot.key
+            let user = User(uid: uuid, dictionary: dictionary)
+            completion(user)
         }
     }
     
@@ -74,10 +83,7 @@ extension BestTaxi: UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let homeDetail = BestTaxiDetail()
-        present(homeDetail, animated: true, completion: nil)
+        navigationController?.pushViewController(homeDetail, animated: true)
     }
-    
-    
-
 }
 

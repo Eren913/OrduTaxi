@@ -30,37 +30,39 @@ class BestTaxiDetail: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
-        
         tableView.register(SettingsCell.self, forCellReuseIdentifier: reuseIdentifier)
         view.addSubview(tableView)
         tableView.frame = view.frame
-        
-        let frame = CGRect(x: 0, y: 88, width: view.frame.width, height: 100)
+        let frame = CGRect(x: 0, y: 100, width: tableView.frame.width, height: 100)
         userInfoHeader = DetailInfoHeader(frame: frame)
         tableView.tableHeaderView = userInfoHeader
+        tableView.canCancelContentTouches = true
         tableView.tableFooterView = UIView()
+        
     }
     
     func configureUI() {
         configureTableView()
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.barTintColor = UIColor(red: 55/255, green: 120/255, blue: 250/255, alpha: 1)
-        navigationItem.title = "Ornek Kisi"
+        configureNavigation(title: "Eren Celık")
     }
-
+    func configureNavigation(title: String){
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = title
+    }
+    
 }
 
 extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
+        if indexPath.row == 0 {
+        }
         return cell
     }
     

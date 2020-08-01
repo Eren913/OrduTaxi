@@ -10,6 +10,7 @@ pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'GeoFire', '~> 4.0'
+pod 'Cosmos'
 
   # Pods for Otaxi
 

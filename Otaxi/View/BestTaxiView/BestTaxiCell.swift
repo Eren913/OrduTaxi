@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import Cosmos
 
 class BestTaxiCell: UITableViewCell {
     
@@ -17,13 +18,13 @@ class BestTaxiCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
-     lazy var initialLabel: UILabel = {
+    lazy var initialLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 42)
         label.textColor = .white
         return label
     }()
-     lazy var profileImageView: UIView = {
+    lazy var profileImageView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.addSubview(initialLabel)
