@@ -9,6 +9,7 @@
 
 import UIKit
 import MapKit
+import SwiftPhoneNumberFormatter
 
 extension UIColor {
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
@@ -142,6 +143,19 @@ extension UITextField {
         tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
         return tf
     }
+    func phoneTextField(withPlaceholder placeholder: String) -> UITextField {
+        let tf = PhoneFormattedTextField()
+        tf.borderStyle = .none
+        tf.font = UIFont.systemFont(ofSize: 16)
+        tf.textColor = .white
+        tf.keyboardAppearance = .dark
+        tf.keyboardType = .numberPad
+        tf.config.defaultConfiguration = PhoneFormat(defaultPhoneFormat: "(###) ###-##-##")
+        tf.prefix = "+90 "
+        tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
+        return tf
+    }
+    
 }
 
 extension MKPlacemark {

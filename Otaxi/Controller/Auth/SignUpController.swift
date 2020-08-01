@@ -9,8 +9,6 @@
 import UIKit
 import Firebase
 import FirebaseAuth
-import GeoFire
-
 
 class SignUpController : UIViewController{
     
@@ -29,6 +27,8 @@ class SignUpController : UIViewController{
         "Akyazı Taksi"]
     
     //MARK: Properties
+    let stops = UIPickerView()
+    
     private let titleLabel : UILabel = {
         let label = UILabel()
         label.text = "ORDU"
@@ -63,7 +63,7 @@ class SignUpController : UIViewController{
         return view
     }()
     private let telNoTextField : UITextField = {
-        return UITextField().textField(withPlaceholder: "Telefon Numarası", isSecureTextEntry: false)
+        return UITextField().phoneTextField(withPlaceholder: "Telefon Numarası")
     }()
     
     private lazy var telNoContainer : UIView = {
@@ -96,16 +96,16 @@ class SignUpController : UIViewController{
         view.heightAnchor.constraint(equalToConstant: 80).isActive = true
         return view
     }()
-    private let stops = UIPickerView()
-    private let stopsLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Durak Seç:"
-        label.font = UIFont(name: "Avenir-Light", size: 20)
-        label.textColor = UIColor(white: 1, alpha: 1)
-        return label
+    
+    private let stopsTextField : UITextField = {
+        return UITextField().textField(withPlaceholder: "Durağı Seç", isSecureTextEntry: false)
     }()
     
-    
+    private lazy var stopTextFieldContainer : UIView = {
+        let view = UIView().inputContainerView(image: (UIImage(systemName: "mappin.circle.fill")!.withTintColor(.white)), textField: stopsTextField)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return view
+    }()
     private let alreadyHaveAccountButton : UIButton  = {
         let button = UIButton(type: .system)
         let attributeTitle = NSMutableAttributedString(string: "Hesabınız Varmı ? ",attributes: [
@@ -128,12 +128,14 @@ class SignUpController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        stopsTextField.inputView = stops
         stops.delegate = self
         stops.dataSource = self
         
         
     }
     fileprivate func configureUI() {
+        createToolbar()
         view.backgroundColor = .backgroundColor
         view.addSubview(titleLabel)
         titleLabel.centerX(inView: view)
@@ -145,8 +147,7 @@ class SignUpController : UIViewController{
                                                 telNoContainer,
                                                 passwordContainer,
                                                 accountTypeContainer,
-                                                stopsLabel,
-                                                stops,
+                                                stopTextFieldContainer,
                                                 signUpButton])
         sv.axis = .vertical
         sv.distribution = .fillEqually
@@ -168,6 +169,9 @@ class SignUpController : UIViewController{
         alreadyHaveAccountButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor)
     }
     //MARK:- Selectors
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
     @objc fileprivate func handleShowSignIn(){
         navigationController?.popViewController(animated: true)
     }
@@ -175,7 +179,8 @@ class SignUpController : UIViewController{
         guard let emailtext = emailTextField.text else {return}
         guard let passwordtext = passwordTextField.text else {return}
         guard let fullnameText = fullNameTextField.text else {return}
-        
+        guard let telNoText = telNoTextField.text else {return}
+        guard let pickerindex = stopsTextField.text else {return}
         let accountTypeIndex = accountType.selectedSegmentIndex
         
         Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
@@ -188,10 +193,10 @@ class SignUpController : UIViewController{
             
             let values = [EMAİL_FREF:emailtext,
                           FULLNAME_FREF:fullnameText,
+                          TEL_NO_FREF:telNoText,
+                          DURAK_ISMI_FREF : pickerindex,
                           ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
-            if accountTypeIndex == 1 {
-                
-            }
+            
             self.updateValues(uid: uid, values: values)
         }
     }
@@ -218,6 +223,16 @@ class SignUpController : UIViewController{
             
         }
     }
+    func createToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.barTintColor = .black
+        toolBar.tintColor = .white
+        let doneButton = UIBarButtonItem(title: "Tamam", style: .plain, target: self, action:#selector(self.dismissKeyboard))
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        stopsTextField.inputAccessoryView = toolBar
+    }
 }
 extension SignUpController:  UIPickerViewDelegate, UIPickerViewDataSource{
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -231,10 +246,27 @@ extension SignUpController:  UIPickerViewDelegate, UIPickerViewDataSource{
         return source.count
     }
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 40
+        return 50
     }
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         return NSAttributedString(string: source[row], attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        stopsTextField.text = source[row]
+    }
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label: UILabel
+        if let view = view as? UILabel {
+            label = view
+        } else {
+            label = UILabel()
+        }
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont(name: "Avenir-Light", size: 20)
+        label.text = source[row]
+        return label
     }
 }
 

@@ -10,6 +10,8 @@ let USER_FREF = "Users"
 let EMAİL_FREF = "Email"
 let FULLNAME_FREF = "Fullname"
 let PASSWORD_FREF = "Password"
+let TEL_NO_FREF = "TelNo"
+let DURAK_ISMI_FREF = "DurakIsmi"
 let ACCOUNT_TYPE_FREF = "AccountType"
 
 

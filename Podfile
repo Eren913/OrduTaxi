@@ -12,6 +12,7 @@ pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'GeoFire', '~> 4.0'
 pod 'Cosmos'
+pod "SwiftPhoneNumberFormatter"
 
   # Pods for Otaxi
 
