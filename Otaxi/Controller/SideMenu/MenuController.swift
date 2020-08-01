@@ -18,9 +18,9 @@ enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
     
     var description: String {
         switch self {
-        case .yourTrips: return "Your Trips"
-        case .settings: return "Settings"
-        case .logout: return "Log Out"
+        case .yourTrips: return "Favori Taksiciler"
+        case .settings: return "Ayarlar"
+        case .logout: return "Çıkış Yap"
         }
     }
 }

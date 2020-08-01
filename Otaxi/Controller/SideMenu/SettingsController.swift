@@ -20,15 +20,15 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
     
     var description: String {
         switch self {
-        case .home: return "Home"
-        case .work: return "Work"
+        case .home: return "Ev"
+        case .work: return "İş"
         }
     }
     
     var subtitle: String {
         switch self {
-        case .home: return "Add Home"
-        case .work: return "Add Work"
+        case .home: return "Ev Adressi Ekle"
+        case .work: return "İş Adressi Ekle"
         }
     }
 }
@@ -73,7 +73,7 @@ class SettingsController: UITableViewController {
             delegate?.updateUser(self)
         }
         
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Helper Functions
@@ -116,10 +116,9 @@ extension SettingsController {
         let title = UILabel()
         title.font = UIFont.systemFont(ofSize: 16)
         title.textColor = .white
-        title.text = "Favorites"
+        title.text = "Favori Adress Ekle"
         view.addSubview(title)
         title.centerY(inView: view, leftAnchor: view.leftAnchor, paddingLeft: 16)
-        
         return view
     }
     

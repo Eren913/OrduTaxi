@@ -19,19 +19,19 @@ enum SettingsSection: Int,CaseIterable,CustomStringConvertible{
     
     var description: String{
         switch self {
-        case .Social: return "Social"
-        case .Communication: return "Communication"
+        case .Social: return "Sağlık Ve Güvenlik"
+        case .Communication: return "Bilgiler"
         }
     }
 }
 enum SocialSection: Int,CaseIterable,SectionType{
-    var containsSwitch: Bool { return true }
+    var containsSwitch: Bool {return true}
     
     case rating
     
     var description: String{
         switch self {
-        case .rating: return "Puan"
+        case .rating: return "Sağlık puanı"
         }
     }
 }
@@ -40,14 +40,20 @@ enum CommunicationSection: Int,CaseIterable,SectionType{
     var containsSwitch: Bool {
         switch self{
         case .favorite : return true
+        case .phone: return false
+        case .carModel: return false
         }
     }
     
     case favorite
+    case phone
+    case carModel
     
     var description: String{
         switch self {
-        case .favorite: return "Favorite"
+        case .favorite: return "Favorilere Ekle"
+        case .phone: return "Tel No: +905321233245"
+        case .carModel: return "Arac Model: Dacia Duster"
         }
     }
 }
@@ -67,15 +73,13 @@ class SettingsCell: UITableViewCell {
     // MARK: - Init
     lazy var cosmosView: CosmosView = {
         var view = CosmosView()
-        //view.settings.updateOnTouch = true
+        view.settings.updateOnTouch = true
         view.settings.filledImage = UIImage(named: "RatingStarFilled")?.withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = UIImage(named: "RatingStarEmpty")?.withRenderingMode(.alwaysOriginal)
         view.settings.totalStars = 5
         view.settings.starSize = 24
         view.settings.starMargin = 4
         view.settings.fillMode = .precise
-        view.settings.textColor = .red
-        view.settings.textMargin = 20
         
         return view
     }()
@@ -89,7 +93,8 @@ class SettingsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(cosmosView)
-        cosmosView.anchor(left: rightAnchor , paddingLeft: 12)
+        cosmosView.centerY(inView: self)
+        cosmosView.anchor(right: rightAnchor , paddingLeft: 12)
         addSubview(swicthControl)
         swicthControl.centerY(inView: self)
         swicthControl.anchor(right: rightAnchor,paddingRight: 12)
@@ -100,9 +105,7 @@ class SettingsCell: UITableViewCell {
     }
     @objc func handleSwitchControl(sender: UISwitch){
         if sender.isOn{
-         print("DEBUG: switch on")
         }else {
-            print("DEBUG: switch ooff")
         }
     }
     

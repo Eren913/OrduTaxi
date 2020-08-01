@@ -15,10 +15,11 @@ class BestTaxiDetail: UIViewController {
     
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
+    let settingCell: SettingsCell? = nil
     var selectedDriver : Drivers?
-
+    
     // MARK: - Init
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -61,7 +62,16 @@ extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .blue
-        
+        let btn = UIButton()
+        btn.setTitle("Düzenle", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.layer.cornerRadius = 10
+        btn.addTarget(self, action: #selector(handleDuzenleTapped), for: .touchUpInside)
+        if section == 0{
+            view.addSubview(btn)
+            btn.centerY(inView: view)
+            btn.anchor(right: view.rightAnchor,paddingRight: 12)
+        }
         let title = UILabel()
         title.font = UIFont.boldSystemFont(ofSize: 16)
         title.textColor = .white
@@ -89,11 +99,13 @@ extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
         switch section {
         case .Social:
-             let social = SocialSection(rawValue: indexPath.row)
-             cell.sectionType = social
+            let social = SocialSection(rawValue: indexPath.row)
+            cell.sectionType = social
+            cell.swicthControl.isHidden = true
         case .Communication:
             let communication = CommunicationSection(rawValue: indexPath.row)
             cell.sectionType = communication
+            cell.cosmosView.isHidden = true
         }
         return cell
     }
@@ -105,7 +117,11 @@ extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
         case .Communication:
             print(CommunicationSection(rawValue: indexPath.row)!)
         }
-
+        
+    }
+    @objc func handleDuzenleTapped(updateOnTouch: Bool){
+        print("DEBUG: Tapped")
+        settingCell?.cosmosView.settings.updateOnTouch = false
     }
     
     
