@@ -150,6 +150,7 @@ class HomeController : UIViewController{
                             height: 30)
         
         view.addSubview(inputActivationView)
+        inputActivationView.layer.cornerRadius = 10
         inputActivationView.centerX(inView: view)
         inputActivationView.setDimensions(height: 50,
                                           width: view.frame.width - 64)
@@ -344,7 +345,7 @@ extension HomeController: MKMapViewDelegate{
     //MARK:-MapView Selectors
     @objc func handleDetailDisclosure(){
         guard let selectedtitle = selectedAnnotation?.title else {return}
-        let detail = BestTaxi()
+        let detail = StopsDriver()
         //detail.user = user
         detail.navigationTitle = selectedtitle
         detail.navigationController?.navigationBar.prefersLargeTitles = true
@@ -423,7 +424,7 @@ extension HomeController: LocationInputViewDelegate{
 extension HomeController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "Saved Locations" : "Results"
+        return section == 0 ? "Kayıtlı Adressler" : "Sonuç"
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

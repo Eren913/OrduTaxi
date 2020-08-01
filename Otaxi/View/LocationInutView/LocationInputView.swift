@@ -53,7 +53,7 @@ class LocationInputView: UIView {
     }()
     private lazy var startingLocationTextField : UITextField = {
         let tf = UITextField()
-        tf.placeholder = "CurrentLocation"
+        tf.placeholder = "Şuanki Konum"
         tf.backgroundColor = .lightGray
         tf.isEnabled = false
         tf.font = UIFont.systemFont(ofSize: 14)
@@ -67,7 +67,7 @@ class LocationInputView: UIView {
     }()
     private lazy var destinationLocationTextField : UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Destination"
+        tf.placeholder = "Gidilecek Yer"
         tf.backgroundColor = .lightGray
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.keyboardType = .default

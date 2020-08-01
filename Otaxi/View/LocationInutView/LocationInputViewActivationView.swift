@@ -26,7 +26,7 @@ class LocationInputViewActivationView: UIView{
     
     private let placeHolderLabel : UILabel = {
         let label = UILabel()
-        label.text = "Where to ?"
+        label.text = "Nereye ?"
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .darkGray
         return label

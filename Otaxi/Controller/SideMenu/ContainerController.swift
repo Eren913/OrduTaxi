@@ -174,7 +174,7 @@ extension ContainerController: MenuControllerDelegate {
         isExpanded.toggle()
         animateMenu(shouldExpand: isExpanded) { _ in
             switch option {
-            case .yourTrips:
+            case .favoriTaksiciler:
                 break
             case .settings:
                 guard let user = self.user else { return }
@@ -182,16 +182,21 @@ extension ContainerController: MenuControllerDelegate {
                 controller.delegate = self
                 self.navigationController?.pushViewController(controller, animated: true)
                 self.modalPresentationStyle = .fullScreen
+            case .bestTaxi:
+                print("DEBUG: Best taxi clicked")
+                let vc = HealtyTaxi()
+                self.navigationController?.pushViewController(vc, animated: true)
+                self.modalPresentationStyle = .fullScreen
+
+                break
             case .logout:
                 let alert = UIAlertController(title: nil,
-                                              message: "Are you sure you want to log out?",
+                                              message: "Çıkış Yapmak İstiyormusunuz ?",
                                               preferredStyle: .actionSheet)
-                alert.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { _ in
+                alert.addAction(UIAlertAction(title: "Çıkış Yap", style: .destructive, handler: { _ in
                     self.signOut()
                 }))
-                
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                
+                alert.addAction(UIAlertAction(title: "Vazgeç", style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }

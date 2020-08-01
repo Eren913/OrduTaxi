@@ -6,16 +6,17 @@
 //
 
 import UIKit
+import Cosmos
 
 private let reuseIdentifier = "SettingsCell"
 
-class BestTaxiDetail: UIViewController {
+class StopsDriverDetail: UIViewController {
     
     // MARK: - Properties
     
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
-    let settingCell: SettingsCell? = nil
+    let settingCell: SettingsCell! = nil
     var selectedDriver : Drivers?
     
     // MARK: - Init
@@ -26,6 +27,15 @@ class BestTaxiDetail: UIViewController {
         userInfoHeader.usernameLabel.text = selectedDriver?.fullname
         userInfoHeader.initialLabel.text = selectedDriver?.firstInitial
         userInfoHeader.emailLabel.text = selectedDriver?.email
+        
+        
+    }
+    private func callNumber(phoneNumber:String) {
+        
+        if let phoneCallURL = URL(string: "telprompt://\(phoneNumber)") {
+            UIApplication.shared.canOpenURL(phoneCallURL)
+        }
+        
     }
     // MARK: - Helper Functions
     func configureTableView() {
@@ -54,7 +64,7 @@ class BestTaxiDetail: UIViewController {
     
 }
 
-extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
+extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return SettingsSection.allCases.count
@@ -102,6 +112,7 @@ extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
             let social = SocialSection(rawValue: indexPath.row)
             cell.sectionType = social
             cell.swicthControl.isHidden = true
+            
         case .Communication:
             let communication = CommunicationSection(rawValue: indexPath.row)
             cell.sectionType = communication
@@ -119,9 +130,14 @@ extension BestTaxiDetail: UITableViewDelegate, UITableViewDataSource {
         }
         
     }
-    @objc func handleDuzenleTapped(updateOnTouch: Bool){
-        print("DEBUG: Tapped")
-        settingCell?.cosmosView.settings.updateOnTouch = false
+    @objc func handleDuzenleTapped(sender: UIButton,update: Bool){
+        sender.isSelected = !sender.isSelected
+        sender.tintColor = .clear
+        
+        if sender.isSelected{
+            sender.setTitle("Tamam", for: .selected)
+            
+        }
     }
     
     

@@ -1,5 +1,5 @@
 //
-//  BestTaxi.swift
+//  StopsDriver.swift
 //  Otaxi
 //
 //  Created by lil ero on 28.07.2020.
@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 let tableViewIdentifer = "id"
 
-class BestTaxi: UIViewController{
+class StopsDriver: UIViewController{
     //MARK: - Properties
     var driversArray : [Drivers] = []
     let tableView = UITableView()
@@ -34,12 +34,11 @@ class BestTaxi: UIViewController{
     func fetchAllUserData() {
         USER_FSREF.addSnapshotListener { (snapshot, error) in
             if error != nil {
-                print("DEBUG: errororooror")
+                print("DEBUG: Error")
             } else {
                 if snapshot?.isEmpty == false && snapshot != nil {
                     self.driversArray.removeAll(keepingCapacity: false)
                     for document in snapshot!.documents {
-                        let documentId = document.documentID
                         if let username = document.get(FULLNAME_FREF) as? String {
                             if let email = document.get(EMAİL_FREF) as? String {
                                 let snap = Drivers(fullname: username, email: email, accountType: nil)
@@ -54,7 +53,7 @@ class BestTaxi: UIViewController{
     }
     func configureTableView(){
         tableView.frame = view.bounds
-        tableView.register(BestTaxiCell.self, forCellReuseIdentifier: tableViewIdentifer)
+        tableView.register(StopsDriverCell.self, forCellReuseIdentifier: tableViewIdentifer)
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -70,7 +69,7 @@ class BestTaxi: UIViewController{
         navigationController?.popViewController(animated: true)
     }
 }
-extension BestTaxi: UITableViewDelegate,UITableViewDataSource{
+extension StopsDriver: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
@@ -79,14 +78,14 @@ extension BestTaxi: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! BestTaxiCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! StopsDriverCell
         cell.nameLabel.text = driversArray[indexPath.row].fullname
         cell.initialLabel.text = driversArray[indexPath.row].firstInitial
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let homeDetail = BestTaxiDetail()
+        let homeDetail = StopsDriverDetail()
         homeDetail.selectedDriver = driversArray[indexPath.row].self
         navigationController?.pushViewController(homeDetail, animated: true)
     }

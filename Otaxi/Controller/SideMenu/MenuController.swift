@@ -12,13 +12,15 @@ import FirebaseAuth
 private let reuseIdentifier = "MenuCell"
 
 enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
-    case yourTrips
+    case favoriTaksiciler
+    case bestTaxi
     case settings
     case logout
     
     var description: String {
         switch self {
-        case .yourTrips: return "Favori Taksiciler"
+        case .favoriTaksiciler: return "Favori Taksiciler"
+        case .bestTaxi: return "Sağlıklı Taksiler"
         case .settings: return "Ayarlar"
         case .logout: return "Çıkış Yap"
         }
@@ -100,7 +102,7 @@ extension MenuController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         
-        if indexPath.row == 2{
+        if indexPath.row == 3{
             cell.textLabel?.textColor = .white
             cell.backgroundColor = .red
             cell.layer.cornerRadius = 5

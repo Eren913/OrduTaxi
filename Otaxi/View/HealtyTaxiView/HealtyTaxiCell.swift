@@ -1,21 +1,25 @@
 //
-//  BestTaxiCell.swift
+//  HealtyTaxiCell.swift
 //  Otaxi
 //
-//  Created by lil ero on 28.07.2020.
+//  Created by lil ero on 1.08.2020.
 //
-
 import UIKit
-import MapKit
 import Cosmos
 
-class BestTaxiCell: UITableViewCell {
+class HealtyTaxiCell: UITableViewCell {
     
     // MARK: - Properties
     var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 20)
+        return label
+    }()
+    var stopLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
     lazy var initialLabel: UILabel = {
@@ -32,11 +36,23 @@ class BestTaxiCell: UITableViewCell {
         initialLabel.centerY(inView: view)
         return view
     }()
+    lazy var cosmosView: CosmosView = {
+        var view = CosmosView()
+        view.settings.updateOnTouch = false
+        view.settings.filledImage = UIImage(named: "RatingStarFilled")?.withRenderingMode(.alwaysOriginal)
+        view.settings.emptyImage = UIImage(named: "RatingStarEmpty")?.withRenderingMode(.alwaysOriginal)
+        view.settings.totalStars = 5
+        view.settings.starSize = 20
+        view.settings.starMargin = 4
+        view.settings.fillMode = .full
+        return view
+    }()
+
     
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        let stack = UIStackView(arrangedSubviews: [nameLabel])
+        let stack = UIStackView(arrangedSubviews: [nameLabel,stopLabel,cosmosView])
         stack.distribution = .fillEqually
         stack.axis = .vertical
         stack.spacing = 4
@@ -49,6 +65,9 @@ class BestTaxiCell: UITableViewCell {
         stack.centerY(inView: self, leftAnchor: profileImageView.rightAnchor, paddingLeft: 10)
         stack.anchor(width: self.bounds.width,height: 80)
         
+        cosmosView.didTouchCosmos = { rating in
+            print("Rated: \(rating)")
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

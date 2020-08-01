@@ -69,18 +69,15 @@ class SettingsCell: UITableViewCell {
             cosmosView.isHidden = !sectionType.containsSwitch
         }
     }
-    
-    // MARK: - Init
     lazy var cosmosView: CosmosView = {
         var view = CosmosView()
-        view.settings.updateOnTouch = true
+        view.settings.updateOnTouch = false
         view.settings.filledImage = UIImage(named: "RatingStarFilled")?.withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = UIImage(named: "RatingStarEmpty")?.withRenderingMode(.alwaysOriginal)
         view.settings.totalStars = 5
         view.settings.starSize = 24
         view.settings.starMargin = 4
-        view.settings.fillMode = .precise
-        
+        view.settings.fillMode = .full
         return view
     }()
     lazy var swicthControl: UISwitch = {
@@ -89,7 +86,7 @@ class SettingsCell: UITableViewCell {
         sw.addTarget(self, action: #selector(handleSwitchControl), for: .valueChanged)
         return sw
     }()
-    
+    // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(cosmosView)
@@ -103,10 +100,11 @@ class SettingsCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    //MARK:- Selectors
     @objc func handleSwitchControl(sender: UISwitch){
         if sender.isOn{
         }else {
+            
         }
     }
-    
 }
