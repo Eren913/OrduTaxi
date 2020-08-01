@@ -23,7 +23,6 @@
 		221CE74A24D0214D006085D6 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74724D0214C006085D6 /* SettingsController.swift */; };
 		221CE74B24D0214D006085D6 /* AddLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74824D0214D006085D6 /* AddLocationController.swift */; };
 		221CE74D24D0228F006085D6 /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74C24D0228F006085D6 /* UserInfoHeader.swift */; };
-		221CE74F24D022BB006085D6 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74E24D022BB006085D6 /* LocationCell.swift */; };
 		221CE75524D06239006085D6 /* TaksiDurakları.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75424D06239006085D6 /* TaksiDurakları.swift */; };
 		221CE75924D06728006085D6 /* BestTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75824D06728006085D6 /* BestTaxi.swift */; };
 		221CE75B24D06EB2006085D6 /* BestTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE75A24D06EB1006085D6 /* BestTaxiCell.swift */; };
@@ -33,11 +32,12 @@
 		2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2240024824C6DD340086DA98 /* LocationHandler.swift */; };
 		22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0A24C5E13D0001D289 /* AppDelegate.swift */; };
 		22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0C24C5E13D0001D289 /* SceneDelegate.swift */; };
-		22438E1224C5E13D0001D289 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1024C5E13D0001D289 /* Main.storyboard */; };
-		22438E1424C5E1400001D289 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1324C5E1400001D289 /* Assets.xcassets */; };
-		22438E1724C5E1400001D289 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22438E1524C5E1400001D289 /* LaunchScreen.storyboard */; };
 		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
 		22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7E91524C84F8900F59FDE /* RideActionView.swift */; };
+		22FEFEFD24D57426001AE0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEF824D57426001AE0C2 /* Assets.xcassets */; };
+		22FEFEFE24D57426001AE0C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */; };
+		22FEFEFF24D57426001AE0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEFB24D57426001AE0C2 /* Main.storyboard */; };
+		22FEFF0124D574A5001AE0C2 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0024D574A5001AE0C2 /* LocationCell.swift */; };
 		3AE041D90371F3F813EEDA28 /* Pods_Otaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA98B7F4BEECD6D5E9D24434 /* Pods_Otaxi.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,7 +60,6 @@
 		221CE74724D0214C006085D6 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		221CE74824D0214D006085D6 /* AddLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationController.swift; sourceTree = "<group>"; };
 		221CE74C24D0228F006085D6 /* UserInfoHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
-		221CE74E24D022BB006085D6 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationCell.swift; path = ../../../../../Downloads/UberTutorial/UberTutorial/View/LocationCell.swift; sourceTree = "<group>"; };
 		221CE75424D06239006085D6 /* TaksiDurakları.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TaksiDurakları.swift"; sourceTree = "<group>"; };
 		221CE75824D06728006085D6 /* BestTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestTaxi.swift; sourceTree = "<group>"; };
 		221CE75A24D06EB1006085D6 /* BestTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestTaxiCell.swift; sourceTree = "<group>"; };
@@ -71,12 +70,13 @@
 		22438E0724C5E13D0001D289 /* Otaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Otaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22438E0A24C5E13D0001D289 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22438E0C24C5E13D0001D289 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		22438E1124C5E13D0001D289 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		22438E1324C5E1400001D289 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		22438E1624C5E1400001D289 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22438E1824C5E1400001D289 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		22E7E91524C84F8900F59FDE /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
+		22FEFEF824D57426001AE0C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		22FEFEFA24D57426001AE0C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		22FEFEFB24D57426001AE0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		22FEFF0024D574A5001AE0C2 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		CA98B7F4BEECD6D5E9D24434 /* Pods_Otaxi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Otaxi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -134,7 +134,7 @@
 			children = (
 				221CE76524D2A971006085D6 /* BestTaxiView */,
 				221CE75724D066B6006085D6 /* Side Menu View */,
-				221CE74E24D022BB006085D6 /* LocationCell.swift */,
+				22FEFF0024D574A5001AE0C2 /* LocationCell.swift */,
 				22044C0E24C5E2B4001FC245 /* LocationInputView.swift */,
 				22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */,
 				22E7E91524C84F8900F59FDE /* RideActionView.swift */,
@@ -226,8 +226,8 @@
 				22044C0124C5E2A6001FC245 /* Service */,
 				22044C0424C5E2AC001FC245 /* Controller */,
 				22044C0D24C5E2B4001FC245 /* View */,
+				22FEFEF624D57426001AE0C2 /* StoryBoards */,
 				22044C1424C5E2B9001FC245 /* Utils */,
-				22438E1F24C5E1550001D289 /* StoryBoards */,
 				22438E1824C5E1400001D289 /* Info.plist */,
 				22044C1724C5E301001FC245 /* GoogleService-Info.plist */,
 			);
@@ -243,14 +243,15 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
-		22438E1F24C5E1550001D289 /* StoryBoards */ = {
+		22FEFEF624D57426001AE0C2 /* StoryBoards */ = {
 			isa = PBXGroup;
 			children = (
-				22438E1024C5E13D0001D289 /* Main.storyboard */,
-				22438E1324C5E1400001D289 /* Assets.xcassets */,
-				22438E1524C5E1400001D289 /* LaunchScreen.storyboard */,
+				22FEFEF824D57426001AE0C2 /* Assets.xcassets */,
+				22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */,
+				22FEFEFB24D57426001AE0C2 /* Main.storyboard */,
 			);
-			path = StoryBoards;
+			name = StoryBoards;
+			path = ../../Otaksi/Otaksi/StoryBoards;
 			sourceTree = "<group>";
 		};
 		B336F30A6503C6D793E446DD /* Pods */ = {
@@ -329,10 +330,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22438E1724C5E1400001D289 /* LaunchScreen.storyboard in Resources */,
+				22FEFEFF24D57426001AE0C2 /* Main.storyboard in Resources */,
+				22FEFEFE24D57426001AE0C2 /* LaunchScreen.storyboard in Resources */,
+				22FEFEFD24D57426001AE0C2 /* Assets.xcassets in Resources */,
 				22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */,
-				22438E1424C5E1400001D289 /* Assets.xcassets in Resources */,
-				22438E1224C5E13D0001D289 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +394,6 @@
 				22044C0C24C5E2AC001FC245 /* SignUpController.swift in Sources */,
 				22044C0A24C5E2AC001FC245 /* HomeController.swift in Sources */,
 				2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */,
-				221CE74F24D022BB006085D6 /* LocationCell.swift in Sources */,
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
@@ -410,6 +410,7 @@
 				221CE74B24D0214D006085D6 /* AddLocationController.swift in Sources */,
 				221CE74424D02120006085D6 /* ContainerController.swift in Sources */,
 				221CE74A24D0214D006085D6 /* SettingsController.swift in Sources */,
+				22FEFF0124D574A5001AE0C2 /* LocationCell.swift in Sources */,
 				221CE74924D0214D006085D6 /* MenuHeader.swift in Sources */,
 				22044BFD24C5E298001FC245 /* Extensions+UIView.swift in Sources */,
 			);
@@ -418,18 +419,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		22438E1024C5E13D0001D289 /* Main.storyboard */ = {
+		22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				22438E1124C5E13D0001D289 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		22438E1524C5E1400001D289 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				22438E1624C5E1400001D289 /* Base */,
+				22FEFEFA24D57426001AE0C2 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

@@ -129,10 +129,9 @@ extension SettingsController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
-        
         guard let type = LocationType(rawValue: indexPath.row) else { return cell }
-        cell.titleLabel.text = type.description
-        cell.addressLabel.text = locationText(forType: type)
+        cell.titlelabel.text = type.description
+        cell.adressLabel.text = locationText(forType: type)
         return cell
     }
     
