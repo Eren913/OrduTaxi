@@ -14,6 +14,12 @@ let TEL_NO_FREF = "TelNo"
 let DURAK_ISMI_FREF = "DurakIsmi"
 let ACCOUNT_TYPE_FREF = "AccountType"
 
+let HEALTH_SCORE_FREF = "HealthScore"
+
+let RATING_USER_FREF = "Begenen_Kullanıcılar"
+let USER_ID_FREF = "Kullanici_ID"
+
+
 
 let DRIVER_ANNO_REUSE_ID = "DriverAnnotation"
 

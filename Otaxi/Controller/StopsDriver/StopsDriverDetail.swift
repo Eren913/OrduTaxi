@@ -8,6 +8,7 @@
 import UIKit
 import Cosmos
 import JXReviewController
+import Firebase
 
 
 private let reuseIdentifier = "SettingsCell"
@@ -16,36 +17,62 @@ class StopsDriverDetail: UIViewController {
     
     // MARK: - Properties
     
-    var inter: Int = 0{
+    var ratingPoint: Int = 0{
         didSet{
+            setRating()
             tableView.reloadData()
         }
     }
-    var cosmosTouches: Double = 0
+    
     
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
     let settingCell: SettingsCell? = nil
-    var selectedDriver : Drivers?
+    var selectedDriver : Drivers!
     
-    // MARK: - Init
-    
+    var ratings = [Rating]()
+    let fireStore = Firestore.firestore()
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         userInfoHeader.usernameLabel.text = selectedDriver?.fullname
         userInfoHeader.initialLabel.text = selectedDriver?.firstInitial
         userInfoHeader.emailLabel.text = selectedDriver?.email
+        
     }
     override func viewWillAppear(_ animated: Bool) {
+        getRating()
     }
     private func callNumber(phoneNumber:String) {
-        
         if let url = URL(string: "tel://\(phoneNumber)"),
-        UIApplication.shared.canOpenURL(url) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-        
+    }
+    
+    //MARK:-Api
+    func setRating(){
+        fireStore.collection(USER_FREF).document(self.selectedDriver.uid!).updateData([
+            HEALTH_SCORE_FREF : ratingPoint
+        ]) { (error) in
+            if let error = error{
+                print("DEBUG: Update value data error \(error.localizedDescription)")
+                return
+            }
+        }
+    }
+    func getRating(){
+        fireStore.collection(USER_FREF).document(selectedDriver.uid!).addSnapshotListener { documentSnapshot, error in
+          guard let document = documentSnapshot else {print("DEBUG: Error fetching document: \(error!)")
+            return}
+          guard let data = document.data() else {print("DEBUG: Document data was empty.")
+            return}
+            
+            let ratPoint = data[HEALTH_SCORE_FREF] as? Int ?? 0
+            self.ratingPoint = ratPoint
+            
+        }
     }
     // MARK: - Helper Functions
     func configureTableView() {
@@ -61,9 +88,7 @@ class StopsDriverDetail: UIViewController {
         tableView.tableHeaderView = userInfoHeader
         tableView.canCancelContentTouches = true
         tableView.tableFooterView = UIView()
-        
     }
-    
     func configureUI() {
         configureTableView()
         configureNavigation()
@@ -79,9 +104,8 @@ class StopsDriverDetail: UIViewController {
         reviewController.delegate = self
         present(reviewController, animated: true)
     }
-    
 }
-
+//MARK:-UITableViewDelegate,UITableViewDataSource
 extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -125,7 +149,7 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
         cell.selectionStyle = .none
         cell.cosmosView.settings.updateOnTouch = false
-        cell.cosmosView.rating = Double(self.inter)
+        cell.cosmosView.rating = Double(self.ratingPoint)
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
         switch section {
         case .Social:
@@ -162,19 +186,9 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     
     
 }
+//MARK:-JXReviewControllerDelegate
 extension StopsDriverDetail: JXReviewControllerDelegate {
-
-    func reviewController(_ reviewController: JXReviewController, didSelectWith point: Int) {
-        print("DEBUG:Did select with \(point) point(s).")
-    }
-
-    func reviewController(_ reviewController: JXReviewController, didCancelWith point: Int) {
-        print("DEBUG:Did cancel with \(point) point(s).")
-    }
-
     func reviewController(_ reviewController: JXReviewController, didSubmitWith point: Int) {
-        print("DEBUG: Did submit with \(point) point(s).")
-        self.inter = point
-        print("DEBUG: Did submit with \(self.inter) inters(s).")
+        self.ratingPoint = point
     }
 }

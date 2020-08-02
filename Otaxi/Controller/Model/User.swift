@@ -44,6 +44,7 @@ struct User {
     }
 }
 struct Drivers{
+    let uid: String?
     let fullname: String?
     let email: String?
     var accountType: AccountType?

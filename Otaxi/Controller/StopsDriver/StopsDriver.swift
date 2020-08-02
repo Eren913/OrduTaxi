@@ -39,9 +39,11 @@ class StopsDriver: UIViewController{
                 if snapshot?.isEmpty == false && snapshot != nil {
                     self.driversArray.removeAll(keepingCapacity: false)
                     for document in snapshot!.documents {
+                        
                         if let username = document.get(FULLNAME_FREF) as? String {
                             if let email = document.get(EMAİL_FREF) as? String {
-                                let snap = Drivers(fullname: username, email: email, accountType: nil)
+                                let uid = document.documentID
+                                let snap = Drivers(uid: uid, fullname: username, email: email, accountType: nil)
                                 self.driversArray.append(snap)
                             }
                         }

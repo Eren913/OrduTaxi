@@ -34,6 +34,7 @@
 		22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0C24C5E13D0001D289 /* SceneDelegate.swift */; };
 		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
 		22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7E91524C84F8900F59FDE /* RideActionView.swift */; };
+		22E9A41324D70BD000929768 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E9A41224D70BD000929768 /* Rating.swift */; };
 		22FEFEFD24D57426001AE0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEF824D57426001AE0C2 /* Assets.xcassets */; };
 		22FEFEFE24D57426001AE0C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */; };
 		22FEFEFF24D57426001AE0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEFB24D57426001AE0C2 /* Main.storyboard */; };
@@ -75,6 +76,7 @@
 		22438E1824C5E1400001D289 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		22E7E91524C84F8900F59FDE /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
+		22E9A41224D70BD000929768 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		22FEFEF824D57426001AE0C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22FEFEFA24D57426001AE0C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22FEFEFB24D57426001AE0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				221CE75424D06239006085D6 /* TaksiDurakları.swift */,
 				22044BFF24C5E2A2001FC245 /* User.swift */,
 				2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */,
+				22E9A41224D70BD000929768 /* Rating.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 		22044C0424C5E2AC001FC245 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				22044BFE24C5E2A2001FC245 /* Model */,
 				22FEFF0324D5F8A4001AE0C2 /* HealtyTaxi */,
 				22044C0624C5E2AC001FC245 /* HomeController.swift */,
 				221CE74124D02120006085D6 /* SideMenu */,
@@ -226,7 +230,6 @@
 			children = (
 				22438E1E24C5E1480001D289 /* Delegates */,
 				22044BFB24C5E298001FC245 /* Extensions */,
-				22044BFE24C5E2A2001FC245 /* Model */,
 				22044C0124C5E2A6001FC245 /* Service */,
 				22044C0424C5E2AC001FC245 /* Controller */,
 				22044C0D24C5E2B4001FC245 /* View */,
@@ -428,6 +431,7 @@
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
 				221CE75924D06728006085D6 /* StopsDriver.swift in Sources */,
+				22E9A41324D70BD000929768 /* Rating.swift in Sources */,
 				22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */,
 				221CE74524D02120006085D6 /* MenuController.swift in Sources */,
 				221CE76324D2A67E006085D6 /* DetailInfo.swift in Sources */,
