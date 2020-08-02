@@ -84,6 +84,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JXReviewController-JXReviewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JXReviewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Otaxi.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -94,7 +104,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SnapKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftPhoneNumberFormatter.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIButtonSetBackgroundColorForState.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -61,6 +61,7 @@ enum CommunicationSection: Int,CaseIterable,SectionType{
 class SettingsCell: UITableViewCell {
     
     // MARK: - Properties
+    
     var sectionType : SectionType? {
         didSet{
             guard let sectionType = sectionType else { return }
@@ -71,7 +72,7 @@ class SettingsCell: UITableViewCell {
     }
     lazy var cosmosView: CosmosView = {
         var view = CosmosView()
-        view.settings.updateOnTouch = false
+        view.settings.updateOnTouch = true
         view.settings.filledImage = UIImage(named: "RatingStarFilled")?.withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = UIImage(named: "RatingStarEmpty")?.withRenderingMode(.alwaysOriginal)
         view.settings.totalStars = 5
@@ -95,6 +96,7 @@ class SettingsCell: UITableViewCell {
         addSubview(swicthControl)
         swicthControl.centerY(inView: self)
         swicthControl.anchor(right: rightAnchor,paddingRight: 12)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

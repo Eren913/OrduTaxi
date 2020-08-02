@@ -7,6 +7,8 @@
 
 import UIKit
 import Cosmos
+import JXReviewController
+
 
 private let reuseIdentifier = "SettingsCell"
 
@@ -14,9 +16,16 @@ class StopsDriverDetail: UIViewController {
     
     // MARK: - Properties
     
+    var inter: Int = 0{
+        didSet{
+            tableView.reloadData()
+        }
+    }
+    var cosmosTouches: Double = 0
+    
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
-    let settingCell: SettingsCell! = nil
+    let settingCell: SettingsCell? = nil
     var selectedDriver : Drivers?
     
     // MARK: - Init
@@ -27,13 +36,14 @@ class StopsDriverDetail: UIViewController {
         userInfoHeader.usernameLabel.text = selectedDriver?.fullname
         userInfoHeader.initialLabel.text = selectedDriver?.firstInitial
         userInfoHeader.emailLabel.text = selectedDriver?.email
-        
-        
+    }
+    override func viewWillAppear(_ animated: Bool) {
     }
     private func callNumber(phoneNumber:String) {
         
-        if let phoneCallURL = URL(string: "telprompt://\(phoneNumber)") {
-            UIApplication.shared.canOpenURL(phoneCallURL)
+        if let url = URL(string: "tel://\(phoneNumber)"),
+        UIApplication.shared.canOpenURL(url) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
         
     }
@@ -60,6 +70,14 @@ class StopsDriverDetail: UIViewController {
     }
     func configureNavigation(){
         navigationController?.isNavigationBarHidden = false
+    }
+    func requestReview() {
+        let reviewController = JXReviewController()
+        reviewController.image = UIImage(systemName: "app.fill")
+        reviewController.title = "Enjoy it?"
+        reviewController.message = "Tap a star to rate it."
+        reviewController.delegate = self
+        present(reviewController, animated: true)
     }
     
 }
@@ -105,7 +123,9 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
-        
+        cell.selectionStyle = .none
+        cell.cosmosView.settings.updateOnTouch = false
+        cell.cosmosView.rating = Double(self.inter)
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
         switch section {
         case .Social:
@@ -136,10 +156,25 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         
         if sender.isSelected{
             sender.setTitle("Tamam", for: .selected)
-            
+            requestReview()
         }
     }
     
     
 }
+extension StopsDriverDetail: JXReviewControllerDelegate {
 
+    func reviewController(_ reviewController: JXReviewController, didSelectWith point: Int) {
+        print("DEBUG:Did select with \(point) point(s).")
+    }
+
+    func reviewController(_ reviewController: JXReviewController, didCancelWith point: Int) {
+        print("DEBUG:Did cancel with \(point) point(s).")
+    }
+
+    func reviewController(_ reviewController: JXReviewController, didSubmitWith point: Int) {
+        print("DEBUG: Did submit with \(point) point(s).")
+        self.inter = point
+        print("DEBUG: Did submit with \(self.inter) inters(s).")
+    }
+}
