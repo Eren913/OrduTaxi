@@ -47,8 +47,13 @@ struct Drivers{
     let uid: String?
     let fullname: String?
     let email: String?
+    var healthpoint: Double?
+    let stop: String?
     var accountType: AccountType?
     var firstInitial: String { return String((fullname?.prefix(1))!) }
+}
+struct eren{
+    let uid: Int?
 }
 
 

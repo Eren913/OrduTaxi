@@ -64,10 +64,10 @@ class StopsDriverDetail: UIViewController {
     }
     func getRating(){
         fireStore.collection(USER_FREF).document(selectedDriver.uid!).addSnapshotListener { documentSnapshot, error in
-          guard let document = documentSnapshot else {print("DEBUG: Error fetching document: \(error!)")
-            return}
-          guard let data = document.data() else {print("DEBUG: Document data was empty.")
-            return}
+            guard let document = documentSnapshot else {print("DEBUG: Error fetching document: \(error!)")
+                return}
+            guard let data = document.data() else {print("DEBUG: Document data was empty.")
+                return}
             
             let ratPoint = data[HEALTH_SCORE_FREF] as? Int ?? 0
             self.ratingPoint = ratPoint
@@ -90,6 +90,7 @@ class StopsDriverDetail: UIViewController {
         tableView.tableFooterView = UIView()
     }
     func configureUI() {
+        settingCell?.delegate = self
         configureTableView()
         configureNavigation()
     }
@@ -99,8 +100,8 @@ class StopsDriverDetail: UIViewController {
     func requestReview() {
         let reviewController = JXReviewController()
         reviewController.image = UIImage(systemName: "app.fill")
-        reviewController.title = "Enjoy it?"
-        reviewController.message = "Tap a star to rate it."
+        reviewController.title = "Sürücünün Durumu"
+        reviewController.message = "Yıldıza Dokun Ve Puanla"
         reviewController.delegate = self
         present(reviewController, animated: true)
     }
@@ -151,12 +152,12 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         cell.cosmosView.settings.updateOnTouch = false
         cell.cosmosView.rating = Double(self.ratingPoint)
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
+        
         switch section {
         case .Social:
             let social = SocialSection(rawValue: indexPath.row)
             cell.sectionType = social
             cell.swicthControl.isHidden = true
-            
         case .Communication:
             let communication = CommunicationSection(rawValue: indexPath.row)
             cell.sectionType = communication
@@ -190,5 +191,15 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
 extension StopsDriverDetail: JXReviewControllerDelegate {
     func reviewController(_ reviewController: JXReviewController, didSubmitWith point: Int) {
         self.ratingPoint = point
+    }
+}
+//MARK:- SettingsCellDelegate
+extension StopsDriverDetail: SettingsCellDelegate{
+    func swicthSender(_ sender: UISwitch) {
+        if sender.isOn{
+            
+        }else{
+            
+        }
     }
 }

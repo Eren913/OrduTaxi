@@ -12,6 +12,9 @@ import Cosmos
 protocol SectionType: CustomStringConvertible {
     var containsSwitch: Bool { get }
 }
+@objc protocol SettingsCellDelegate: class {
+    func swicthSender(_ sender: UISwitch)
+}
 
 enum SettingsSection: Int,CaseIterable,CustomStringConvertible{
     case Social
@@ -70,6 +73,8 @@ class SettingsCell: UITableViewCell {
             cosmosView.isHidden = !sectionType.containsSwitch
         }
     }
+    weak var delegate: SettingsCellDelegate?
+    
     lazy var cosmosView: CosmosView = {
         var view = CosmosView()
         view.settings.updateOnTouch = true
@@ -83,8 +88,8 @@ class SettingsCell: UITableViewCell {
     }()
     lazy var swicthControl: UISwitch = {
        let sw = UISwitch()
-        sw.isOn = true
-        sw.addTarget(self, action: #selector(handleSwitchControl), for: .valueChanged)
+        sw.isOn = false
+        sw.addTarget(delegate, action: #selector(delegate?.swicthSender(_:)), for: .valueChanged)
         return sw
     }()
     // MARK: - Init
@@ -103,10 +108,7 @@ class SettingsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     //MARK:- Selectors
-    @objc func handleSwitchControl(sender: UISwitch){
-        if sender.isOn{
-        }else {
-            
-        }
+    @objc func handleSwitchControl(_ sender: UISwitch){
+        delegate?.swicthSender(sender)
     }
 }

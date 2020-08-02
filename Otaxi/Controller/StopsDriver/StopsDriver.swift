@@ -19,7 +19,6 @@ class StopsDriver: UIViewController{
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.driversName.removeAll()
         view.backgroundColor = .red
         configureTableView()
         configureNavigation(title: navigationTitle)
@@ -32,18 +31,17 @@ class StopsDriver: UIViewController{
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     func fetchAllUserData() {
-        USER_FSREF.addSnapshotListener { (snapshot, error) in
+        USER_FSREF.whereField(DURAK_ISMI_FREF, isEqualTo: navigationTitle).addSnapshotListener { (snapshot, error) in
             if error != nil {
                 print("DEBUG: Error")
             } else {
                 if snapshot?.isEmpty == false && snapshot != nil {
                     self.driversArray.removeAll(keepingCapacity: false)
                     for document in snapshot!.documents {
-                        
                         if let username = document.get(FULLNAME_FREF) as? String {
                             if let email = document.get(EMAİL_FREF) as? String {
                                 let uid = document.documentID
-                                let snap = Drivers(uid: uid, fullname: username, email: email, accountType: nil)
+                                let snap = Drivers(uid: uid, fullname: username, email: email,healthpoint: nil, stop: nil, accountType: nil)
                                 self.driversArray.append(snap)
                             }
                         }

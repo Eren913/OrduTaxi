@@ -18,6 +18,7 @@ let HEALTH_SCORE_FREF = "HealthScore"
 
 let RATING_USER_FREF = "Begenen_Kullanıcılar"
 let USER_ID_FREF = "Kullanici_ID"
+let FAVORITE_TAXI = "FavoriTaksi"
 
 
 
