@@ -80,7 +80,6 @@ class ContainerController: UIViewController {
     }
     
     // MARK: - Helper Functions
-    
     func presentLoginController() {
         DispatchQueue.main.async {
             let nav = UINavigationController(rootViewController: LoginController())
@@ -183,7 +182,6 @@ extension ContainerController: MenuControllerDelegate {
                 self.navigationController?.pushViewController(controller, animated: true)
                 self.modalPresentationStyle = .fullScreen
             case .bestTaxi:
-                print("DEBUG: Best taxi clicked")
                 let vc = HealtyTaxi()
                 self.navigationController?.pushViewController(vc, animated: true)
                 self.modalPresentationStyle = .fullScreen

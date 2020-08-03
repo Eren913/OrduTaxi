@@ -188,16 +188,25 @@ class SignUpController : UIViewController{
                 print("DEBUG: Failed to register user with error \(error.localizedDescription)")
                 return
             }
-            
             guard let uid = result?.user.uid else { return }
-            
-            let values = [EMAİL_FREF:emailtext,
-                          FULLNAME_FREF:fullnameText,
-                          TEL_NO_FREF:telNoText,
-                          DURAK_ISMI_FREF : pickerindex,
-                          ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
-            
-            self.updateValues(uid: uid, values: values)
+            if accountTypeIndex == 0{
+                let values = [EMAİL_FREF:emailtext,
+                              FULLNAME_FREF:fullnameText,
+                              TEL_NO_FREF:telNoText,
+                              ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
+                self.updateValues(uid: uid, values: values)
+            }else if accountTypeIndex == 1{
+                let values = [EMAİL_FREF:emailtext,
+                              FULLNAME_FREF:fullnameText,
+                              TEL_NO_FREF:telNoText,
+                              DURAK_ISMI_FREF : pickerindex,
+                              ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
+                self.updateValues(uid: uid, values: values)
+            }
+            let container = ContainerController()
+            container.configure()
+            self.navigationController?.pushViewController(container, animated: true)
+            self.navigationController?.modalPresentationStyle = .fullScreen
         }
     }
     //MARK:-HelperFunctions
@@ -206,21 +215,11 @@ class SignUpController : UIViewController{
             if let error = error{
                 debugPrint("DEBUG: FireStore Updata Data Error -- \(error.localizedDescription)")
             }
-            let home = ContainerController()
-            home.configure()
-            let nav = UINavigationController(rootViewController: home)
-            nav.modalPresentationStyle = .fullScreen
-            self.navigationController?.navigationBar.isHidden = true
-            self.present(nav, animated: true, completion: nil)
         }
         USER_REF.child(uid).updateChildValues(values) { (error, ref) in
-            let home = HomeController()
-            home.configure()
-            let nav = UINavigationController(rootViewController: home)
-            nav.modalPresentationStyle = .fullScreen
-            self.navigationController?.navigationBar.isHidden = true
-            self.present(nav, animated: true, completion: nil)
-            
+            if let error = error{
+                debugPrint("DEBUG: RealtimeDatabase Updata Data Error -- \(error.localizedDescription)")
+            }
         }
     }
     func createToolbar() {

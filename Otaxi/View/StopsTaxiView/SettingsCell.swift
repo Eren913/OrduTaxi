@@ -14,6 +14,7 @@ protocol SectionType: CustomStringConvertible {
 }
 @objc protocol SettingsCellDelegate: class {
     func swicthSender(_ sender: UISwitch)
+    func callButton(_ sender: UIButton)
 }
 
 enum SettingsSection: Int,CaseIterable,CustomStringConvertible{
@@ -55,7 +56,7 @@ enum CommunicationSection: Int,CaseIterable,SectionType{
     var description: String{
         switch self {
         case .favorite: return "Favorilere Ekle"
-        case .phone: return "Tel No: +905321233245"
+        case .phone: return "Tel No:"
         case .carModel: return "Arac Model: Dacia Duster"
         }
     }
@@ -92,6 +93,18 @@ class SettingsCell: UITableViewCell {
         sw.addTarget(delegate, action: #selector(delegate?.swicthSender(_:)), for: .valueChanged)
         return sw
     }()
+    lazy var callButton : UIButton = {
+        let btn = UIButton(type: .system)
+        btn.addTarget(delegate, action: #selector(delegate?.callButton(_:)), for: .touchUpInside)
+        btn.setImage(UIImage(systemName: "phone.fill")!.withTintColor(.white), for: .normal)
+        return btn
+    }()
+    let callLabel : UILabel = {
+        let label = UILabel()
+        label.text = "eren"
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -101,14 +114,17 @@ class SettingsCell: UITableViewCell {
         addSubview(swicthControl)
         swicthControl.centerY(inView: self)
         swicthControl.anchor(right: rightAnchor,paddingRight: 12)
-        
+        addSubview(callButton)
+        callButton.isHidden = true
+        callButton.centerY(inView: self)
+        callButton.anchor(right: rightAnchor,paddingRight: 12)
+        addSubview(callLabel)
+        callLabel.isHidden = true
+        callLabel.centerY(inView: self)
+        callLabel.anchor(left: leftAnchor,paddingLeft: 80)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    //MARK:- Selectors
-    @objc func handleSwitchControl(_ sender: UISwitch){
-        delegate?.swicthSender(sender)
     }
 }

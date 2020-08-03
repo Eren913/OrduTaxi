@@ -12,14 +12,13 @@ let tableViewIdentifer = "id"
 
 class StopsDriver: UIViewController{
     //MARK: - Properties
-    var driversArray : [Drivers] = []
+    var drivers : [Rating] = []
     let tableView = UITableView()
     var navigationTitle : String = ""
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
         configureTableView()
         configureNavigation(title: navigationTitle)
         fetchAllUserData()
@@ -32,20 +31,11 @@ class StopsDriver: UIViewController{
     }
     func fetchAllUserData() {
         USER_FSREF.whereField(DURAK_ISMI_FREF, isEqualTo: navigationTitle).addSnapshotListener { (snapshot, error) in
-            if error != nil {
-                print("DEBUG: Error")
+            if let error = error {
+                print("DEBUG: Error Stop Drivers -- \(error.localizedDescription)")
             } else {
                 if snapshot?.isEmpty == false && snapshot != nil {
-                    self.driversArray.removeAll(keepingCapacity: false)
-                    for document in snapshot!.documents {
-                        if let username = document.get(FULLNAME_FREF) as? String {
-                            if let email = document.get(EMAİL_FREF) as? String {
-                                let uid = document.documentID
-                                let snap = Drivers(uid: uid, fullname: username, email: email,healthpoint: nil, stop: nil, accountType: nil)
-                                self.driversArray.append(snap)
-                            }
-                        }
-                    }
+                    self.drivers = Rating.fetchRating(snapshot: snapshot)
                     self.tableView.reloadData()
                 }
             }
@@ -74,19 +64,19 @@ extension StopsDriver: UITableViewDelegate,UITableViewDataSource{
         return 100
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return driversArray.count
+        return drivers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! StopsDriverCell
-        cell.nameLabel.text = driversArray[indexPath.row].fullname
-        cell.initialLabel.text = driversArray[indexPath.row].firstInitial
+        cell.nameLabel.text = drivers[indexPath.row].fullname
+        cell.initialLabel.text = drivers[indexPath.row].firstInitial
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let homeDetail = StopsDriverDetail()
-        homeDetail.selectedDriver = driversArray[indexPath.row].self
+        homeDetail.selectedDriver = drivers[indexPath.row].self
         navigationController?.pushViewController(homeDetail, animated: true)
     }
 }

@@ -16,7 +16,6 @@ class RideActionView: UIView{
             adressLabel.text = destination?.address
         }
     }
-    
     //MARK: - Properties
     let titleLabel : UILabel = {
        let label = UILabel()

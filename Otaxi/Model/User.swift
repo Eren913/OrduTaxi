@@ -52,8 +52,5 @@ struct Drivers{
     var accountType: AccountType?
     var firstInitial: String { return String((fullname?.prefix(1))!) }
 }
-struct eren{
-    let uid: Int?
-}
 
 

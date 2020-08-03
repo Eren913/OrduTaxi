@@ -64,10 +64,6 @@ class HealtyTaxiCell: UITableViewCell {
         addSubview(stack)
         stack.centerY(inView: self, leftAnchor: profileImageView.rightAnchor, paddingLeft: 10)
         stack.anchor(width: self.bounds.width,height: 80)
-        
-        cosmosView.didTouchCosmos = { rating in
-            print("Rated: \(rating)")
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {

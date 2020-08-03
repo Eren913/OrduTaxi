@@ -35,7 +35,7 @@ class LoginController: UIViewController {
         return view
     }()
     private let passwordTextField : UITextField = {
-        return UITextField().textField(withPlaceholder: "Şifre", isSecureTextEntry: false)
+        return UITextField().textField(withPlaceholder: "Şifre", isSecureTextEntry: true)
     }()
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
@@ -62,14 +62,6 @@ class LoginController: UIViewController {
         button.setAttributedTitle(attributeTitle, for: .normal)
         return button
     }()
-    let keywindow = UIApplication.shared.connectedScenes
-        .filter({$0.activationState == .foregroundActive})
-        .map({$0 as? UIWindowScene})
-        .compactMap({$0})
-        .first?.windows
-        .filter({$0.isKeyWindow}).first
-    
-    
     //MARK:-Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,20 +78,15 @@ class LoginController: UIViewController {
     @objc func handlesignIn(){
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else {return}
-        
         Auth.auth().signIn(withEmail: email, password: password) { (authData, error) in
             if let error = error {
                 print("DEBUG: error Sıgn In \(error.localizedDescription)")
             }
-            
             let container = ContainerController()
-            let nav = UINavigationController(rootViewController: container)
             container.configure()
-            nav.pushViewController(container, animated: true)
-            nav.modalPresentationStyle = .fullScreen
-            self.present(nav, animated: true, completion: nil)
+            self.navigationController?.pushViewController(container, animated: true)
+            self.navigationController?.modalPresentationStyle = .fullScreen
         }
-        
     }
     //MARK:-HelperFunc
     fileprivate func configureUI() {

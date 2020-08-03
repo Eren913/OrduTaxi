@@ -23,15 +23,14 @@ class StopsDriverDetail: UIViewController {
             tableView.reloadData()
         }
     }
-    
-    
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
     let settingCell: SettingsCell? = nil
-    var selectedDriver : Drivers!
+    var selectedDriver : Rating!
     
-    var ratings = [Rating]()
     let fireStore = Firestore.firestore()
+    
+    let app = UIApplication.shared
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,16 +43,10 @@ class StopsDriverDetail: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         getRating()
     }
-    private func callNumber(phoneNumber:String) {
-        if let url = URL(string: "tel://\(phoneNumber)"),
-            UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-    }
     
     //MARK:-Api
     func setRating(){
-        fireStore.collection(USER_FREF).document(self.selectedDriver.uid!).updateData([
+        fireStore.collection(USER_FREF).document(self.selectedDriver.uid).updateData([
             HEALTH_SCORE_FREF : ratingPoint
         ]) { (error) in
             if let error = error{
@@ -63,15 +56,13 @@ class StopsDriverDetail: UIViewController {
         }
     }
     func getRating(){
-        fireStore.collection(USER_FREF).document(selectedDriver.uid!).addSnapshotListener { documentSnapshot, error in
+        fireStore.collection(USER_FREF).document(selectedDriver.uid).addSnapshotListener { documentSnapshot, error in
             guard let document = documentSnapshot else {print("DEBUG: Error fetching document: \(error!)")
                 return}
             guard let data = document.data() else {print("DEBUG: Document data was empty.")
                 return}
-            
             let ratPoint = data[HEALTH_SCORE_FREF] as? Int ?? 0
             self.ratingPoint = ratPoint
-            
         }
     }
     // MARK: - Helper Functions
@@ -87,7 +78,6 @@ class StopsDriverDetail: UIViewController {
         userInfoHeader = DetailInfoHeader(frame: frame)
         tableView.tableHeaderView = userInfoHeader
         tableView.canCancelContentTouches = true
-        tableView.tableFooterView = UIView()
     }
     func configureUI() {
         settingCell?.delegate = self
@@ -104,6 +94,17 @@ class StopsDriverDetail: UIViewController {
         reviewController.message = "Yıldıza Dokun Ve Puanla"
         reviewController.delegate = self
         present(reviewController, animated: true)
+    }
+    private func callNumber(phoneNumber:String) {
+        if let phone = URL(string: "tel://\(phoneNumber)"){
+            if app.canOpenURL(phone){
+                app.open(phone, options: [:], completionHandler: nil)
+                print("DEBUG: success Call")
+            }
+        }else{
+            print("DEBUG: Fail Call")
+        }
+        
     }
 }
 //MARK:-UITableViewDelegate,UITableViewDataSource
@@ -152,7 +153,11 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         cell.cosmosView.settings.updateOnTouch = false
         cell.cosmosView.rating = Double(self.ratingPoint)
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
-        
+        if indexPath.row == 1 {
+            cell.callButton.isHidden = false
+            cell.callLabel.isHidden = false
+            cell.callLabel.text = selectedDriver.telNo
+        }
         switch section {
         case .Social:
             let social = SocialSection(rawValue: indexPath.row)
@@ -175,7 +180,7 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         }
         
     }
-    @objc func handleDuzenleTapped(sender: UIButton,update: Bool){
+    @objc func handleDuzenleTapped(sender: UIButton){
         sender.isSelected = !sender.isSelected
         sender.tintColor = .clear
         
@@ -195,9 +200,13 @@ extension StopsDriverDetail: JXReviewControllerDelegate {
 }
 //MARK:- SettingsCellDelegate
 extension StopsDriverDetail: SettingsCellDelegate{
+    func callButton(_ sender: UIButton) {
+        callNumber(phoneNumber: selectedDriver.telNo)
+    }
+    
     func swicthSender(_ sender: UISwitch) {
         if sender.isOn{
-            
+            try?  Auth.auth().signOut()
         }else{
             
         }

@@ -127,11 +127,13 @@ class HomeController : UIViewController{
         fetchUserData()
         fetchDurakOnMap(TaksiDurakları.shared.duraklar)
     }
+
     fileprivate func configureActionbutton(configure config : ActionbuttonConfiguration){
         switch config {
         case .showMenu:
             self.actionButton.setImage(#imageLiteral(resourceName: "baseline_menu_black_36dp.png").withRenderingMode(.alwaysOriginal), for: .normal)
             self.actionButtonConfig = .showMenu
+            
         case .dissmissActionView:
             actionButton.setImage(#imageLiteral(resourceName: "baseline_arrow_back_black_36dp-1").withRenderingMode(.alwaysOriginal), for: .normal)
             actionButtonConfig = .dissmissActionView
