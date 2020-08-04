@@ -1,0 +1,6 @@
+framework module UIButtonSetBackgroundColorForState {
+  umbrella header "UIButtonSetBackgroundColorForState-umbrella.h"
+
+  export *
+  module * { export * }
+}
