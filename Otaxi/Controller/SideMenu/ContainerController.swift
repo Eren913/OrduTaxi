@@ -174,6 +174,9 @@ extension ContainerController: MenuControllerDelegate {
         animateMenu(shouldExpand: isExpanded) { _ in
             switch option {
             case .favoriTaksiciler:
+                let controller = FavoriteTaxi()
+                self.navigationController?.pushViewController(controller, animated: true)
+                self.modalPresentationStyle = .fullScreen
                 break
             case .settings:
                 guard let user = self.user else { return }
@@ -181,11 +184,11 @@ extension ContainerController: MenuControllerDelegate {
                 controller.delegate = self
                 self.navigationController?.pushViewController(controller, animated: true)
                 self.modalPresentationStyle = .fullScreen
+                break
             case .bestTaxi:
                 let vc = HealtyTaxi()
                 self.navigationController?.pushViewController(vc, animated: true)
                 self.modalPresentationStyle = .fullScreen
-
                 break
             case .logout:
                 let alert = UIAlertController(title: nil,

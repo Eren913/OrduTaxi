@@ -47,7 +47,6 @@ class StopsDriverDetail: UIViewController {
     
     //MARK:-Api
     func setRating(){
-        
         fireStore.runTransaction({ (transection, errorPointer) -> Any? in
             let selectedRatingPoint : DocumentSnapshot
             do{
@@ -69,7 +68,7 @@ class StopsDriverDetail: UIViewController {
             return nil
         }) { (nesne, error) in
             if let error = error {
-                debugPrint("DEBUG: Begenme Fonksiyonunda hata meydana geldi \(error.localizedDescription)")
+                debugPrint("DEBUG: Paunalam Fonksiyonunda hata meydana geldi \(error.localizedDescription)")
             }
         }
 
@@ -205,7 +204,6 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     @objc func handleDuzenleTapped(sender: UIButton){
         sender.isSelected = !sender.isSelected
         sender.tintColor = .clear
-        
         if sender.isSelected{
             sender.setTitle("Tamam", for: .selected)
             requestReview()

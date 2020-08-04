@@ -17,6 +17,8 @@
 		22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */; };
 		22044C1624C5E2B9001FC245 /* Referance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C1524C5E2B9001FC245 /* Referance.swift */; };
 		22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22044C1724C5E301001FC245 /* GoogleService-Info.plist */; };
+		221C14E824D977AB00C36BC1 /* FavoriteTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */; };
+		221C14EB24D977E000C36BC1 /* FavoriteTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */; };
 		221CE74424D02120006085D6 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74224D02120006085D6 /* ContainerController.swift */; };
 		221CE74524D02120006085D6 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74324D02120006085D6 /* MenuController.swift */; };
 		221CE74924D0214D006085D6 /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74624D0214C006085D6 /* MenuHeader.swift */; };
@@ -57,6 +59,8 @@
 		22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInputViewActivationView.swift; sourceTree = "<group>"; };
 		22044C1524C5E2B9001FC245 /* Referance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referance.swift; sourceTree = "<group>"; };
 		22044C1724C5E301001FC245 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxi.swift; sourceTree = "<group>"; };
+		221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxiCell.swift; sourceTree = "<group>"; };
 		221CE74224D02120006085D6 /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		221CE74324D02120006085D6 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		221CE74624D0214C006085D6 /* MenuHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 		22044C0424C5E2AC001FC245 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				221C14E624D9778C00C36BC1 /* FavoriteTaxi */,
 				22FEFF0324D5F8A4001AE0C2 /* HealtyTaxi */,
 				22044C0624C5E2AC001FC245 /* HomeController.swift */,
 				221CE74124D02120006085D6 /* SideMenu */,
@@ -140,6 +145,7 @@
 		22044C0D24C5E2B4001FC245 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				221C14E924D977BF00C36BC1 /* FavoriteTaxiCell */,
 				22FEFF0624D5FA3D001AE0C2 /* HealtyTaxiView */,
 				221CE76524D2A971006085D6 /* StopsTaxiView */,
 				22FEFF0224D5F6C6001AE0C2 /* LocationInutView */,
@@ -156,6 +162,22 @@
 				2240024824C6DD340086DA98 /* LocationHandler.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		221C14E624D9778C00C36BC1 /* FavoriteTaxi */ = {
+			isa = PBXGroup;
+			children = (
+				221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */,
+			);
+			path = FavoriteTaxi;
+			sourceTree = "<group>";
+		};
+		221C14E924D977BF00C36BC1 /* FavoriteTaxiCell */ = {
+			isa = PBXGroup;
+			children = (
+				221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */,
+			);
+			path = FavoriteTaxiCell;
 			sourceTree = "<group>";
 		};
 		221CE74124D02120006085D6 /* SideMenu */ = {
@@ -426,7 +448,9 @@
 				221CE76024D2A469006085D6 /* SettingsCell.swift in Sources */,
 				22044C0C24C5E2AC001FC245 /* SignUpController.swift in Sources */,
 				22044C0A24C5E2AC001FC245 /* HomeController.swift in Sources */,
+				221C14EB24D977E000C36BC1 /* FavoriteTaxiCell.swift in Sources */,
 				2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */,
+				221C14E824D977AB00C36BC1 /* FavoriteTaxi.swift in Sources */,
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
