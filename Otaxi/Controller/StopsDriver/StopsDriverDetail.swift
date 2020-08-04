@@ -19,7 +19,6 @@ class StopsDriverDetail: UIViewController {
     
     var ratingPoint: Int = 0{
         didSet{
-            setRating()
             tableView.reloadData()
         }
     }
@@ -27,6 +26,8 @@ class StopsDriverDetail: UIViewController {
     var userInfoHeader: DetailInfoHeader!
     let settingCell: SettingsCell? = nil
     var selectedDriver : Rating!
+    
+    var begeniler = [Rating]()
     
     let fireStore = Firestore.firestore()
     
@@ -46,14 +47,33 @@ class StopsDriverDetail: UIViewController {
     
     //MARK:-Api
     func setRating(){
-        fireStore.collection(USER_FREF).document(self.selectedDriver.uid).updateData([
-            HEALTH_SCORE_FREF : ratingPoint
-        ]) { (error) in
-            if let error = error{
-                print("DEBUG: Update value data error \(error.localizedDescription)")
-                return
+        
+        fireStore.runTransaction({ (transection, errorPointer) -> Any? in
+            let selectedRatingPoint : DocumentSnapshot
+            do{
+                try selectedRatingPoint = transection.getDocument(self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid))
+            }catch let error as NSError{
+                debugPrint("DEBUG: Puanlamada Hata oluştu...\(error.localizedDescription)")
+                return nil
+            }
+            
+            guard let eskisayi = (selectedRatingPoint.data()?[HEALTH_SCORE_FREF] as? Int) else {return nil}
+            let secilenFikirRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid)
+            if self.begeniler.count > 0 {
+                //Kullanıcı daha önceden beğenmiş ve beğeniden çıkmak üzere
+                transection.updateData([HEALTH_SCORE_FREF : eskisayi - self.ratingPoint], forDocument: secilenFikirRef)
+            }else {
+                //kullanıcı daha önce beğenmemeiş ve beğenmek üzere
+                transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
+            }
+            return nil
+        }) { (nesne, error) in
+            if let error = error {
+                debugPrint("DEBUG: Begenme Fonksiyonunda hata meydana geldi \(error.localizedDescription)")
             }
         }
+
+        tableView.reloadData()
     }
     func getRating(){
         fireStore.collection(USER_FREF).document(selectedDriver.uid).addSnapshotListener { documentSnapshot, error in
@@ -116,11 +136,13 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .blue
+        
         let btn = UIButton()
         btn.setTitle("Düzenle", for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.layer.cornerRadius = 10
         btn.addTarget(self, action: #selector(handleDuzenleTapped), for: .touchUpInside)
+        
         if section == 0{
             view.addSubview(btn)
             btn.centerY(inView: view)
@@ -187,6 +209,7 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         if sender.isSelected{
             sender.setTitle("Tamam", for: .selected)
             requestReview()
+        }else{
         }
     }
     
@@ -196,6 +219,7 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
 extension StopsDriverDetail: JXReviewControllerDelegate {
     func reviewController(_ reviewController: JXReviewController, didSubmitWith point: Int) {
         self.ratingPoint = point
+        setRating()
     }
 }
 //MARK:- SettingsCellDelegate
