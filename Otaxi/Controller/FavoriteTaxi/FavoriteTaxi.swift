@@ -8,6 +8,8 @@
 let identifer = "FavoriteTaxiID"
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class FavoriteTaxi: UIViewController{
     //MARK:-Properties
@@ -20,7 +22,7 @@ class FavoriteTaxi: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        
+        fetchAllUserData()
         
     }
     //MARK:-Helper Functions
@@ -33,7 +35,10 @@ class FavoriteTaxi: UIViewController{
     }
     //MARK:-Api
     func fetchAllUserData() {
-        USER_FSREF.whereField(FAVORITE_TAXI, isEqualTo: true).addSnapshotListener { (snapshot, error) in
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let way = Firestore.firestore().collection(USER_FREF).document(uid).collection("FavoriTaksiciler")
+        
+        way.whereField(FAVORITE_TAXI, isEqualTo: true).addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("DEBUG: Error favori Drivers -- \(error.localizedDescription)")
             } else {

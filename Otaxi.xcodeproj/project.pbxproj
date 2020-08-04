@@ -19,6 +19,9 @@
 		22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22044C1724C5E301001FC245 /* GoogleService-Info.plist */; };
 		221C14E824D977AB00C36BC1 /* FavoriteTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */; };
 		221C14EB24D977E000C36BC1 /* FavoriteTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */; };
+		221C14FB24D9A55200C36BC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 221C14F824D9A55100C36BC1 /* Main.storyboard */; };
+		221C14FC24D9A55200C36BC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 221C14FA24D9A55100C36BC1 /* Assets.xcassets */; };
+		221C14FE24D9A5D800C36BC1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 221C14FD24D9A5D800C36BC1 /* Launch Screen.storyboard */; };
 		221CE74424D02120006085D6 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74224D02120006085D6 /* ContainerController.swift */; };
 		221CE74524D02120006085D6 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74324D02120006085D6 /* MenuController.swift */; };
 		221CE74924D0214D006085D6 /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE74624D0214C006085D6 /* MenuHeader.swift */; };
@@ -37,9 +40,6 @@
 		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
 		22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7E91524C84F8900F59FDE /* RideActionView.swift */; };
 		22E9A41324D70BD000929768 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E9A41224D70BD000929768 /* Driver.swift */; };
-		22FEFEFD24D57426001AE0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEF824D57426001AE0C2 /* Assets.xcassets */; };
-		22FEFEFE24D57426001AE0C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */; };
-		22FEFEFF24D57426001AE0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FEFEFB24D57426001AE0C2 /* Main.storyboard */; };
 		22FEFF0124D574A5001AE0C2 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0024D574A5001AE0C2 /* LocationCell.swift */; };
 		22FEFF0524D5F8BB001AE0C2 /* HealtyTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0424D5F8BB001AE0C2 /* HealtyTaxi.swift */; };
 		22FEFF0824D5FA57001AE0C2 /* HealtyTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0724D5FA57001AE0C2 /* HealtyTaxiCell.swift */; };
@@ -61,6 +61,9 @@
 		22044C1724C5E301001FC245 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxi.swift; sourceTree = "<group>"; };
 		221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxiCell.swift; sourceTree = "<group>"; };
+		221C14F824D9A55100C36BC1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		221C14FA24D9A55100C36BC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		221C14FD24D9A5D800C36BC1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../../../../Documents/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		221CE74224D02120006085D6 /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		221CE74324D02120006085D6 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		221CE74624D0214C006085D6 /* MenuHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
@@ -81,9 +84,6 @@
 		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		22E7E91524C84F8900F59FDE /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		22E9A41224D70BD000929768 /* Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
-		22FEFEF824D57426001AE0C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		22FEFEFA24D57426001AE0C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		22FEFEFB24D57426001AE0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		22FEFF0024D574A5001AE0C2 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		22FEFF0424D5F8BB001AE0C2 /* HealtyTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealtyTaxi.swift; sourceTree = "<group>"; };
 		22FEFF0724D5FA57001AE0C2 /* HealtyTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealtyTaxiCell.swift; sourceTree = "<group>"; };
@@ -275,9 +275,9 @@
 		22FEFEF624D57426001AE0C2 /* StoryBoards */ = {
 			isa = PBXGroup;
 			children = (
-				22FEFEF824D57426001AE0C2 /* Assets.xcassets */,
-				22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */,
-				22FEFEFB24D57426001AE0C2 /* Main.storyboard */,
+				221C14FA24D9A55100C36BC1 /* Assets.xcassets */,
+				221C14F824D9A55100C36BC1 /* Main.storyboard */,
+				221C14FD24D9A5D800C36BC1 /* Launch Screen.storyboard */,
 			);
 			name = StoryBoards;
 			path = ../../Otaksi/Otaksi/StoryBoards;
@@ -385,10 +385,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22FEFEFF24D57426001AE0C2 /* Main.storyboard in Resources */,
-				22FEFEFE24D57426001AE0C2 /* LaunchScreen.storyboard in Resources */,
-				22FEFEFD24D57426001AE0C2 /* Assets.xcassets in Resources */,
 				22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */,
+				221C14FC24D9A55200C36BC1 /* Assets.xcassets in Resources */,
+				221C14FE24D9A5D800C36BC1 /* Launch Screen.storyboard in Resources */,
+				221C14FB24D9A55200C36BC1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,17 +477,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		22FEFEF924D57426001AE0C2 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				22FEFEFA24D57426001AE0C2 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		22438E1924C5E1400001D289 /* Debug */ = {

@@ -125,6 +125,17 @@ class StopsDriverDetail: UIViewController {
         }
         
     }
+    func setFavoriteTaxiData(favorite: Bool){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let way = fireStore.collection(USER_FREF).document(uid).collection("FavoriTaksiciler").document(selectedDriver.uid)
+            
+            way.setData([
+                FAVORITE_TAXI: favorite],merge: true) { (error) in
+                if let error = error {
+                    print("DEBUG: update Favorite Taxi \(error.localizedDescription)")
+                }
+        }
+    }
 }
 //MARK:-UITableViewDelegate,UITableViewDataSource
 extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
@@ -228,9 +239,9 @@ extension StopsDriverDetail: SettingsCellDelegate{
     
     func swicthSender(_ sender: UISwitch) {
         if sender.isOn{
-            try?  Auth.auth().signOut()
+            setFavoriteTaxiData(favorite: true)
         }else{
-            
+            setFavoriteTaxiData(favorite: false)
         }
     }
 }
