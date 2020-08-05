@@ -80,7 +80,7 @@ class LoginController: UIViewController {
         guard let password = passwordTextField.text else {return}
         Auth.auth().signIn(withEmail: email, password: password) { (authData, error) in
             if let error = error {
-                print("DEBUG: error Sıgn In \(error.localizedDescription)")
+                self.presentAlertController(withTitle: "Kullanıcı Adı Veya Şifre Yanlış", message: error.localizedDescription)
             }
             let container = ContainerController()
             container.configure()

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class UserInfoHeader: UIView {
     
@@ -16,13 +17,13 @@ class UserInfoHeader: UIView {
     
     private lazy var profileImageView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
-        
-        view.addSubview(initialLabel)
-        initialLabel.centerX(inView: view)
-        initialLabel.centerY(inView: view)
-        
+        view.backgroundColor = .white
         return view
+    }()
+    lazy var uploadImageView : UIImageView = {
+        let img = UIImageView().profileUploadImage()
+        img.isUserInteractionEnabled = true
+        return img
     }()
     
     private lazy var initialLabel: UILabel = {
@@ -58,8 +59,10 @@ class UserInfoHeader: UIView {
         
         addSubview(profileImageView)
         profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 16)
-        profileImageView.setDimensions(height: 64, width: 64)
-        profileImageView.layer.cornerRadius = 64 / 2
+        profileImageView.setDimensions(height: 65, width: 65)
+        profileImageView.layer.cornerRadius = 65 / 2
+        
+        configureImageView()
         
         let stack = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
         stack.distribution = .fillEqually
@@ -71,6 +74,16 @@ class UserInfoHeader: UIView {
                       leftAnchor: profileImageView.rightAnchor,
                       paddingLeft: 12)
     }
+    //MARK:-Helper function
+    func configureImageView(){
+        addSubview(uploadImageView)
+        uploadImageView.centerX(inView: profileImageView)
+        uploadImageView.centerY(inView: profileImageView)
+        uploadImageView.setDimensions(height: 65, width: 65)
+        uploadImageView.layer.cornerRadius = 65 / 2
+        uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

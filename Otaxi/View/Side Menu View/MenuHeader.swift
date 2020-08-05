@@ -18,8 +18,8 @@ class MenuHeader: UIView {
         let view = UIView()
         view.backgroundColor = .black
         view.addSubview(initialLabel)
-        initialLabel.centerX(inView: view)
-        initialLabel.centerY(inView: view)
+        view.centerX(inView: initialLabel)
+        view.centerY(inView: initialLabel)
         return view
     }()
     
@@ -36,12 +36,16 @@ class MenuHeader: UIView {
         label.textColor = .white
         return label
     }()
-    
     private lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .white
         return label
+    }()
+    lazy var uploadImageView : UIImageView = {
+        let img = UIImageView().profileUploadImage()
+        img.isUserInteractionEnabled = true
+        return img
     }()
     // MARK: - Lifecycle
     
@@ -49,17 +53,17 @@ class MenuHeader: UIView {
         self.user = user
         super.init(frame: frame)
         backgroundColor = .backgroundColor
+        addSubview(profileImageView)
+        profileImageView.anchor(top: topAnchor, left: leftAnchor,
+                                paddingTop: 10, paddingLeft: 12,
+                                width: 64, height: 64)
+        profileImageView.layer.cornerRadius = 64 / 2
         
         initialLabel.text = user.firstInitial
         fullnameLabel.text = user.fullname
         emailLabel.text = user.email
         
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor,
-                                paddingTop: 10, paddingLeft: 12,
-                                width: 64, height: 64)
-        
-        profileImageView.layer.cornerRadius = 64 / 2
+        configureImageView()
         
         let stack = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
         stack.distribution = .fillEqually
@@ -79,6 +83,13 @@ class MenuHeader: UIView {
     
     // MARK: - Selectors
     
-    // MARK: - Helper Functions
-
+    //MARK:-Helper function
+    func configureImageView(){
+        addSubview(uploadImageView)
+        uploadImageView.centerX(inView: profileImageView)
+        uploadImageView.centerY(inView: profileImageView)
+        uploadImageView.setDimensions(height: 65, width: 65)
+        uploadImageView.layer.cornerRadius = 65 / 2
+        uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
+    }
 }

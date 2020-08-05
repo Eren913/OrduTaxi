@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class ContainerController: UIViewController {
     
@@ -75,7 +76,7 @@ class ContainerController: UIViewController {
             try Auth.auth().signOut()
             presentLoginController()
         } catch {
-            print("DEBUG: Error signing out")
+            self.presentAlertController(withTitle: "Çıkış Yaparken Hata Meydana Geldi", message: "Lütfen Tekrar Deneyiniz")
         }
     }
     

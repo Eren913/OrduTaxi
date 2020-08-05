@@ -16,7 +16,6 @@ class Rating{
     private(set) var stop: String
     private(set) var accountType: Int
     private(set) var telNo: String
-    
     var firstInitial: String { return String((fullname.prefix(1))) }
     init(uid: String,fullname: String,email: String,healthpoint: Double,stop: String,accountType: Int,firstInitial: String? = nil,telNo: String){
         self.uid = uid
@@ -43,4 +42,25 @@ class Rating{
         }
         return ratings
     }
+}
+class ProfilPhoto{
+    private(set) var uid: String
+    private(set) var imageUrl: String
+    
+    init(uid: String,imageUrl: String) {
+        self.uid = uid
+        self.imageUrl = imageUrl
+    }
+    class func fetchProfilephoto(snapshot: QuerySnapshot?) -> [ProfilPhoto]{
+        var pp = [ProfilPhoto]()
+        guard let snap = snapshot else { return pp }
+        for document in snap.documents{
+            let uid = document.documentID
+            let imageUrlArray = document.get(IMAGEURL_REF_FS) as? String ?? ""
+            let driverInfo = ProfilPhoto(uid: uid, imageUrl: imageUrlArray)
+            pp.append(driverInfo)
+        }
+        return pp
+    }
+    
 }

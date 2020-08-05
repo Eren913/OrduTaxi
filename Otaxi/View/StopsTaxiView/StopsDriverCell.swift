@@ -40,6 +40,7 @@ class StopsDriverCell: UITableViewCell {
         stack.distribution = .fillEqually
         stack.axis = .vertical
         stack.spacing = 4
+        
         addSubview(profileImageView)
         profileImageView.setDimensions(height: 80, width: 80)
         profileImageView.layer.cornerRadius = 80 / 2

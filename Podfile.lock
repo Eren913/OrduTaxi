@@ -346,6 +346,9 @@ PODS:
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
   - PromisesObjC (1.2.9)
+  - SDWebImage (5.8.4):
+    - SDWebImage/Core (= 5.8.4)
+  - SDWebImage/Core (5.8.4)
   - SnapKit (5.0.1)
   - SwiftPhoneNumberFormatter (1.5)
   - UIButtonSetBackgroundColorForState (0.1.0)
@@ -359,6 +362,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - GeoFire (~> 4.0)
   - JXReviewController
+  - SDWebImage (~> 5.0)
   - SwiftPhoneNumberFormatter
 
 SPEC REPOS:
@@ -386,6 +390,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - SDWebImage
     - SnapKit
     - SwiftPhoneNumberFormatter
     - UIButtonSetBackgroundColorForState
@@ -414,10 +419,11 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
+  SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftPhoneNumberFormatter: 0cc91f4daa06dd606a9defb21048a75c36a771a2
   UIButtonSetBackgroundColorForState: fcc963a30f972e15434bacebefe042033940a438
 
-PODFILE CHECKSUM: 1d2e9633cceaf8bb732a128bd2308ec187e7ecb0
+PODFILE CHECKSUM: 474ebc36bfbc095b72a13dbbc8b2ab698e10556a
 
 COCOAPODS: 1.10.0.beta.1

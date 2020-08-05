@@ -131,6 +131,17 @@ extension UIView {
         layer.masksToBounds = false
     }
 }
+extension UIImageView{
+    func profileUploadImage() -> UIImageView{
+        let img = UIImageView()
+        img.layer.borderWidth = 1
+        img.layer.masksToBounds = false
+        img.layer.borderColor = UIColor.black.cgColor
+        img.clipsToBounds = true
+        img.contentMode = .scaleAspectFill
+        return img
+    }
+}
 
 extension UITextField {
     func textField(withPlaceholder placeholder: String, isSecureTextEntry: Bool) -> UITextField {
@@ -197,7 +208,7 @@ extension MKMapView {
 extension UIViewController {
     func presentAlertController(withTitle title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Tamam", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     

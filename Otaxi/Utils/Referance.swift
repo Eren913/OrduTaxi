@@ -21,6 +21,9 @@ let USER_ID_FREF = "Kullanici_ID"
 let FAVORITE_TAXI = "FavoriTaksi"
 
 
+let IMAGEURL_REF_FS = "ImageUrl"
+let PROFILEPHOTO_REF = "ProfilePhoto"
+
 
 let DRIVER_ANNO_REUSE_ID = "DriverAnnotation"
 

@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import FirebaseAuth
+import Firebase
+import SDWebImage
 
 private let reuseIdentifier = "MenuCell"
 
@@ -38,7 +39,7 @@ class MenuController: UITableViewController {
     private let user: User
     weak var delegate: MenuControllerDelegate?
     
-    private lazy var menuHeader: MenuHeader = {
+    lazy var menuHeader: MenuHeader = {
         let frame = CGRect(x: 0,
                            y: 0,
                            width: self.view.frame.width - 80,
@@ -61,8 +62,7 @@ class MenuController: UITableViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureTableView()
-        
-
+        getProfilePhoto()
     }
     
     // MARK: - Selectors
@@ -89,6 +89,19 @@ class MenuController: UITableViewController {
         tableView.rowHeight = 60
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableHeaderView = menuHeader
+    }
+    private var profilPhoto = [ProfilPhoto]()
+    func getProfilePhoto(){
+        let db = Firestore.firestore().collection(USER_FREF)
+        let ref = db.document(user.uid).collection(PROFILEPHOTO_REF)
+        ref.addSnapshotListener { (snapshot, error) in
+            if snapshot?.isEmpty == false && snapshot != nil {
+                self.profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)
+                self.profilPhoto.forEach { (profil) in
+                    self.menuHeader.uploadImageView.sd_setImage(with: URL(string: profil.imageUrl))
+                }
+            }
+        }
     }
 }
 

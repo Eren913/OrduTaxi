@@ -13,7 +13,6 @@ import GeoFire
 
 let DB_REF = Database.database().reference()
 let USER_REF = DB_REF.child(USER_FREF)
-let DRIVER_LOC_FREF = DB_REF.child("driver-locations")
 
 let FS_REF = Firestore.firestore()
 let USER_FSREF = FS_REF.collection(USER_FREF)
@@ -26,18 +25,6 @@ struct Service {
             let uuid = snapshot.key
             let user = User(uid: uuid, dictionary: dictionary)
             completion(user)
-        }
-    }
-    func fetchDrivers(location: CLLocation, completion: @escaping(User) -> Void){
-        let geoFire = GeoFire(firebaseRef: DRIVER_LOC_FREF)
-        DRIVER_LOC_FREF.observe(.value){ (snapshot) in
-            geoFire.query(at: location, withRadius: 50).observe(.keyEntered, with: { (uid, location) in
-                self.fetchUserData(uid: uid) { (user) in
-                    var driver = user
-                    driver.location = location
-                    completion(driver)
-                }
-            })
         }
     }
     func saveLocation(locationString: String, type: LocationType, completion: @escaping (Error?, DatabaseReference) -> Void) {

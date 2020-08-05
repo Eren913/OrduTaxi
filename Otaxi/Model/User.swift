@@ -13,7 +13,6 @@ enum AccountType: Int {
     case passenger
     case driver
 }
-
 struct User {
     let fullname: String
     let email: String
@@ -22,13 +21,15 @@ struct User {
     let uid: String
     var homeLocation: String?
     var workLocation: String?
-    
+    var photo: String?
     var firstInitial: String { return String(fullname.prefix(1)) }
+    
     
     init(uid: String, dictionary: [String: Any]) {
         self.uid = uid
         self.fullname = dictionary[FULLNAME_FREF] as? String ?? ""
         self.email = dictionary[EMAİL_FREF] as? String ?? ""
+        self.photo = dictionary[IMAGEURL_REF_FS] as? String ?? ""
         
         if let home = dictionary["homeLocation"] as? String {
             self.homeLocation = home
@@ -43,14 +44,4 @@ struct User {
         }
     }
 }
-struct Drivers{
-    let uid: String?
-    let fullname: String?
-    let email: String?
-    var healthpoint: Double?
-    let stop: String?
-    var accountType: AccountType?
-    var firstInitial: String { return String((fullname?.prefix(1))!) }
-}
-
 

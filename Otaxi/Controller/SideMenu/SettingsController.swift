@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import SDWebImage
 
 private let reuseIdentifier = "LocationCell"
 
@@ -38,23 +40,27 @@ class SettingsController: UITableViewController {
     // MARK: - Properties
     
     var user: User
+    var profilPhoto = [ProfilPhoto]()
+    
+    //var pp: ProfilPhoto?
+    
+    let db = Firestore.firestore().collection(USER_FREF)
+    
     private let locationManager = LocationHandler.shared.locationManager
     weak var delegate: SettingsControllerDelegate?
     var userInfoUpdated = false
-
+    
     private lazy var infoHeader: UserInfoHeader = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
         let view = UserInfoHeader(user: user, frame: frame)
         return view
     }()
-    
     // MARK: - Lifecycle
     
     init(user: User) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -64,6 +70,10 @@ class SettingsController: UITableViewController {
         view.backgroundColor = .backgroundColor
         configureTableView()
         configureNavigationBar()
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(choosePicture))
+        infoHeader.uploadImageView.addGestureRecognizer(gestureRecognizer)
+        getProfilePhoto()
     }
     
     // MARK: - Selectors
@@ -72,11 +82,21 @@ class SettingsController: UITableViewController {
         if userInfoUpdated {
             delegate?.updateUser(self)
         }
-        
         self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Helper Functions
+    func getProfilePhoto(){
+        let ref = db.document(self.user.uid).collection("ProfilePhoto")
+        ref.addSnapshotListener { (snapshot, error) in
+            if snapshot?.isEmpty == false && snapshot != nil {
+                self.profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)
+                self.profilPhoto.forEach { (profil) in
+                    self.infoHeader.uploadImageView.sd_setImage(with: URL(string: profil.imageUrl))
+                }
+            }
+        }
+    }
     
     func locationText(forType type: LocationType) -> String {
         switch type {
@@ -173,3 +193,74 @@ extension SettingsController: AddLocationControllerDelegate {
         self.tableView.reloadData()
     }
 }
+//MARK:- UIImagePickerControllerDelegate,UIImagePickerControllerDelegate
+extension SettingsController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    @objc func choosePicture() {
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        pickerController.allowsEditing = true
+        pickerController.sourceType = .photoLibrary
+        self.present(pickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        infoHeader.uploadImageView.image = info[.editedImage] as? UIImage
+        self.dismiss(animated: true) {
+            self.uploadImage()
+        }
+    }
+    func uploadImage(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let storageReference = Storage.storage().reference()
+        let mediaFolder = storageReference.child("Media")
+        if let data = infoHeader.uploadImageView.image?.jpegData(compressionQuality: 0.5) {
+            let uuid = UUID().uuidString
+            let imageReference = mediaFolder.child("\(uuid).jpg")
+            imageReference.putData(data, metadata: nil) { (metadata, error) in
+                if let error = error {
+                    self.presentAlertController(withTitle: "Fotoraf Yüklenirken Hata Meydana Geldi", message: error.localizedDescription)
+                    return
+                } else {
+                    imageReference.downloadURL { (url, error) in
+                        if error == nil {
+                            let imageUrl = url?.absoluteString
+                            //Firestore
+                            self.db.whereField(self.user.uid, isEqualTo: uid).getDocuments { (snapshot, error) in
+                                if let error = error {
+                                    print("DEBUG: Error get document \(error.localizedDescription)")
+                                } else {
+                                    if snapshot?.isEmpty == false && snapshot != nil {
+                                        for document in snapshot!.documents {
+                                            if var imageUrlArray = document.get(IMAGEURL_REF_FS) as? String {
+                                                imageUrlArray.append(imageUrl!)
+                                                let additionalDictionary = [IMAGEURL_REF_FS : imageUrlArray] as [String : Any]
+                                                self.db.document(self.user.uid).setData(additionalDictionary, merge: true) { (error) in
+                                                    if let error = error {
+                                                        print("DEBUG: Error setting Data \(error.localizedDescription)")
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        let Dictionary = [IMAGEURL_REF_FS : imageUrl!, "FotoSahibi" : self.user.uid] as [String : Any]
+                                        self.db.document(uid).collection(PROFILEPHOTO_REF).document(uid).setData(Dictionary, merge: true) { (error) in
+                                            if let error = error  {
+                                                print("DEBUG: Error setting profile Photo Data -- \(error.localizedDescription)")
+                                            }
+                                        }
+                                        USER_REF.child(uid).updateChildValues(Dictionary) { (error, ref) in
+                                            if let error = error{
+                                                debugPrint("DEBUG: RealtimeDatabase Update photo Data Error -- \(error.localizedDescription)")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -22,7 +22,6 @@ class FavoriteTaxi: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        fetchAllUserData()
         
     }
     //MARK:-Helper Functions

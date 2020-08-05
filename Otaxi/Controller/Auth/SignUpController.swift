@@ -185,7 +185,7 @@ class SignUpController : UIViewController{
         
         Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
             if let error = error {
-                print("DEBUG: Failed to register user with error \(error.localizedDescription)")
+                self.presentAlertController(withTitle: "Kayıt Olurken Hata Meydana Geldi", message: error.localizedDescription)
                 return
             }
             guard let uid = result?.user.uid else { return }

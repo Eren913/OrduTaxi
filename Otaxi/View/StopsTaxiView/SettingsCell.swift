@@ -101,7 +101,6 @@ class SettingsCell: UITableViewCell {
     }()
     let callLabel : UILabel = {
         let label = UILabel()
-        label.text = "eren"
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()

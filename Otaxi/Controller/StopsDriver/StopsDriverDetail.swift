@@ -68,10 +68,9 @@ class StopsDriverDetail: UIViewController {
             return nil
         }) { (nesne, error) in
             if let error = error {
-                debugPrint("DEBUG: Paunalam Fonksiyonunda hata meydana geldi \(error.localizedDescription)")
+                debugPrint("DEBUG: Puanlama Fonksiyonunda hata meydana geldi \(error.localizedDescription)")
             }
         }
-
         tableView.reloadData()
     }
     func getRating(){
@@ -118,7 +117,7 @@ class StopsDriverDetail: UIViewController {
         if let phone = URL(string: "tel://\(phoneNumber)"){
             if app.canOpenURL(phone){
                 app.open(phone, options: [:], completionHandler: nil)
-                print("DEBUG: success Call")
+                print("DEBUG: successs Call")
             }
         }else{
             print("DEBUG: Fail Call")
@@ -128,11 +127,10 @@ class StopsDriverDetail: UIViewController {
     func setFavoriteTaxiData(favorite: Bool){
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let way = fireStore.collection(USER_FREF).document(uid).collection("FavoriTaksiciler").document(selectedDriver.uid)
-            
             way.setData([
                 FAVORITE_TAXI: favorite],merge: true) { (error) in
                 if let error = error {
-                    print("DEBUG: update Favorite Taxi \(error.localizedDescription)")
+                    self.presentAlertController(withTitle: "Taksici favorilere eklenirken Hata Meydana Geldi ", message: error.localizedDescription)
                 }
         }
     }
