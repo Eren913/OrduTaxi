@@ -84,6 +84,9 @@ class SettingsController: UITableViewController {
         }
         self.navigationController?.popViewController(animated: true)
     }
+    @objc func handleedit(){
+        //infoHeader.configureInitalLabel.isHidden = true
+    }
     
     // MARK: - Helper Functions
     func getProfilePhoto(){
@@ -91,8 +94,10 @@ class SettingsController: UITableViewController {
         ref.addSnapshotListener { (snapshot, error) in
             if snapshot?.isEmpty == false && snapshot != nil {
                 self.profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)
-                self.profilPhoto.forEach { (profil) in
-                    self.infoHeader.uploadImageView.sd_setImage(with: URL(string: profil.imageUrl))
+                if self.profilPhoto.count > 0 {
+                    self.profilPhoto.forEach { (profil) in
+                        self.infoHeader.uploadImageView.sd_setImage(with: URL(string: profil.imageUrl))
+                    }
                 }
             }
         }
@@ -119,6 +124,7 @@ class SettingsController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Ayarlar"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Düzenle", style: .done, target: self, action: #selector(handleedit))
     }
 }
 

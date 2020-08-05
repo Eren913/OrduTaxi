@@ -17,9 +17,6 @@ class MenuHeader: UIView {
     private lazy var profileImageView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.addSubview(initialLabel)
-        view.centerX(inView: initialLabel)
-        view.centerY(inView: initialLabel)
         return view
     }()
     
@@ -63,6 +60,8 @@ class MenuHeader: UIView {
         fullnameLabel.text = user.fullname
         emailLabel.text = user.email
         
+        configureInitalLabel()
+        
         configureImageView()
         
         let stack = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
@@ -91,5 +90,10 @@ class MenuHeader: UIView {
         uploadImageView.setDimensions(height: 65, width: 65)
         uploadImageView.layer.cornerRadius = 65 / 2
         uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
+    }
+    func configureInitalLabel(){
+        profileImageView.addSubview(initialLabel)
+        initialLabel.centerX(inView: profileImageView)
+        initialLabel.centerY(inView: profileImageView)
     }
 }

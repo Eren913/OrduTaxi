@@ -38,6 +38,7 @@ class MenuController: UITableViewController {
     
     private let user: User
     weak var delegate: MenuControllerDelegate?
+    private var profilPhoto = [ProfilPhoto]()
     
     lazy var menuHeader: MenuHeader = {
         let frame = CGRect(x: 0,
@@ -90,7 +91,7 @@ class MenuController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableHeaderView = menuHeader
     }
-    private var profilPhoto = [ProfilPhoto]()
+    
     func getProfilePhoto(){
         let db = Firestore.firestore().collection(USER_FREF)
         let ref = db.document(user.uid).collection(PROFILEPHOTO_REF)
