@@ -65,6 +65,12 @@ class MenuController: UITableViewController {
         configureTableView()
         getProfilePhoto()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        if user.photo!.isEmpty{
+            menuHeader.configureInitalLabel()
+        }
+        SDWebImageManager.shared.imageCache.clear(with: .all, completion: nil)
+    }
     
     // MARK: - Selectors
     @objc func signOut(){

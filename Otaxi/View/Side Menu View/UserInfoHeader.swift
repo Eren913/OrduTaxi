@@ -18,9 +18,6 @@ class UserInfoHeader: UIView {
     private lazy var profileImageView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-//        view.addSubview(initialLabel)
-//        initialLabel.centerX(inView: view)
-//        initialLabel.centerY(inView: view)
         return view
     }()
     lazy var uploadImageView : UIImageView = {
@@ -65,11 +62,8 @@ class UserInfoHeader: UIView {
         profileImageView.setDimensions(height: 65, width: 65)
         profileImageView.layer.cornerRadius = 65 / 2
         
-        configureImageView()
         configureInitalLabel()
-        
-        
-        
+        configureImageView()
         let stack = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
         stack.distribution = .fillEqually
         stack.spacing = 4
@@ -84,7 +78,7 @@ class UserInfoHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     //MARK:-Helper function
-     func configureImageView(){
+    func configureImageView(){
         addSubview(uploadImageView)
         uploadImageView.centerX(inView: profileImageView)
         uploadImageView.centerY(inView: profileImageView)
@@ -92,7 +86,7 @@ class UserInfoHeader: UIView {
         uploadImageView.layer.cornerRadius = 65 / 2
         uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
     }
-     func configureInitalLabel(){
+    func configureInitalLabel(){
         profileImageView.addSubview(initialLabel)
         initialLabel.centerX(inView: profileImageView)
         initialLabel.centerY(inView: profileImageView)

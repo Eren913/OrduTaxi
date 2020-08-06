@@ -75,6 +75,10 @@ class SettingsController: UITableViewController {
         infoHeader.uploadImageView.addGestureRecognizer(gestureRecognizer)
         getProfilePhoto()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+        
+    }
     
     // MARK: - Selectors
     
@@ -84,11 +88,30 @@ class SettingsController: UITableViewController {
         }
         self.navigationController?.popViewController(animated: true)
     }
-    @objc func handleedit(){
-        //infoHeader.configureInitalLabel.isHidden = true
+    @objc func choosePicture() {
+        let alert = UIAlertController(title: nil,
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Fotorafı Sil", style: .destructive, handler: { _ in
+            Firestore.firestore().collection(USER_FREF).document(self.user.uid).collection(PROFILEPHOTO_REF).document(self.user.uid).delete { (error) in
+                if let err = error {
+                    print("DEBUG: error deleting profilePhoto \(err.localizedDescription)")
+                }
+            }
+            SDWebImageManager.shared.imageCache.clear(with: .all) {
+                self.infoHeader.uploadImageView.image = nil
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Fotoğraf Çek", style: .default, handler: { _ in
+            self.pickerFunctions(sourceType: .camera)
+        }))
+        alert.addAction(UIAlertAction(title: "Fotoğraf Seç", style: .default, handler: { _ in
+            self.pickerFunctions(sourceType: .photoLibrary)
+        }))
+        alert.addAction(UIAlertAction(title: "Vazgeç", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
-    
-    // MARK: - Helper Functions
+    //MARK:-Api
     func getProfilePhoto(){
         let ref = db.document(self.user.uid).collection("ProfilePhoto")
         ref.addSnapshotListener { (snapshot, error) in
@@ -103,6 +126,14 @@ class SettingsController: UITableViewController {
         }
     }
     
+    // MARK: - Helper Functions
+    func pickerFunctions(sourceType: UIImagePickerController.SourceType){
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        pickerController.allowsEditing = true
+        pickerController.sourceType = sourceType
+        self.present(pickerController, animated: true, completion: nil)
+    }
     func locationText(forType type: LocationType) -> String {
         switch type {
         case .home:
@@ -124,7 +155,7 @@ class SettingsController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Ayarlar"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Düzenle", style: .done, target: self, action: #selector(handleedit))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Düzenle", style: .plain, target: self, action: #selector(choosePicture))
     }
 }
 
@@ -134,7 +165,6 @@ extension SettingsController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return LocationType.allCases.count
     }
-    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
@@ -201,14 +231,6 @@ extension SettingsController: AddLocationControllerDelegate {
 }
 //MARK:- UIImagePickerControllerDelegate,UIImagePickerControllerDelegate
 extension SettingsController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    @objc func choosePicture() {
-        let pickerController = UIImagePickerController()
-        pickerController.delegate = self
-        pickerController.allowsEditing = true
-        pickerController.sourceType = .photoLibrary
-        self.present(pickerController, animated: true, completion: nil)
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         infoHeader.uploadImageView.image = info[.editedImage] as? UIImage
         self.dismiss(animated: true) {
