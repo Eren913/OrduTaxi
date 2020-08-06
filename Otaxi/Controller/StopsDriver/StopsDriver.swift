@@ -15,7 +15,7 @@ class StopsDriver: UIViewController{
     var drivers : [Rating] = []
     let tableView = UITableView()
     var navigationTitle : String = ""
-    
+    var user: User?
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +53,17 @@ class StopsDriver: UIViewController{
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = title
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
+    }
+    func checkUserUid(){
+        if user == nil{
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.isModalInPresentation = true
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
+            self.presentAlertController(withTitle: "Kullanıcı Veri Tabanında Hata Meydana Geldi", message: "Hesabınız Silinmiş Olabilir Tekrardan Giriş veya Kayıt Yapınız")
+        }
     }
     //MARK:Selectors
     @objc func handleDismissal(){

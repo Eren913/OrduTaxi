@@ -9,7 +9,6 @@
 import Firebase
 import CoreLocation
 import FirebaseDatabase
-import GeoFire
 
 let DB_REF = Database.database().reference()
 let USER_REF = DB_REF.child(USER_FREF)

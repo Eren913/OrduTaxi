@@ -56,7 +56,6 @@ class SettingsController: UITableViewController {
         return view
     }()
     // MARK: - Lifecycle
-    
     init(user: User) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
@@ -89,6 +88,8 @@ class SettingsController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     @objc func choosePicture() {
+        let mediaFolder = Storage.storage().reference().child("Media").child("\(user.uid).jpg")
+        
         let alert = UIAlertController(title: nil,
                                       message: nil,
                                       preferredStyle: .actionSheet)
@@ -97,9 +98,19 @@ class SettingsController: UITableViewController {
                 if let err = error {
                     print("DEBUG: error deleting profilePhoto \(err.localizedDescription)")
                 }
-            }
-            SDWebImageManager.shared.imageCache.clear(with: .all) {
-                self.infoHeader.uploadImageView.image = nil
+                USER_REF.child(self.user.uid).child(IMAGEURL_REF_FS).removeValue { (error, ref) in
+                    if error != nil{
+                        print("DEBUG: Error Deleting Data From Realtime DataBase")
+                    }
+                }
+                mediaFolder.delete { (error) in
+                    if let error = error{
+                        print("DEBUG: deleting storage image \(error.localizedDescription)")
+                    }
+                }
+                SDWebImageManager.shared.imageCache.clear(with: .all) {
+                    self.infoHeader.uploadImageView.image = nil
+                }
             }
         }))
         alert.addAction(UIAlertAction(title: "Fotoğraf Çek", style: .default, handler: { _ in
@@ -242,8 +253,8 @@ extension SettingsController: UIImagePickerControllerDelegate, UINavigationContr
         let storageReference = Storage.storage().reference()
         let mediaFolder = storageReference.child("Media")
         if let data = infoHeader.uploadImageView.image?.jpegData(compressionQuality: 0.5) {
-            let uuid = UUID().uuidString
-            let imageReference = mediaFolder.child("\(uuid).jpg")
+            //let uuid = UUID().uuidString
+            let imageReference = mediaFolder.child("\(user.uid).jpg")
             imageReference.putData(data, metadata: nil) { (metadata, error) in
                 if let error = error {
                     self.presentAlertController(withTitle: "Fotoraf Yüklenirken Hata Meydana Geldi", message: error.localizedDescription)
@@ -259,9 +270,9 @@ extension SettingsController: UIImagePickerControllerDelegate, UINavigationContr
                                 } else {
                                     if snapshot?.isEmpty == false && snapshot != nil {
                                         for document in snapshot!.documents {
-                                            if var imageUrlArray = document.get(IMAGEURL_REF_FS) as? String {
-                                                imageUrlArray.append(imageUrl!)
-                                                let additionalDictionary = [IMAGEURL_REF_FS : imageUrlArray] as [String : Any]
+                                            if var imageUrl = document.get(IMAGEURL_REF_FS) as? String {
+                                                imageUrl.append(imageUrl)
+                                                let additionalDictionary = [IMAGEURL_REF_FS : imageUrl] as [String : Any]
                                                 self.db.document(self.user.uid).setData(additionalDictionary, merge: true) { (error) in
                                                     if let error = error {
                                                         print("DEBUG: Error setting Data \(error.localizedDescription)")

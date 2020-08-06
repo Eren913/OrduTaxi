@@ -65,13 +65,6 @@ class MenuController: UITableViewController {
         configureTableView()
         getProfilePhoto()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        if user.photo!.isEmpty{
-            menuHeader.configureInitalLabel()
-        }
-        SDWebImageManager.shared.imageCache.clear(with: .all, completion: nil)
-    }
-    
     // MARK: - Selectors
     @objc func signOut(){
         do{
@@ -97,16 +90,22 @@ class MenuController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableHeaderView = menuHeader
     }
-    
+    // MARK: - Api
     func getProfilePhoto(){
+        profilPhoto.removeAll()
         let db = Firestore.firestore().collection(USER_FREF)
         let ref = db.document(user.uid).collection(PROFILEPHOTO_REF)
         ref.addSnapshotListener { (snapshot, error) in
             if snapshot?.isEmpty == false && snapshot != nil {
                 self.profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)
-                self.profilPhoto.forEach { (profil) in
-                    self.menuHeader.uploadImageView.sd_setImage(with: URL(string: profil.imageUrl))
+                if self.profilPhoto.count > 0 {
+                    for photo in self.profilPhoto{
+                        self.menuHeader.uploadImageView.sd_setImage(with: URL(string: photo.imageUrl))
+                        break
+                    }
                 }
+            }else{
+                self.menuHeader.uploadImageView.image =  nil
             }
         }
     }

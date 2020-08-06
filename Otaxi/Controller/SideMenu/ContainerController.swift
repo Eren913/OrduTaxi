@@ -152,7 +152,7 @@ class ContainerController: UIViewController {
 
 // MARK: - SettingsControllerDelegate
 
-extension ContainerController: SettingsControllerDelegate {
+extension ContainerController: SettingsControllerDelegate {    
     func updateUser(_ controller: SettingsController) {
         self.user = controller.user
     }

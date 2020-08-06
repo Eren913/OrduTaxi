@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MenuHeader: UIView {
     
@@ -50,6 +51,7 @@ class MenuHeader: UIView {
         self.user = user
         super.init(frame: frame)
         backgroundColor = .backgroundColor
+        
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor,
                                 paddingTop: 10, paddingLeft: 12,
@@ -61,7 +63,6 @@ class MenuHeader: UIView {
         emailLabel.text = user.email
         
         configureInitalLabel()
-        
         configureImageView()
         
         let stack = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
