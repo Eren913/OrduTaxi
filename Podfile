@@ -15,7 +15,7 @@ pod 'Cosmos'
 pod "SwiftPhoneNumberFormatter"
 pod 'JXReviewController'
 
-pod 'SDWebImage', '~> 5.0'
+pod 'SDWebImage'
 
   # Pods for Otaxi
 
