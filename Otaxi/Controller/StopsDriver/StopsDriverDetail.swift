@@ -42,10 +42,14 @@ class StopsDriverDetail: UIViewController {
         
     }
     override func viewWillAppear(_ animated: Bool) {
+        getImage()
         getRating()
     }
     
     //MARK:-Api
+    func getImage(){
+        _ = Service.shared.getProfilePhotoFS(uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
+    }
     func setRating(){
         fireStore.runTransaction({ (transection, errorPointer) -> Any? in
             let selectedRatingPoint : DocumentSnapshot

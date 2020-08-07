@@ -12,11 +12,7 @@ class DetailInfoHeader: UIView {
     
     lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.addSubview(initialLabel)
-        initialLabel.centerX(inView: iv)
-        initialLabel.centerY(inView: iv)
         iv.backgroundColor = .black
-        iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -41,6 +37,11 @@ class DetailInfoHeader: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    lazy var uploadImageView : UIImageView = {
+        let img = UIImageView().profileUploadImage()
+        img.isUserInteractionEnabled = true
+        return img
+    }()
     
     // MARK: - Init
     
@@ -62,10 +63,27 @@ class DetailInfoHeader: UIView {
         addSubview(emailLabel)
         emailLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 10).isActive = true
         emailLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 12).isActive = true
+        
+        configureInitalLabel()
+        configureImageView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    //MARK:-Helper function
+    func configureImageView(){
+        addSubview(uploadImageView)
+        uploadImageView.centerX(inView: profileImageView)
+        uploadImageView.centerY(inView: profileImageView)
+        uploadImageView.setDimensions(height: 65, width: 65)
+        uploadImageView.layer.cornerRadius = 65 / 2
+        uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
+    }
+    func configureInitalLabel(){
+        profileImageView.addSubview(initialLabel)
+        initialLabel.centerX(inView: profileImageView)
+        initialLabel.centerY(inView: profileImageView)
     }
     
 }
