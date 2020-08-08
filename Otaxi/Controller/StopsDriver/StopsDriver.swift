@@ -16,6 +16,10 @@ class StopsDriver: UIViewController{
     let tableView = UITableView()
     var navigationTitle : String = ""
     var user: User?
+    
+    var profilPhoto = [ProfilPhoto]()
+    
+    let cll = StopsDriverCell()
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +33,8 @@ class StopsDriver: UIViewController{
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
-    func fetchAllUserData() {
+    //MARK:-Api
+    fileprivate func fetchAllUserData() {
         USER_FSREF.whereField(DURAK_ISMI_FREF, isEqualTo: navigationTitle).addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("DEBUG: Error Stop Drivers -- \(error.localizedDescription)")
@@ -47,14 +52,15 @@ class StopsDriver: UIViewController{
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
+        tableView.tableFooterView = UIView()
     }
-    func configureNavigation(title: String){
+    fileprivate func configureNavigation(title: String){
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = title
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
     }
-    func checkUserUid(){
+    fileprivate func checkUserUid(){
         if user == nil{
             DispatchQueue.main.async {
                 let nav = UINavigationController(rootViewController: LoginController())
@@ -80,6 +86,8 @@ extension StopsDriver: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! StopsDriverCell
+        cell.selectionStyle = .none
+        _ = Service.shared.getProfilePhotoFS(uid: drivers[indexPath.row].uid, imageView: cell.uploadImageView)
         cell.nameLabel.text = drivers[indexPath.row].fullname
         cell.initialLabel.text = drivers[indexPath.row].firstInitial
         cell.accessoryType = .disclosureIndicator

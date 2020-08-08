@@ -27,10 +27,12 @@ class StopsDriverCell: UITableViewCell {
     lazy var profileImageView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.addSubview(initialLabel)
-        initialLabel.centerX(inView: view)
-        initialLabel.centerY(inView: view)
         return view
+    }()
+    lazy var uploadImageView : UIImageView = {
+        let img = UIImageView().profileUploadImage()
+        img.isUserInteractionEnabled = true
+        return img
     }()
     
     // MARK: - Lifecycle
@@ -50,9 +52,25 @@ class StopsDriverCell: UITableViewCell {
         stack.centerY(inView: self, leftAnchor: profileImageView.rightAnchor, paddingLeft: 10)
         stack.anchor(width: self.bounds.width,height: 80)
         
+        configureImageView()
+        configureInitalLabel()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    func configureImageView(){
+        addSubview(uploadImageView)
+        uploadImageView.centerX(inView: profileImageView)
+        uploadImageView.centerY(inView: profileImageView)
+        uploadImageView.setDimensions(height: 80, width: 80)
+        uploadImageView.layer.cornerRadius = 80 / 2
+        uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
+    }
+    func configureInitalLabel(){
+        profileImageView.addSubview(initialLabel)
+        initialLabel.centerX(inView: profileImageView)
+        initialLabel.centerY(inView: profileImageView)
     }
 }

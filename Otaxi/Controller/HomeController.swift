@@ -348,7 +348,6 @@ extension HomeController: MKMapViewDelegate{
     @objc func handleDetailDisclosure(){
         guard let selectedtitle = selectedAnnotation?.title else {return}
         let detail = StopsDriver()
-        //detail.user = user
         detail.navigationTitle = selectedtitle
         detail.navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.pushViewController(detail, animated: true)

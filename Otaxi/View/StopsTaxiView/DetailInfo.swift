@@ -76,8 +76,8 @@ class DetailInfoHeader: UIView {
         addSubview(uploadImageView)
         uploadImageView.centerX(inView: profileImageView)
         uploadImageView.centerY(inView: profileImageView)
-        uploadImageView.setDimensions(height: 65, width: 65)
-        uploadImageView.layer.cornerRadius = 65 / 2
+        uploadImageView.setDimensions(height: 80, width: 80)
+        uploadImageView.layer.cornerRadius = 80 / 2
         uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
     }
     func configureInitalLabel(){

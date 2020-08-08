@@ -61,7 +61,7 @@ class MenuController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .backgroundColor
         configureTableView()
         getProfilePhoto()
     }
@@ -83,7 +83,7 @@ class MenuController: UITableViewController {
     // MARK: - Helper Functions
     
     func configureTableView() {
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .backgroundColor
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.rowHeight = 60
@@ -120,7 +120,9 @@ extension MenuController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        
+        cell.textLabel?.textColor = .white
+        cell.backgroundColor = .backgroundColor
+        cell.selectionStyle = .none
         if indexPath.row == 3{
             cell.textLabel?.textColor = .white
             cell.backgroundColor = .red

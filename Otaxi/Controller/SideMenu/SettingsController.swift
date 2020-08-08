@@ -124,17 +124,7 @@ class SettingsController: UITableViewController {
     }
     //MARK:-Api
     func getProfilePhoto(){
-        let ref = db.document(self.user.uid).collection("ProfilePhoto")
-        ref.addSnapshotListener { (snapshot, error) in
-            if snapshot?.isEmpty == false && snapshot != nil {
-                self.profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)
-                if self.profilPhoto.count > 0 {
-                    self.profilPhoto.forEach { (profil) in
-                        self.infoHeader.uploadImageView.sd_setImage(with: URL(string: profil.imageUrl))
-                    }
-                }
-            }
-        }
+        _ = Service.shared.getProfilePhotoFS(uid: user.uid, imageView: infoHeader.uploadImageView)
     }
     
     // MARK: - Helper Functions
