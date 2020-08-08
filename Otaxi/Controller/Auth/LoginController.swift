@@ -40,8 +40,8 @@ class LoginController: UIViewController {
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Giriş Yap", for: .normal)
-        
-        button.layer.cornerRadius = 5
+        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
+        button.layer.cornerRadius = 10
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.addTarget(self, action: #selector(handlesignIn), for: .touchUpInside)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
