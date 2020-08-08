@@ -16,9 +16,11 @@ let ACCOUNT_TYPE_FREF = "AccountType"
 
 let HEALTH_SCORE_FREF = "HealthScore"
 
-let RATING_USER_FREF = "Begenen_Kullanıcılar"
-let USER_ID_FREF = "Kullanici_ID"
+let BEGENI_FSREF = "Begeniler"
+let USER_ID_FREF = "KULLANICI_ID"
 let FAVORITE_TAXI = "FavoriTaksi"
+let FAVORITES_TAXI_FSREF = "FavoriTaksiciler"
+let LIKECOUNT = "LikeCount"
 
 
 let IMAGEURL_REF_FS = "ImageUrl"

@@ -77,15 +77,12 @@ class Begeni{
     }
     class func BegenileriGetir(snapshot: QuerySnapshot?) -> [Begeni]{
         var begeniler = [Begeni]()
-        
         guard let snap = snapshot else { return begeniler }
-        
         for kayit in snap.documents {
             let veri = kayit.data()
-            let kullaniciId = veri["KULLANICI_ID"] as? String ?? ""
-            let likecount = veri["LikeCount"] as? Int ?? 0
+            let kullaniciId = veri[USER_ID_FREF] as? String ?? ""
+            let likecount = veri[LIKECOUNT] as? Int ?? 0
             let documentId = kayit.documentID
-            
             let yeniBegeni = Begeni(kullanici_like_id: kullaniciId, kullanici_doc_id: documentId, likeCount: likecount)
             begeniler.append(yeniBegeni)
         }

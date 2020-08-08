@@ -6,6 +6,7 @@
 //  Copyright © 2020 lil ero. All rights reserved.
 //
 
+import UIKit
 import Firebase
 import CoreLocation
 import FirebaseDatabase
@@ -43,7 +44,6 @@ struct Service {
         var profilPhoto = [ProfilPhoto]()
         let db = Firestore.firestore().collection(USER_FREF)
         let ref = db.document(uid).collection(PROFILEPHOTO_REF)
-        
         ref.addSnapshotListener { (snapshot, error) in
             if snapshot?.isEmpty == false && snapshot != nil {
                 profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)
@@ -57,5 +57,33 @@ struct Service {
         }
         
     }
+    
+    func fetchRating(selectedDriveruid uid: String,completion: @escaping(Int) -> Void){
+        var bgn = [Begeni]()
+        guard let uide = Auth.auth().currentUser?.uid else {return}
+        let begeniSorgu = USER_FSREF.document(uid).collection(BEGENI_FSREF).whereField(USER_ID_FREF, isEqualTo: uide)
+        begeniSorgu.addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {print("DEBUG: Error fetching document: \(error!)")
+                return}
+            bgn = Begeni.BegenileriGetir(snapshot: document)
+            for begeniler in bgn{
+                completion(begeniler.likeCount)
+            }
+        }
+    }
+
+    
+    func setFavoriteTaxiData(fullname: String,uid: String,completion: @escaping(Error?) -> Void){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let way = USER_FSREF.document(uid).collection(FAVORITES_TAXI_FSREF).document()
+        way.setData([
+            FULLNAME_FREF:fullname,
+            USER_ID_FREF:uid]) { (error) in
+                if let error = error {
+                    completion(error)
+                }
+        }
+    }
+    
 }
 

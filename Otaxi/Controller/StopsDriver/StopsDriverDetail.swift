@@ -22,20 +22,17 @@ class StopsDriverDetail: UIViewController {
             tableView.reloadData()
         }
     }
+    var likeCount = 0
+    var likeArray : [Begeni] = []
+    
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
     let settingCell: SettingsCell? = nil
     var selectedDriver : Rating!
-    
-    var begeniler = [Rating]()
-    
-    var bgn = [Begeni]()
-    
     let fireStore = Firestore.firestore()
-    
-    var likeCount : Int = 0
-    
     let app = UIApplication.shared
+    
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,28 +43,16 @@ class StopsDriverDetail: UIViewController {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        getImage()
-        getRating()
+        fetchImage()
         begeniGetir()
     }
     
     //MARK:-Api
-    func getImage(){
-        _ = Service.shared.getProfilePhotoFS(uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
-    }
     func begeniGetir(){
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        let begeniSorgu = fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection("BEGENI_REF").whereField("KULLANICI_ID", isEqualTo: uid)
+        let begeniSorgu = fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).whereField(USER_ID_FREF, isEqualTo: uid)
         begeniSorgu.getDocuments { (snapshot, error) in
-            self.bgn = Begeni.BegenileriGetir(snapshot: snapshot)
-            if self.bgn.count > 0{
-                print("DEBUG: dolu")
-            }else{
-                print("DEBUG: boş")
-            }
-            self.bgn.forEach { (b) in
-                self.likeCount = b.likeCount
-            }
+            self.likeArray = Begeni.BegenileriGetir(snapshot: snapshot)
         }
     }
     func setRating(){
@@ -82,39 +67,38 @@ class StopsDriverDetail: UIViewController {
             }
             guard let eskisayi = (selectedRatingPoint.data()?[HEALTH_SCORE_FREF] as? Int) else {return nil}
             let secilenFikirRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid)
-            if self.bgn.count > 0 {
-                //Kullanıcı daha önceden beğenmiş ve beğeniden çıkmak üzere
-                transection.updateData([HEALTH_SCORE_FREF : eskisayi - self.ratingPoint], forDocument: secilenFikirRef)
-                let eskibegeni = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection("BEGENI_REF").document(uid)
-                transection.deleteDocument(eskibegeni)
-            }else {
-                //kullanıcı daha önce beğenmemeiş ve beğenmek üzere
-                transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
-                let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection("BEGENI_REF").document(uid)
+            
+            if self.ratingPoint > self.likeArray[0].likeCount{
+                let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
                 transection.setData([
-                    "KULLANICI_ID" : uid,
-                    "LikeCount":self.ratingPoint,], forDocument : yeniBegeniRef)
+                    USER_ID_FREF : uid,
+                    LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
+                 transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
+            }else{
+                print("DEBUG: working")
+                transection.updateData([HEALTH_SCORE_FREF : eskisayi - self.ratingPoint], forDocument: secilenFikirRef)
+                let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
+                transection.setData([
+                    USER_ID_FREF : uid,
+                    LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
             }
+            
+            
+            
             return nil
-        }) { (nesne, error) in
+        }) { (object, error) in
             if let error = error {
                 debugPrint("DEBUG: Puanlama Fonksiyonunda hata meydana geldi \(error.localizedDescription)")
             }
         }
         tableView.reloadData()
     }
-    func getRating(){
-        fireStore.collection(USER_FREF).document(selectedDriver.uid).addSnapshotListener { documentSnapshot, error in
-            guard let document = documentSnapshot else {print("DEBUG: Error fetching document: \(error!)")
-                return}
-            guard let data = document.data() else {print("DEBUG: Document data was empty.")
-                return}
-            let ratPoint = data[HEALTH_SCORE_FREF] as? Int ?? 0
-            self.ratingPoint = ratPoint
-        }
+    
+    func fetchImage(){
+        _ = Service.shared.getProfilePhotoFS(uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
     }
     // MARK: - Helper Functions
-    func configureTableView() {
+    fileprivate func configureTableView() {
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -128,15 +112,15 @@ class StopsDriverDetail: UIViewController {
         tableView.tableHeaderView = userInfoHeader
         tableView.canCancelContentTouches = true
     }
-    func configureUI() {
+    fileprivate func configureUI() {
         settingCell?.delegate = self
         configureTableView()
         configureNavigation()
     }
-    func configureNavigation(){
+    fileprivate func configureNavigation(){
         navigationController?.isNavigationBarHidden = false
     }
-    func requestReview() {
+    fileprivate func requestReview() {
         let reviewController = JXReviewController()
         reviewController.image = UIImage(systemName: "app.fill")
         reviewController.title = "Sürücünün Durumu"
@@ -144,7 +128,7 @@ class StopsDriverDetail: UIViewController {
         reviewController.delegate = self
         present(reviewController, animated: true)
     }
-    private func callNumber(phoneNumber:String) {
+    fileprivate func callNumber(phoneNumber:String) {
         if let phone = URL(string: "tel://\(phoneNumber)"){
             if app.canOpenURL(phone){
                 app.open(phone, options: [:], completionHandler: nil)
@@ -153,18 +137,8 @@ class StopsDriverDetail: UIViewController {
         }else{
             print("DEBUG: Fail Call")
         }
-        
     }
-    func setFavoriteTaxiData(favorite: Bool){
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        let way = fireStore.collection(USER_FREF).document(uid).collection("FavoriTaksiciler").document(selectedDriver.uid)
-            way.setData([
-                FAVORITE_TAXI: favorite],merge: true) { (error) in
-                if let error = error {
-                    self.presentAlertController(withTitle: "Taksici favorilere eklenirken Hata Meydana Geldi ", message: error.localizedDescription)
-                }
-        }
-    }
+    
 }
 //MARK:-UITableViewDelegate,UITableViewDataSource
 extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
@@ -212,7 +186,9 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
         cell.selectionStyle = .none
         cell.cosmosView.settings.updateOnTouch = false
-        cell.cosmosView.rating = Double(self.ratingPoint)
+        _ = Service.shared.fetchRating(selectedDriveruid: selectedDriver.uid, completion: { (q) in
+            cell.cosmosView.rating = Double(q)
+        })
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
         if indexPath.row == 1 {
             cell.callButton.isHidden = false
@@ -268,9 +244,11 @@ extension StopsDriverDetail: SettingsCellDelegate{
     
     func swicthSender(_ sender: UISwitch) {
         if sender.isOn{
-            setFavoriteTaxiData(favorite: true)
+            _ = Service.shared.setFavoriteTaxiData(fullname: selectedDriver.fullname, uid: selectedDriver.uid, completion: { (error) in
+                self.presentAlertController(withTitle: "Taksici favorilere eklenirken Hata Meydana Geldi ", message: error!.localizedDescription)
+            })
         }else{
-            setFavoriteTaxiData(favorite: false)
+            
         }
     }
 }

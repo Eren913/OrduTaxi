@@ -17,9 +17,6 @@ class StopsDriver: UIViewController{
     var navigationTitle : String = ""
     var user: User?
     
-    var profilPhoto = [ProfilPhoto]()
-    
-    let cll = StopsDriverCell()
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
