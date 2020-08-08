@@ -31,7 +31,7 @@ extension CALayer{
     static func gradientLayer(frame: CGRect) -> CALayer{
         let gradient = CAGradientLayer()
         gradient.frame = frame
-        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.startPoint = CGPoint(x: 0, y: 1)
         gradient.endPoint = CGPoint(x: 1, y: 1)
         gradient.colors = [UIColor.startColor, UIColor.endColor]
         return gradient
