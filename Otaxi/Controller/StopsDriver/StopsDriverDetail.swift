@@ -29,7 +29,11 @@ class StopsDriverDetail: UIViewController {
     
     var begeniler = [Rating]()
     
+    var bgn = [Begeni]()
+    
     let fireStore = Firestore.firestore()
+    
+    var likeCount : Int = 0
     
     let app = UIApplication.shared
     // MARK: - LifeCycle
@@ -44,13 +48,30 @@ class StopsDriverDetail: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         getImage()
         getRating()
+        begeniGetir()
     }
     
     //MARK:-Api
     func getImage(){
         _ = Service.shared.getProfilePhotoFS(uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
     }
+    func begeniGetir(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let begeniSorgu = fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection("BEGENI_REF").whereField("KULLANICI_ID", isEqualTo: uid)
+        begeniSorgu.getDocuments { (snapshot, error) in
+            self.bgn = Begeni.BegenileriGetir(snapshot: snapshot)
+            if self.bgn.count > 0{
+                print("DEBUG: dolu")
+            }else{
+                print("DEBUG: boş")
+            }
+            self.bgn.forEach { (b) in
+                self.likeCount = b.likeCount
+            }
+        }
+    }
     func setRating(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
         fireStore.runTransaction({ (transection, errorPointer) -> Any? in
             let selectedRatingPoint : DocumentSnapshot
             do{
@@ -59,15 +80,20 @@ class StopsDriverDetail: UIViewController {
                 debugPrint("DEBUG: Puanlamada Hata oluştu...\(error.localizedDescription)")
                 return nil
             }
-            
             guard let eskisayi = (selectedRatingPoint.data()?[HEALTH_SCORE_FREF] as? Int) else {return nil}
             let secilenFikirRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid)
-            if self.begeniler.count > 0 {
+            if self.bgn.count > 0 {
                 //Kullanıcı daha önceden beğenmiş ve beğeniden çıkmak üzere
                 transection.updateData([HEALTH_SCORE_FREF : eskisayi - self.ratingPoint], forDocument: secilenFikirRef)
+                let eskibegeni = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection("BEGENI_REF").document(uid)
+                transection.deleteDocument(eskibegeni)
             }else {
                 //kullanıcı daha önce beğenmemeiş ve beğenmek üzere
                 transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
+                let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection("BEGENI_REF").document(uid)
+                transection.setData([
+                    "KULLANICI_ID" : uid,
+                    "LikeCount":self.ratingPoint,], forDocument : yeniBegeniRef)
             }
             return nil
         }) { (nesne, error) in

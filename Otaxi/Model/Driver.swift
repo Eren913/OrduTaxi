@@ -64,3 +64,31 @@ class ProfilPhoto{
     }
     
 }
+class Begeni{
+    
+    private(set) var kullaniciId : String
+    private(set) var documentId : String
+    private(set) var likeCount : Int
+    
+    init(kullanici_like_id: String ,kullanici_doc_id :String,likeCount : Int){
+        self.kullaniciId = kullanici_like_id
+        self.documentId = kullanici_doc_id
+        self.likeCount = likeCount
+    }
+    class func BegenileriGetir(snapshot: QuerySnapshot?) -> [Begeni]{
+        var begeniler = [Begeni]()
+        
+        guard let snap = snapshot else { return begeniler }
+        
+        for kayit in snap.documents {
+            let veri = kayit.data()
+            let kullaniciId = veri["KULLANICI_ID"] as? String ?? ""
+            let likecount = veri["LikeCount"] as? Int ?? 0
+            let documentId = kayit.documentID
+            
+            let yeniBegeni = Begeni(kullanici_like_id: kullaniciId, kullanici_doc_id: documentId, likeCount: likecount)
+            begeniler.append(yeniBegeni)
+        }
+        return begeniler
+    }
+}
