@@ -21,6 +21,21 @@ extension UIColor {
     static let outlineStrokeColor = UIColor.rgb(red: 234, green: 46, blue: 111)
     static let trackStrokeColor = UIColor.rgb(red: 56, green: 25, blue: 49)
     static let pulsatingFillColor = UIColor.rgb(red: 86, green: 30, blue: 63)
+    
+    static let startColor = UIColor(displayP3Red: 33.0/255, green: 212.0/255, blue: 253.0/255, alpha: 1).cgColor
+    static let endColor = UIColor(displayP3Red: 183.0/255, green: 33.0/255, blue: 1, alpha: 1).cgColor
+    
+    
+}
+extension CALayer{
+    static func gradientLayer(frame: CGRect) -> CALayer{
+        let gradient = CAGradientLayer()
+        gradient.frame = frame
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        gradient.colors = [UIColor.startColor, UIColor.endColor]
+        return gradient
+    }
 }
 
 extension UIView {

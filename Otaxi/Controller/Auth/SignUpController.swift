@@ -12,26 +12,10 @@ import FirebaseAuth
 
 class SignUpController : UIViewController{
     
-    private let location = LocationHandler.shared.locationManager.location
-    let source = [
-        "Cumhuriyet Taksi",
-        "Çicek Taksi",
-        "Birlik Taksi",
-        "Sağlam Taksi",
-        "Bucak Taksi",
-        "Sağlık Taksi",
-        "Yonca Taksi",
-        "Başak Taksi",
-        "Otogar Taksi",
-        "Meydan Taksi",
-        "Akyazı Taksi"]
-    
     //MARK: Properties
-    let stops = UIPickerView()
-    
     private let titleLabel : UILabel = {
         let label = UILabel()
-        label.text = "ORDU"
+        label.text = "OTaksi"
         label.font = UIFont(name: "Avenir-Light", size: 36)
         label.textColor = UIColor(white: 1, alpha: 0.8)
         return label
@@ -83,29 +67,6 @@ class SignUpController : UIViewController{
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         return button
     }()
-    private let accountType : UISegmentedControl = {
-        let sgmntCntrl = UISegmentedControl(items: ["Yolcu","Taksici"])
-        sgmntCntrl.backgroundColor = .backgroundColor
-        sgmntCntrl.tintColor = UIColor(white: 1, alpha: 0.8)
-        sgmntCntrl.selectedSegmentIndex = 0
-        return sgmntCntrl
-    }()
-    private lazy var accountTypeContainer : UIView = {
-        let view = UIView().inputContainerView(image:#imageLiteral(resourceName: "ic_account_box_white_2x.png") ,
-                                               segmentedControl: accountType)
-        view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        return view
-    }()
-    
-    private let stopsTextField : UITextField = {
-        return UITextField().textField(withPlaceholder: "Durağı Seç", isSecureTextEntry: false)
-    }()
-    
-    private lazy var stopTextFieldContainer : UIView = {
-        let view = UIView().inputContainerView(image: (UIImage(systemName: "mappin.circle.fill")!.withTintColor(.white)), textField: stopsTextField)
-        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        return view
-    }()
     private let alreadyHaveAccountButton : UIButton  = {
         let button = UIButton(type: .system)
         let attributeTitle = NSMutableAttributedString(string: "Hesabınız Varmı ? ",attributes: [
@@ -120,6 +81,20 @@ class SignUpController : UIViewController{
         button.setAttributedTitle(attributeTitle, for: .normal)
         return button
     }()
+    private let alreadyHaveADriver : UIButton  = {
+        let button = UIButton(type: .system)
+        let attributeTitle = NSMutableAttributedString(string: "Taksicimisiniz? ",attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor: UIColor.lightGray
+        ])
+        attributeTitle.append(NSAttributedString(string: "Kayıt Ol",attributes: [
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
+        ]))
+        button.addTarget(self, action: #selector(handleDriverSignUp), for: .touchUpInside)
+        button.setAttributedTitle(attributeTitle, for: .normal)
+        return button
+    }()
     
     
     //MARK:- Lifecycle
@@ -128,14 +103,8 @@ class SignUpController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        stopsTextField.inputView = stops
-        stops.delegate = self
-        stops.dataSource = self
-        
-        
     }
     fileprivate func configureUI() {
-        createToolbar()
         view.backgroundColor = .backgroundColor
         view.addSubview(titleLabel)
         titleLabel.centerX(inView: view)
@@ -146,8 +115,6 @@ class SignUpController : UIViewController{
                                                 fullNameContainer,
                                                 telNoContainer,
                                                 passwordContainer,
-                                                accountTypeContainer,
-                                                stopTextFieldContainer,
                                                 signUpButton])
         sv.axis = .vertical
         sv.distribution = .fillEqually
@@ -162,7 +129,9 @@ class SignUpController : UIViewController{
                   paddingRight: 16)
         
         
-        
+        view.addSubview(alreadyHaveADriver)
+        alreadyHaveADriver.centerX(inView: view)
+        alreadyHaveADriver.anchor(top: sv.bottomAnchor, paddingTop: 10)
         
         view.addSubview(alreadyHaveAccountButton)
         alreadyHaveAccountButton.centerX(inView: view)
@@ -175,38 +144,37 @@ class SignUpController : UIViewController{
     @objc fileprivate func handleShowSignIn(){
         navigationController?.popViewController(animated: true)
     }
+    @objc fileprivate func handleDriverSignUp(){
+        let dri = DriverSignUp()
+        navigationController?.pushViewController(dri, animated: true)
+    }
     @objc func signUpClicked(){
         guard let emailtext = emailTextField.text else {return}
         guard let passwordtext = passwordTextField.text else {return}
         guard let fullnameText = fullNameTextField.text else {return}
         guard let telNoText = telNoTextField.text else {return}
-        guard let pickerindex = stopsTextField.text else {return}
-        let accountTypeIndex = accountType.selectedSegmentIndex
         
-        Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
-            if let error = error {
-                self.presentAlertController(withTitle: "Kayıt Olurken Hata Meydana Geldi", message: error.localizedDescription)
-                return
-            }
-            guard let uid = result?.user.uid else { return }
-            if accountTypeIndex == 0{
+        if emailTextField.text != "" && passwordTextField.text != "" && fullNameTextField.text != "" && telNoTextField.text != "" {
+            Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
+                if let error = error {
+                    self.presentAlertController(withTitle: "Kayıt Olurken Hata Meydana Geldi", message: error.localizedDescription)
+                    return
+                }
+                guard let uid = result?.user.uid else { return }
                 let values = [EMAİL_FREF:emailtext,
                               FULLNAME_FREF:fullnameText,
                               TEL_NO_FREF:telNoText,
-                              ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
+                              ACCOUNT_TYPE_FREF: 0] as [String : Any]
                 self.updateValues(uid: uid, values: values)
-            }else if accountTypeIndex == 1{
-                let values = [EMAİL_FREF:emailtext,
-                              FULLNAME_FREF:fullnameText,
-                              TEL_NO_FREF:telNoText,
-                              DURAK_ISMI_FREF : pickerindex,
-                              ACCOUNT_TYPE_FREF:accountTypeIndex] as [String : Any]
-                self.updateValues(uid: uid, values: values)
+                
+                let container = ContainerController()
+                container.configure()
+                self.navigationController?.pushViewController(container, animated: true)
+                self.navigationController?.modalPresentationStyle = .fullScreen
             }
-            let container = ContainerController()
-            container.configure()
-            self.navigationController?.pushViewController(container, animated: true)
-            self.navigationController?.modalPresentationStyle = .fullScreen
+        }else{
+            self.presentAlertController(withTitle: "Boş Alan Bırakılamaz", message: "Lütfen Tüm Alanları Doldurunuz")
+            return
         }
     }
     //MARK:-HelperFunctions
@@ -222,51 +190,4 @@ class SignUpController : UIViewController{
             }
         }
     }
-    func createToolbar() {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        toolBar.barTintColor = .black
-        toolBar.tintColor = .white
-        let doneButton = UIBarButtonItem(title: "Tamam", style: .plain, target: self, action:#selector(self.dismissKeyboard))
-        toolBar.setItems([doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        stopsTextField.inputAccessoryView = toolBar
-    }
 }
-extension SignUpController:  UIPickerViewDelegate, UIPickerViewDataSource{
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return source[row]
-    }
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return source.count
-    }
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 50
-    }
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        return NSAttributedString(string: source[row], attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-    }
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
-    {
-        stopsTextField.text = source[row]
-    }
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var label: UILabel
-        if let view = view as? UILabel {
-            label = view
-        } else {
-            label = UILabel()
-        }
-        label.textColor = .white
-        label.textAlignment = .center
-        label.font = UIFont(name: "Avenir-Light", size: 20)
-        label.text = source[row]
-        return label
-    }
-}
-
-

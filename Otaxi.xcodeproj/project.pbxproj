@@ -37,6 +37,7 @@
 		22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0A24C5E13D0001D289 /* AppDelegate.swift */; };
 		22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0C24C5E13D0001D289 /* SceneDelegate.swift */; };
 		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
+		229CD15B24DE846500031C5E /* DriverSignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229CD15A24DE846500031C5E /* DriverSignUpScreen.swift */; };
 		22B5E8F524DD8B3E00DBBB01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B5E8F424DD8B3E00DBBB01 /* LaunchScreen.storyboard */; };
 		22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7E91524C84F8900F59FDE /* RideActionView.swift */; };
 		22E9A41324D70BD000929768 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E9A41224D70BD000929768 /* Driver.swift */; };
@@ -81,6 +82,7 @@
 		22438E0C24C5E13D0001D289 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		22438E1824C5E1400001D289 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
+		229CD15A24DE846500031C5E /* DriverSignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverSignUpScreen.swift; sourceTree = "<group>"; };
 		22B5E8F424DD8B3E00DBBB01 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22E7E91524C84F8900F59FDE /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		22E9A41224D70BD000929768 /* Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			children = (
 				22044C0724C5E2AC001FC245 /* LoginController.swift */,
 				22044C0824C5E2AC001FC245 /* SignUpController.swift */,
+				229CD15A24DE846500031C5E /* DriverSignUpScreen.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				221CE75D24D2A447006085D6 /* StopsDriverDetail.swift in Sources */,
 				221CE74D24D0228F006085D6 /* UserInfoHeader.swift in Sources */,
 				22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */,
+				229CD15B24DE846500031C5E /* DriverSignUpScreen.swift in Sources */,
 				221CE76024D2A469006085D6 /* SettingsCell.swift in Sources */,
 				22044C0C24C5E2AC001FC245 /* SignUpController.swift in Sources */,
 				22044C0A24C5E2AC001FC245 /* HomeController.swift in Sources */,

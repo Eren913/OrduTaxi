@@ -15,7 +15,7 @@ class LoginController: UIViewController {
     //MARK:- Properties
     private let titleLabel : UILabel = {
         let label = UILabel()
-        label.text = "ORDU"
+        label.text = "OTaksi"
         label.font = UIFont(name: "Avenir-Light", size: 36)
         label.textColor = UIColor(white: 1, alpha: 0.8)
         return label
@@ -40,12 +40,12 @@ class LoginController: UIViewController {
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Giriş Yap", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
-        button.backgroundColor = .mainBlueTint
+        
         button.layer.cornerRadius = 5
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.addTarget(self, action: #selector(handlesignIn), for: .touchUpInside)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        
         return button
     }()
     private let dontHaveaAccountButton: UIButton = {
@@ -67,6 +67,9 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         configureUI()
     }
+    override func viewDidLayoutSubviews() {
+        loginButton.layer.insertSublayer(CALayer.gradientLayer(frame: loginButton.bounds), at: 0)
+    }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -78,14 +81,19 @@ class LoginController: UIViewController {
     @objc func handlesignIn(){
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else {return}
-        Auth.auth().signIn(withEmail: email, password: password) { (authData, error) in
-            if let error = error {
-                self.presentAlertController(withTitle: "Kullanıcı Adı Veya Şifre Yanlış", message: error.localizedDescription)
+        if emailTextField.text != "" && passwordTextField.text != "" {
+            Auth.auth().signIn(withEmail: email, password: password) { (authData, error) in
+                if let error = error {
+                    self.presentAlertController(withTitle: "Kullanıcı Adı Veya Şifre Yanlış", message: error.localizedDescription)
+                }
+                let container = ContainerController()
+                container.configure()
+                self.navigationController?.pushViewController(container, animated: true)
+                self.navigationController?.modalPresentationStyle = .fullScreen
             }
-            let container = ContainerController()
-            container.configure()
-            self.navigationController?.pushViewController(container, animated: true)
-            self.navigationController?.modalPresentationStyle = .fullScreen
+        }else{
+            self.presentAlertController(withTitle: "Boş Bıraklımaz", message: "Lütfen Tüm Alanları Doldurun")
+            return
         }
     }
     //MARK:-HelperFunc
