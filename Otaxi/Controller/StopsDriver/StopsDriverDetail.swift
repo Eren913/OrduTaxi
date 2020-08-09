@@ -49,9 +49,10 @@ class StopsDriverDetail: UIViewController {
     
     //MARK:-Api
     func begeniGetir(){
+        //likeArray.removeAll(keepingCapacity: false)
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let begeniSorgu = fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).whereField(USER_ID_FREF, isEqualTo: uid)
-        begeniSorgu.getDocuments { (snapshot, error) in
+        begeniSorgu.addSnapshotListener { (snapshot, error) in
             self.likeArray = Begeni.BegenileriGetir(snapshot: snapshot)
         }
     }
@@ -67,23 +68,28 @@ class StopsDriverDetail: UIViewController {
             }
             guard let eskisayi = (selectedRatingPoint.data()?[HEALTH_SCORE_FREF] as? Int) else {return nil}
             let secilenFikirRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid)
+            let fark = self.ratingPoint - self.likeArray[0].likeCount
+            
+            
             
             if self.ratingPoint > self.likeArray[0].likeCount{
+                print("DEBUG: if")
                 let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
                 transection.setData([
                     USER_ID_FREF : uid,
                     LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
-                 transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
+                transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
+                
+            }else if self.ratingPoint == self.likeArray[0].likeCount{
+                print("DEBUG: point is equal")
             }else{
-                print("DEBUG: working")
-                transection.updateData([HEALTH_SCORE_FREF : eskisayi - self.ratingPoint], forDocument: secilenFikirRef)
+                print("DEBUG: else")
                 let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
                 transection.setData([
                     USER_ID_FREF : uid,
                     LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
+                transection.updateData([HEALTH_SCORE_FREF : eskisayi + fark-1], forDocument: secilenFikirRef)
             }
-            
-            
             
             return nil
         }) { (object, error) in
