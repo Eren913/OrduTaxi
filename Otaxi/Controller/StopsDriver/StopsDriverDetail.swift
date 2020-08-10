@@ -250,11 +250,13 @@ extension StopsDriverDetail: SettingsCellDelegate{
     
     func swicthSender(_ sender: UISwitch) {
         if sender.isOn{
-            _ = Service.shared.setFavoriteTaxiData(fullname: selectedDriver.fullname, uid: selectedDriver.uid, completion: { (error) in
+            _ = Service.shared.setFavoriteTaxiData(fullname: selectedDriver.fullname, selectedDriverUid: selectedDriver.uid, Delete: false, completion: { (error) in
                 self.presentAlertController(withTitle: "Taksici favorilere eklenirken Hata Meydana Geldi ", message: error!.localizedDescription)
             })
         }else{
-            
+            //            _ = Service.shared.setFavoriteTaxiData(fullname: selectedDriver.fullname, selectedDriverUid: selectedDriver.uid, Delete: true, completion: { (error) in
+            //                self.presentAlertController(withTitle: "Taksici Silinirken Hata Meydana Geldi ", message: error!.localizedDescription)
+            //            })
         }
     }
 }

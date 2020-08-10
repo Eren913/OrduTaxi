@@ -27,6 +27,7 @@ protocol HomeControllerDelegate: class {
 
 class HomeController : UIViewController{
     //MARK:- Properties
+    let transition = CircularTransition()
     private let mapView = MKMapView()
     private let locationMeneger = LocationHandler.shared.locationManager
     
@@ -54,6 +55,20 @@ class HomeController : UIViewController{
         button.setImage(#imageLiteral(resourceName: "baseline_menu_black_36dp").withRenderingMode(.alwaysOriginal), for: .normal)
         return button
     }()
+    private let healtyTaxiButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(healtyHomePressed), for: .touchUpInside)
+        button.setImage(UIImage(systemName: "staroflife.fill"), for: .normal)
+        return button
+    }()
+    private let HighPointDrivers : UIButton = {
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(hpPressed), for: .touchUpInside)
+        button.setImage(#imageLiteral(resourceName: "RatingStarEmpty.png").withRenderingMode(.alwaysOriginal), for: .normal)
+        return button
+    }()
+
+    
     
      var user : User? {
         didSet{
@@ -70,7 +85,7 @@ class HomeController : UIViewController{
         checkUserLoggedIn()
         configureUI()
         enableLocationServices()
-        
+        transitioningDelegate = self
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -95,10 +110,21 @@ class HomeController : UIViewController{
                 self.presentRideActionView(shouldShow: false)
             }
         }
-        
     }
-    //MARK:-Api
+    @objc fileprivate func healtyHomePressed(){
+        let vc = HealtyDrivers()
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
+        present(vc, animated: true, completion: nil)
+    }
+    @objc fileprivate func hpPressed(){
+        let vc = HighHPDrivers()
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
+        present(vc, animated: true, completion: nil)
+    }
     
+    //MARK:-Api
     func fetchUserData(){
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Service.shared.fetchUserData(uid: uid) { user in
@@ -150,6 +176,20 @@ class HomeController : UIViewController{
                             paddingLeft: 20,
                             width: 30,
                             height: 30)
+        view.addSubview(healtyTaxiButton)
+        healtyTaxiButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                right: view.rightAnchor,
+                                paddingTop: 16,
+                                paddingRight: 20,
+                                width: 40,
+                                height: 40)
+        view.addSubview(HighPointDrivers)
+        HighPointDrivers.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                 right: healtyTaxiButton.leftAnchor,
+                                 paddingTop: 16,
+                                 paddingRight: 20,
+                                 width: 30,
+                                 height: 30)
         
         view.addSubview(inputActivationView)
         inputActivationView.layer.cornerRadius = 10
@@ -469,5 +509,19 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.zoomToFit(annotations: annotations)
             self.presentRideActionView(shouldShow: true, destination: selectedPlacemark)
         }
+    }
+}
+extension HomeController: UIViewControllerTransitioningDelegate{
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .present
+        transition.startingPoint = healtyTaxiButton.center
+        transition.circleColor = .backgroundColor
+        return transition
+    }
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .dismiss
+        transition.startingPoint = healtyTaxiButton.center
+        transition.circleColor = .backgroundColor
+        return transition
     }
 }

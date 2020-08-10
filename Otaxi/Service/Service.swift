@@ -71,18 +71,27 @@ struct Service {
             }
         }
     }
-
     
-    func setFavoriteTaxiData(fullname: String,uid: String,completion: @escaping(Error?) -> Void){
+    
+    func setFavoriteTaxiData(fullname: String,selectedDriverUid: String,Delete: Bool,completion: @escaping(Error?) -> Void){
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        let way = USER_FSREF.document(uid).collection(FAVORITES_TAXI_FSREF).document()
-        way.setData([
-            FULLNAME_FREF:fullname,
-            USER_ID_FREF:uid]) { (error) in
-                if let error = error {
-                    completion(error)
+        let way = USER_FSREF.document(uid).collection(FAVORITES_TAXI_FSREF).document(selectedDriverUid)
+        if Delete == true{
+            way.delete { (err) in
+                if let err = err {
+                    print("DEBUG: error favortie taxi deleting \(err.localizedDescription)")
                 }
+            }
+        }else{
+            way.setData([
+                FULLNAME_FREF : fullname,
+                USER_ID_FREF  : selectedDriverUid]) { (error) in
+                    if let error = error {
+                        completion(error)
+                    }
+            }
         }
+        
     }
     
 }

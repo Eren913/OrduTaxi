@@ -1,5 +1,5 @@
 //
-//  HealtyTaxiCell.swift
+//  HighHPDriversCell.swift
 //  Otaxi
 //
 //  Created by lil ero on 1.08.2020.
@@ -7,7 +7,7 @@
 import UIKit
 import Cosmos
 
-class HealtyTaxiCell: UITableViewCell {
+class HighHPDriversCell: UITableViewCell {
     
     // MARK: - Properties
     var nameLabel: UILabel = {
