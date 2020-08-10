@@ -14,7 +14,10 @@ import FirebaseAuth
 class FavoriteTaxi: UIViewController{
     //MARK:-Properties
     var selectedFavoriteTaxi: [Rating] = []
+    var rat : Rating? = nil
     var favoritesUid = [String]()
+    
+    
     let db = Firestore.firestore()
     
     fileprivate let tableView = UITableView()
@@ -23,6 +26,7 @@ class FavoriteTaxi: UIViewController{
         super.viewDidLoad()
         configureTableView()
         configureNavigation(title: "Favori Taksiciler")
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchUser()
@@ -58,27 +62,24 @@ class FavoriteTaxi: UIViewController{
         }
     }
     fileprivate func fetchUser(){
-        USER_FSREF.addSnapshotListener { (snapshot, error) in
+        USER_FSREF.whereField("uMvLUWQXcLh1WkaGnSV4iq1VbJJ2", isEqualTo: "uMvLUWQXcLh1WkaGnSV4iq1VbJJ2")
+            .addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("DEBUG: Error Stop Drivers -- \(error.localizedDescription)")
             } else {
                 if snapshot?.isEmpty == false && snapshot != nil {
                     self.selectedFavoriteTaxi = Rating.fetchRating(snapshot: snapshot)
+                    self.selectedFavoriteTaxi.forEach { (e) in
+                        print("DEBUG: \(e.fullname)")
+                        self.rat = e
+                    }
                     self.tableView.reloadData()
                 }
             }
         }
     }
     fileprivate func fetchingFavorites(){
-        USER_FSREF.whereField(favoritesUid[0], isEqualTo: selectedFavoriteTaxi[0].uid).getDocuments { (snapshot, error) in
-            if let error = error {
-                print("DEBUG: error getting facorite taxi documents \(error.localizedDescription)")
-                return
-            }
-            for snap in snapshot!.documents{
-                print("DEBUG: ıd \(snap.documentID)")
-            }
-        }
+
     }
     
     

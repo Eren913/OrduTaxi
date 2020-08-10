@@ -67,6 +67,13 @@ class HomeController : UIViewController{
         button.setImage(#imageLiteral(resourceName: "RatingStarEmpty.png").withRenderingMode(.alwaysOriginal), for: .normal)
         return button
     }()
+    private let hplabel : UILabel = {
+        let label = UILabel()
+        label.text = "Sağlıklı Taksi"
+        label.font = UIFont(name: "Avenir-Light", size: 10)
+        label.textColor = .black
+        return label
+    }()
 
     
     
@@ -180,16 +187,20 @@ class HomeController : UIViewController{
         healtyTaxiButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                 right: view.rightAnchor,
                                 paddingTop: 16,
-                                paddingRight: 20,
+                                paddingRight: 27,
                                 width: 40,
                                 height: 40)
         view.addSubview(HighPointDrivers)
         HighPointDrivers.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                  right: healtyTaxiButton.leftAnchor,
                                  paddingTop: 16,
-                                 paddingRight: 20,
+                                 paddingRight: 18,
                                  width: 30,
                                  height: 30)
+        view.addSubview(hplabel)
+        hplabel.anchor(top: healtyTaxiButton.bottomAnchor,
+                       right: view.rightAnchor,
+                       paddingRight: 20)
         
         view.addSubview(inputActivationView)
         inputActivationView.layer.cornerRadius = 10
