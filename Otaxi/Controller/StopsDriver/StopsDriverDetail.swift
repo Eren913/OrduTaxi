@@ -22,8 +22,9 @@ class StopsDriverDetail: UIViewController {
             tableView.reloadData()
         }
     }
-    var likeCount = 0
     var likeArray : [Begeni] = []
+    
+    var listener: ListenerRegistration!
     
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
@@ -45,6 +46,11 @@ class StopsDriverDetail: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         fetchImage()
         begeniGetir()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        if listener != nil{
+            listener.remove()
+        }
     }
     
     //MARK:-Api
@@ -68,28 +74,35 @@ class StopsDriverDetail: UIViewController {
             }
             guard let eskisayi = (selectedRatingPoint.data()?[HEALTH_SCORE_FREF] as? Int) else {return nil}
             let secilenFikirRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid)
-            let fark = self.ratingPoint - self.likeArray[0].likeCount
             
-            
-            
-            if self.ratingPoint > self.likeArray[0].likeCount{
-                print("DEBUG: if")
-                let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
-                transection.setData([
-                    USER_ID_FREF : uid,
-                    LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
-                transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
-                
-            }else if self.ratingPoint == self.likeArray[0].likeCount{
-                print("DEBUG: point is equal")
+            if self.likeArray.count > 0 {
+                let fark = self.ratingPoint - self.likeArray[0].likeCount
+                if self.ratingPoint > self.likeArray[0].likeCount{
+                    print("DEBUG: if")
+                    let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
+                    transection.setData([
+                        USER_ID_FREF : uid,
+                        LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
+                    transection.updateData([HEALTH_SCORE_FREF : eskisayi + self.ratingPoint], forDocument: secilenFikirRef)
+                    
+                }else if self.ratingPoint == self.likeArray[0].likeCount{
+                    print("DEBUG: point is equal")
+                }else{
+                    print("DEBUG: else")
+                    let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
+                    transection.setData([
+                        USER_ID_FREF : uid,
+                        LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
+                    transection.updateData([HEALTH_SCORE_FREF : eskisayi + fark-1], forDocument: secilenFikirRef)
+                }
             }else{
-                print("DEBUG: else")
+                print("DEBUG: like count empty so not take a count ")
                 let yeniBegeniRef = self.fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).document(uid)
                 transection.setData([
                     USER_ID_FREF : uid,
                     LIKECOUNT    : self.ratingPoint,], forDocument : yeniBegeniRef)
-                transection.updateData([HEALTH_SCORE_FREF : eskisayi + fark-1], forDocument: secilenFikirRef)
             }
+            
             
             return nil
         }) { (object, error) in
@@ -192,8 +205,8 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
         cell.selectionStyle = .none
         cell.cosmosView.settings.updateOnTouch = false
-        _ = Service.shared.fetchRating(selectedDriveruid: selectedDriver.uid, completion: { (q) in
-            cell.cosmosView.rating = Double(q)
+        _ = Service.shared.fetchRating(selectedDriveruid: selectedDriver.uid, completion: { (ratintpoint) in
+            cell.cosmosView.rating = Double(ratintpoint)
         })
         guard let section = SettingsSection(rawValue: indexPath.section) else {return UITableViewCell()}
         if indexPath.row == 1 {
@@ -254,9 +267,9 @@ extension StopsDriverDetail: SettingsCellDelegate{
                 self.presentAlertController(withTitle: "Taksici favorilere eklenirken Hata Meydana Geldi ", message: error!.localizedDescription)
             })
         }else{
-            //            _ = Service.shared.setFavoriteTaxiData(fullname: selectedDriver.fullname, selectedDriverUid: selectedDriver.uid, Delete: true, completion: { (error) in
-            //                self.presentAlertController(withTitle: "Taksici Silinirken Hata Meydana Geldi ", message: error!.localizedDescription)
-            //            })
+            _ = Service.shared.setFavoriteTaxiData(fullname: selectedDriver.fullname, selectedDriverUid: selectedDriver.uid, Delete: true, completion: { (error) in
+                self.presentAlertController(withTitle: "Taksici Silinirken Hata Meydana Geldi ", message: error!.localizedDescription)
+            })
         }
     }
 }

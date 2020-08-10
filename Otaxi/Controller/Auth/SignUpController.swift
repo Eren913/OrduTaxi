@@ -167,7 +167,8 @@ class SignUpController : UIViewController{
                 let values = [EMAİL_FREF:emailtext,
                               FULLNAME_FREF:fullnameText,
                               TEL_NO_FREF:telNoText,
-                              ACCOUNT_TYPE_FREF: 0] as [String : Any]
+                              ACCOUNT_TYPE_FREF: 0,
+                              USER_ID_FREF : uid] as [String : Any]
                 self.updateValues(uid: uid, values: values)
                 
                 let container = ContainerController()

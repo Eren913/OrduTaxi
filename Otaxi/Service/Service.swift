@@ -72,7 +72,7 @@ struct Service {
         }
     }
     
-    
+    //MARK:-Favorites
     func setFavoriteTaxiData(fullname: String,selectedDriverUid: String,Delete: Bool,completion: @escaping(Error?) -> Void){
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let way = USER_FSREF.document(uid).collection(FAVORITES_TAXI_FSREF).document(selectedDriverUid)
@@ -91,7 +91,28 @@ struct Service {
                     }
             }
         }
-        
+    }
+    func fetchUser(completion: @escaping(Error?,Rating)->Void){
+        var selectedFavoriteTaxi = [Rating]()
+        USER_FSREF.addSnapshotListener { (snapshot, error) in
+            if snapshot?.isEmpty == false && snapshot != nil {
+                selectedFavoriteTaxi = Rating.fetchRating(snapshot: snapshot)
+                for slc in selectedFavoriteTaxi{
+                    completion(error,slc)
+                }
+            }
+        }
+    }
+    func fetchAllUserData(completion: @escaping(Error?,Favorites)->Void) {
+        var fav = [Favorites]()
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let way = Firestore.firestore().collection(USER_FREF).document(uid).collection(FAVORITES_TAXI_FSREF)
+        way.getDocuments { (querySnapshot, err) in
+            fav = Favorites.fetchFavorites(QuerySnapshot: querySnapshot)
+            for fave in fav{
+                completion(err,fave)
+            }
+        }
     }
     
 }

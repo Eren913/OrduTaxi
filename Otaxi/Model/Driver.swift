@@ -7,7 +7,7 @@
 
 import UIKit
 import Firebase
-
+//MARK:-Rating
 class Rating{
     private(set) var uid: String
     private(set) var fullname: String
@@ -16,8 +16,9 @@ class Rating{
     private(set) var stop: String
     private(set) var accountType: Int
     private(set) var telNo: String
+    private(set) var useruid: String?
     var firstInitial: String { return String((fullname.prefix(1))) }
-    init(uid: String,fullname: String,email: String,healthpoint: Double,stop: String,accountType: Int,firstInitial: String? = nil,telNo: String){
+    init(uid: String,fullname: String,email: String,healthpoint: Double,stop: String,accountType: Int,firstInitial: String? = nil,telNo: String,useruid: String?){
         self.uid = uid
         self.fullname = fullname
         self.email = email
@@ -25,6 +26,7 @@ class Rating{
         self.stop = stop
         self.accountType = accountType
         self.telNo = telNo
+        self.useruid = useruid
     }
     class func fetchRating(snapshot: QuerySnapshot?) -> [Rating]{
         var ratings = [Rating]()
@@ -35,9 +37,10 @@ class Rating{
             let email = document.get(EMAİL_FREF) as? String ?? "deneme@deneme.com"
             let stop = document.get(DURAK_ISMI_FREF) as? String ?? "Durak yok"
             let tel = document.get(TEL_NO_FREF) as? String ?? "Tel No yok"
+            let userIDfsref = document.get(USER_ID_FREF) as? String ?? "useridFref"
             let accoubtType = document.get(ACCOUNT_TYPE_FREF) as? Int ?? 0
             let uid = document.documentID
-            let driverInfo = Rating(uid: uid, fullname: username, email: email, healthpoint: healt, stop: stop, accountType: accoubtType, firstInitial: nil, telNo: tel)
+            let driverInfo = Rating(uid: uid, fullname: username, email: email, healthpoint: healt, stop: stop, accountType: accoubtType, firstInitial: nil, telNo: tel, useruid: userIDfsref)
             ratings.append(driverInfo)
         }
         return ratings
@@ -64,6 +67,7 @@ class ProfilPhoto{
     }
     
 }
+//MARK:-Begeni
 class Begeni{
     
     private(set) var kullaniciId : String
@@ -87,5 +91,22 @@ class Begeni{
             begeniler.append(yeniBegeni)
         }
         return begeniler
+    }
+}
+//MARK:-Favorites
+class Favorites{
+    private(set) var userID: String
+    init(userID: String) {
+        self.userID = userID
+    }
+    class func fetchFavorites(QuerySnapshot snapshot: QuerySnapshot?) -> [Favorites]{
+        var fav = [Favorites]()
+        guard let snap = snapshot else {return fav}
+        for doc in snap.documents{
+            let userId = doc[USER_ID_FREF] as? String ?? ""
+            let favs = Favorites(userID: userId)
+            fav.append(favs)
+        }
+        return fav
     }
 }

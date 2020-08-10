@@ -13,25 +13,19 @@ import FirebaseAuth
 
 class FavoriteTaxi: UIViewController{
     //MARK:-Properties
-    var selectedFavoriteTaxi: [Rating] = []
-    var rat : Rating? = nil
-    var favoritesUid = [String]()
-    
-    
-    let db = Firestore.firestore()
-    
+    var favoritesDriver = [Rating]()
     fileprivate let tableView = UITableView()
+    
+    
     //MARK:- Lifecyle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
         configureNavigation(title: "Favori Taksiciler")
-        
+        fetchingFavorites()
     }
     override func viewWillAppear(_ animated: Bool) {
-        fetchUser()
-        fetchAllUserData()
-        fetchingFavorites()
+        self.favoritesDriver.removeAll()
     }
     //MARK:-Helper Functions
     fileprivate func configureTableView(){
@@ -39,6 +33,7 @@ class FavoriteTaxi: UIViewController{
         tableView.register(FavoriteTaxiCell.self, forCellReuseIdentifier: identifer)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         view.addSubview(tableView)
     }
     fileprivate func configureNavigation(title: String){
@@ -47,42 +42,27 @@ class FavoriteTaxi: UIViewController{
         navigationItem.title = title
     }
     //MARK:-Api
-    fileprivate func fetchAllUserData() {
-        self.favoritesUid.removeAll()
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        let way = db.collection(USER_FREF).document(uid).collection(FAVORITES_TAXI_FSREF)
-        way.getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    self.favoritesUid.append(document.documentID)
-                }
-            }
-        }
-    }
-    fileprivate func fetchUser(){
-        USER_FSREF.whereField("uMvLUWQXcLh1WkaGnSV4iq1VbJJ2", isEqualTo: "uMvLUWQXcLh1WkaGnSV4iq1VbJJ2")
-            .addSnapshotListener { (snapshot, error) in
-            if let error = error {
-                print("DEBUG: Error Stop Drivers -- \(error.localizedDescription)")
-            } else {
-                if snapshot?.isEmpty == false && snapshot != nil {
-                    self.selectedFavoriteTaxi = Rating.fetchRating(snapshot: snapshot)
-                    self.selectedFavoriteTaxi.forEach { (e) in
-                        print("DEBUG: \(e.fullname)")
-                        self.rat = e
-                    }
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
     fileprivate func fetchingFavorites(){
-
+        _ = Service.shared.fetchUser(completion: { (error, rat) in
+            if let error = error {
+                print("DEBUG: \(error.localizedDescription)")
+                return
+            }
+            _ = Service.shared.fetchAllUserData(completion: { (error, fav) in
+                if let error = error {
+                    print("DEBUG: \(error.localizedDescription)")
+                    return
+                }
+                    print("DEBUG: fav user id \(fav.userID)")
+                    USER_FSREF.whereField(USER_ID_FREF, isEqualTo: fav.userID).getDocuments { (querySnapshot, err) in
+                        if querySnapshot?.isEmpty == false && querySnapshot != nil {
+                            self.favoritesDriver = Rating.fetchRating(snapshot: querySnapshot)
+                            self.tableView.reloadData()
+                        }
+                    }
+            })
+        })
     }
-    
-    
     //MARK:-Selectors
 }
 extension FavoriteTaxi: UITableViewDelegate,UITableViewDataSource{
@@ -90,14 +70,15 @@ extension FavoriteTaxi: UITableViewDelegate,UITableViewDataSource{
         100
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return favoritesDriver.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! FavoriteTaxiCell
-        
+        cell.selectionStyle = .none
+        _ = Service.shared.getProfilePhotoFS(uid: favoritesDriver[indexPath.row].uid, imageView: cell.uploadImageView)
+        cell.usernameLabel.text = favoritesDriver[indexPath.row].fullname
+        cell.emailLabel.text = favoritesDriver[indexPath.row].email
+        cell.initialLabel.text = favoritesDriver[indexPath.row].firstInitial
         return cell
     }
-    
-    
 }

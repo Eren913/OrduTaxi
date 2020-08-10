@@ -110,13 +110,16 @@ class SettingsCell: UITableViewCell {
         addSubview(cosmosView)
         cosmosView.centerY(inView: self)
         cosmosView.anchor(right: rightAnchor , paddingLeft: 12)
+        
         addSubview(swicthControl)
         swicthControl.centerY(inView: self)
         swicthControl.anchor(right: rightAnchor,paddingRight: 12)
+        
         addSubview(callButton)
         callButton.isHidden = true
         callButton.centerY(inView: self)
         callButton.anchor(right: rightAnchor,paddingRight: 12)
+        
         addSubview(callLabel)
         callLabel.isHidden = true
         callLabel.centerY(inView: self)

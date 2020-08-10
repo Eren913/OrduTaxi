@@ -16,7 +16,7 @@ class StopsDriver: UIViewController{
     let tableView = UITableView()
     var navigationTitle : String = ""
     var user: User?
-    
+    private var Listener : ListenerRegistration!
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,9 @@ class StopsDriver: UIViewController{
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     override func viewWillDisappear(_ animated: Bool) {
+        if Listener != nil {
+            Listener.remove()
+        }
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     //MARK:-Api

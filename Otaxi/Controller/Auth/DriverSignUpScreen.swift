@@ -196,12 +196,12 @@ class DriverSignUp: UIViewController{
                     return
                 }
                 guard let uid = result?.user.uid else { return }
-                
-                let values = [EMAİL_FREF:emailtext,
-                              FULLNAME_FREF:fullnameText,
-                              TEL_NO_FREF:telNoText,
-                              DURAK_ISMI_FREF : pickerindex,
-                              ACCOUNT_TYPE_FREF: 1] as [String : Any]
+                let values = [EMAİL_FREF       :emailtext,
+                              FULLNAME_FREF    :fullnameText,
+                              TEL_NO_FREF      :telNoText,
+                              DURAK_ISMI_FREF  : pickerindex,
+                              ACCOUNT_TYPE_FREF: 1,
+                              USER_ID_FREF     : uid] as [String : Any]
                 self.updateValues(uid: uid, values: values)
                 
                 let container = ContainerController()
