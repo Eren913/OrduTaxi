@@ -13,9 +13,8 @@ import FirebaseAuth
 
 class FavoriteTaxi: UIViewController{
     //MARK:-Properties
-    var favoritesDriver = [Rating]()
+    var favoritesDriver : [Rating] = []
     fileprivate let tableView = UITableView()
-    
     
     //MARK:- Lifecyle
     override func viewDidLoad() {
@@ -36,31 +35,19 @@ class FavoriteTaxi: UIViewController{
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
     }
-    fileprivate func configureNavigation(title: String){
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = title
-    }
     //MARK:-Api
     fileprivate func fetchingFavorites(){
-        _ = Service.shared.fetchUser(completion: { (error, rat) in
-            if let error = error {
-                print("DEBUG: \(error.localizedDescription)")
-                return
-            }
-            _ = Service.shared.fetchAllUserData(completion: { (error, fav) in
+        _ = Service.shared.fetchFavorites(completion: { (err, fav) in
+            USER_FSREF.whereField(USER_ID_FREF, isEqualTo: fav.userID).addSnapshotListener { (snapshot, error) in
                 if let error = error {
-                    print("DEBUG: \(error.localizedDescription)")
-                    return
-                }
-                    print("DEBUG: fav user id \(fav.userID)")
-                    USER_FSREF.whereField(USER_ID_FREF, isEqualTo: fav.userID).getDocuments { (querySnapshot, err) in
-                        if querySnapshot?.isEmpty == false && querySnapshot != nil {
-                            self.favoritesDriver = Rating.fetchRating(snapshot: querySnapshot)
-                            self.tableView.reloadData()
-                        }
+                    print("DEBUG: Error favorite Taxi data -- \(error.localizedDescription)")
+                } else {
+                    if snapshot?.isEmpty == false && snapshot != nil {
+                        self.favoritesDriver = Rating.fetchRating(snapshot: snapshot)
+                        self.tableView.reloadData()
                     }
-            })
+                }
+            }
         })
     }
     //MARK:-Selectors

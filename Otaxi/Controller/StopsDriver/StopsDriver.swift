@@ -21,7 +21,7 @@ class StopsDriver: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        configureNavigation(title: navigationTitle)
+        self.configureNavigation(title: navigationTitle)
         fetchAllUserData()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -53,12 +53,6 @@ class StopsDriver: UIViewController{
         tableView.dataSource = self
         view.addSubview(tableView)
         tableView.tableFooterView = UIView()
-    }
-    fileprivate func configureNavigation(title: String){
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = title
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
     }
     fileprivate func checkUserUid(){
         if user == nil{

@@ -61,19 +61,27 @@ class HomeController : UIViewController{
         button.setImage(UIImage(systemName: "staroflife.fill"), for: .normal)
         return button
     }()
-    private let HighPointDrivers : UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(hpPressed), for: .touchUpInside)
-        button.setImage(#imageLiteral(resourceName: "RatingStarEmpty.png").withRenderingMode(.alwaysOriginal), for: .normal)
-        return button
-    }()
     private let hplabel : UILabel = {
         let label = UILabel()
-        label.text = "Sağlıklı Taksi"
+        label.text = "En İyi Taksiler"
         label.font = UIFont(name: "Avenir-Light", size: 10)
         label.textColor = .black
         return label
     }()
+    private let HighPointDrivers : UIButton = {
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(hpPressed), for: .touchUpInside)
+        button.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        return button
+    }()
+    private let highpointDriverlabel : UILabel = {
+        let label = UILabel()
+        label.text = "Yüksek Puanlı Taksiler"
+        label.font = UIFont(name: "Avenir-Light", size: 10)
+        label.textColor = .black
+        return label
+    }()
+    
 
     
     
@@ -191,17 +199,22 @@ class HomeController : UIViewController{
                                 paddingRight: 27,
                                 width: 40,
                                 height: 40)
-        view.addSubview(HighPointDrivers)
-        HighPointDrivers.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                                 right: healtyTaxiButton.leftAnchor,
-                                 paddingTop: 16,
-                                 paddingRight: 18,
-                                 width: 30,
-                                 height: 30)
         view.addSubview(hplabel)
         hplabel.anchor(top: healtyTaxiButton.bottomAnchor,
                        right: view.rightAnchor,
                        paddingRight: 20)
+        view.addSubview(HighPointDrivers)
+        HighPointDrivers.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                right: healtyTaxiButton.leftAnchor,
+                                paddingTop: 16,
+                                paddingRight: 18,
+                                width: 40,
+                                height: 40)
+        view.addSubview(highpointDriverlabel)
+        highpointDriverlabel.anchor(top: HighPointDrivers.bottomAnchor,
+                                    right: hplabel.leftAnchor,
+                                    paddingRight: 0)
+        
         
         view.addSubview(inputActivationView)
         inputActivationView.layer.cornerRadius = 10

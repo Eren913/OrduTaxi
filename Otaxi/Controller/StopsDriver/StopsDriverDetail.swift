@@ -41,7 +41,6 @@ class StopsDriverDetail: UIViewController {
         userInfoHeader.usernameLabel.text = selectedDriver?.fullname
         userInfoHeader.initialLabel.text = selectedDriver?.firstInitial
         userInfoHeader.emailLabel.text = selectedDriver?.email
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchImage()

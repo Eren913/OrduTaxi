@@ -19,7 +19,7 @@ class HighHPDrivers: UIViewController{
     private let dismissButton : UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
-        button.setImage(#imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "baseline_clear_white_36pt_2x").withRenderingMode(.alwaysOriginal), for: .normal)
         return button
     }()
     
@@ -44,18 +44,12 @@ class HighHPDrivers: UIViewController{
         tableView.register(HighHPDriversCell.self, forCellReuseIdentifier: healtyTaxiTableViewIdentifier)
         view.addSubview(tableView)
     }
-    func configureNavigation(title: String){
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = title
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
-    }
     fileprivate func configureUI(){
         view.addSubview(dismissButton)
         dismissButton.anchor(top: view.safeAreaLayoutGuide.topAnchor ,
-                             left: view.leftAnchor,
+                             right: view.rightAnchor,
                              paddingTop: 16,
-                             paddingLeft: 20,
+                             paddingRight: 20,
                              width: 50,
                              height: 50)
     }

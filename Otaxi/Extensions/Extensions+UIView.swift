@@ -221,6 +221,11 @@ extension MKMapView {
 }
 
 extension UIViewController {
+    func configureNavigation(title: String){
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = title
+    }
     func presentAlertController(withTitle title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .cancel, handler: nil))

@@ -52,7 +52,6 @@ class AddLocationController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableFooterView = UIView()
         tableView.rowHeight = 60
-        
         tableView.addShadow()
     }
     

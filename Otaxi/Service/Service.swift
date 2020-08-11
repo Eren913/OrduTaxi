@@ -103,17 +103,20 @@ struct Service {
             }
         }
     }
-    func fetchAllUserData(completion: @escaping(Error?,Favorites)->Void) {
+    func fetchFavorites(completion: @escaping(Error?,Favorites)->Void) -> [Favorites] {
         var fav = [Favorites]()
-        guard let uid = Auth.auth().currentUser?.uid else {return}
+        guard let uid = Auth.auth().currentUser?.uid else {return fav}
         let way = Firestore.firestore().collection(USER_FREF).document(uid).collection(FAVORITES_TAXI_FSREF)
-        way.getDocuments { (querySnapshot, err) in
+        way.addSnapshotListener { (querySnapshot, err) in
             fav = Favorites.fetchFavorites(QuerySnapshot: querySnapshot)
             for fave in fav{
                 completion(err,fave)
             }
         }
+        return fav
     }
+    
+    
     
 }
 
