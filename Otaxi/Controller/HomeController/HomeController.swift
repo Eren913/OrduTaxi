@@ -159,6 +159,7 @@ class HomeController : UIViewController{
         configureUI()
         fetchUserData()
         fetchDurakOnMap(TaksiDurakları.shared.duraklar)
+        self.rideAction.delegate = self
     }
 
     fileprivate func configureActionbutton(configure config : ActionbuttonConfiguration){
@@ -296,14 +297,11 @@ class HomeController : UIViewController{
         }, completion: completion)
     }
     func presentRideActionView(shouldShow: Bool,destination: MKPlacemark? = nil){
-        
         let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
-        
         if shouldShow {
             guard let destination = destination else {return}
             self.rideAction.destination = destination
         }
-        
         UIView.animate(withDuration: 0.4) {
             self.rideAction.frame.origin.y = yOrigin
         }
@@ -335,6 +333,13 @@ private extension HomeController{
             }
             completion(results)
         }
+    }
+    func centerMapOnUserLocation() {
+        guard let coordinate = locationMeneger?.location?.coordinate else { return }
+        let region = MKCoordinateRegion(center: coordinate,
+                                        latitudinalMeters: 2000,
+                                        longitudinalMeters: 2000)
+        mapView.setRegion(region, animated: true)
     }
     
     func generatePolyline(toDestination destination:MKMapItem){
@@ -368,6 +373,9 @@ private extension HomeController{
 }
 //MARK:-MapViewDelegates
 extension HomeController: MKMapViewDelegate{
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        self.rideAction.currentCoordinate = userLocation.coordinate
+    }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
     
         if let annotation = annotation as? DriverAnnotation{
@@ -447,7 +455,7 @@ extension HomeController {
 //MARK:- LocationViewACtivationDelegate
 extension HomeController : LocationInputViewActivationViewDelegate{
     func presentLocationInputView() {
-        //Touched HomeController TExt field
+        //Touched HomeController Text field
         inputActivationView.alpha = 0
         configureLocationInputView()
         
@@ -521,6 +529,41 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.presentRideActionView(shouldShow: true, destination: selectedPlacemark)
         }
     }
+}
+
+extension HomeController: RideActionViewDelegate{
+    func configureActionButton() {
+        let alert = UIAlertController(title: "Haritaları Açmak İstiyormusunuz", message: "Yol Tarifi İçin Haritalar Açılacak", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Tamam", style: .default) { _ in
+            let currenLocation = self.searchResults[0].coordinate
+            let requestLocation = CLLocation(latitude: currenLocation.latitude, longitude: currenLocation.longitude)
+                CLGeocoder().reverseGeocodeLocation(requestLocation) { (placemarks, error) in
+                    if let placemark = placemarks {
+                        if placemark.count > 0 {
+                            let newPlacemark = MKPlacemark(placemark: placemark[0])
+                            let item = MKMapItem(placemark: newPlacemark)
+                            item.name = self.searchResults[0].name
+                            let launchOptions = [MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeWalking]
+                            item.openInMaps(launchOptions: launchOptions)
+                    }
+                }
+            }
+        }
+        let cancel = UIAlertAction(title: "Vazgeç", style: .cancel) { _ in
+            self.centerMapOnUserLocation()
+            self.presentRideActionView(shouldShow: false)
+            self.removeAnnotationsAndOverlays()
+            self.actionButton.setImage(#imageLiteral(resourceName: "baseline_menu_black_36dp").withRenderingMode(.alwaysOriginal), for: .normal)
+            self.actionButtonConfig = .showMenu
+            self.inputActivationView.alpha = 1
+        }
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    
 }
 extension HomeController: UIViewControllerTransitioningDelegate{
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {

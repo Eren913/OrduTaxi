@@ -7,6 +7,10 @@
 
 import UIKit
 import MapKit
+import CoreLocation
+protocol RideActionViewDelegate: class{
+    func configureActionButton()
+}
 
 class RideActionView: UIView{
     
@@ -14,9 +18,13 @@ class RideActionView: UIView{
         didSet{
             titleLabel.text = destination?.name
             adressLabel.text = destination?.address
+            _ = distance(to: destination!.coordinate, distance: uberXLabel)
+           //distancecalcutor()
         }
     }
+    var currentCoordinate: CLLocationCoordinate2D?
     //MARK: - Properties
+    weak var delegate: RideActionViewDelegate?
     let titleLabel : UILabel = {
        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
@@ -48,14 +56,13 @@ class RideActionView: UIView{
     let uberXLabel : UILabel = {
         let label = UILabel()
          label.font = UIFont.systemFont(ofSize: 18)
-         label.text = "Uber X "
          label.textAlignment = .center
          return label
      }()
     private let actionButton : UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .black
-        button.setTitle("Confirm", for: .normal)
+        button.setTitle("Tamam", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
         return button
@@ -107,7 +114,15 @@ class RideActionView: UIView{
     }
     //MARK:- Selectors
     @objc fileprivate func actionButtonPressed(){
-        
+        delegate?.configureActionButton()
     }
-    
+    //MARK:-Helper Func
+    func distance(to: CLLocationCoordinate2D,distance: UILabel) -> CLLocationDistance {
+        guard let currenLocation = currentCoordinate else {return 0.00}
+        let from = CLLocation(latitude: currenLocation.latitude, longitude: currenLocation.longitude)
+        let to = CLLocation(latitude: to.latitude, longitude: to.longitude)
+        let dis = from.distance(from: to) / 1000
+        distance.text = String(format: "Ortalama Mesafe %.01fkm", dis)
+        return dis
+    }
 }
