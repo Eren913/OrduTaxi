@@ -37,8 +37,6 @@
 		22438E0B24C5E13D0001D289 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0A24C5E13D0001D289 /* AppDelegate.swift */; };
 		22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22438E0C24C5E13D0001D289 /* SceneDelegate.swift */; };
 		2250A44824E125220002E5D5 /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2250A44724E125220002E5D5 /* CircularTransition.swift */; };
-		2250A44A24E12D870002E5D5 /* HealtyDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2250A44924E12D870002E5D5 /* HealtyDrivers.swift */; };
-		2250A45024E1576E0002E5D5 /* HealtyTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2250A44F24E1576E0002E5D5 /* HealtyTaxiCell.swift */; };
 		2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */; };
 		229CD15B24DE846500031C5E /* DriverSignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229CD15A24DE846500031C5E /* DriverSignUpScreen.swift */; };
 		22B5E8F524DD8B3E00DBBB01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B5E8F424DD8B3E00DBBB01 /* LaunchScreen.storyboard */; };
@@ -85,8 +83,6 @@
 		22438E0C24C5E13D0001D289 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		22438E1824C5E1400001D289 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2250A44724E125220002E5D5 /* CircularTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
-		2250A44924E12D870002E5D5 /* HealtyDrivers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealtyDrivers.swift; sourceTree = "<group>"; };
-		2250A44F24E1576E0002E5D5 /* HealtyTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealtyTaxiCell.swift; sourceTree = "<group>"; };
 		2291CDCF24C731D600A2B6BB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		229CD15A24DE846500031C5E /* DriverSignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverSignUpScreen.swift; sourceTree = "<group>"; };
 		22B5E8F424DD8B3E00DBBB01 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -142,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				2250A44C24E133E00002E5D5 /* HomeController */,
-				2250A44D24E133F00002E5D5 /* HealtyDrivers */,
 				221C14E624D9778C00C36BC1 /* FavoriteTaxi */,
 				22FEFF0324D5F8A4001AE0C2 /* HighHPDrivers */,
 				221CE74124D02120006085D6 /* SideMenu */,
@@ -155,7 +150,6 @@
 		22044C0D24C5E2B4001FC245 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2250A44E24E1573E0002E5D5 /* HealtyTaxiCell */,
 				221C14E924D977BF00C36BC1 /* FavoriteTaxiCell */,
 				22FEFF0624D5FA3D001AE0C2 /* HighHPDriversView */,
 				221CE76524D2A971006085D6 /* StopsTaxiView */,
@@ -298,22 +292,6 @@
 				22044C0624C5E2AC001FC245 /* HomeController.swift */,
 			);
 			path = HomeController;
-			sourceTree = "<group>";
-		};
-		2250A44D24E133F00002E5D5 /* HealtyDrivers */ = {
-			isa = PBXGroup;
-			children = (
-				2250A44924E12D870002E5D5 /* HealtyDrivers.swift */,
-			);
-			path = HealtyDrivers;
-			sourceTree = "<group>";
-		};
-		2250A44E24E1573E0002E5D5 /* HealtyTaxiCell */ = {
-			isa = PBXGroup;
-			children = (
-				2250A44F24E1576E0002E5D5 /* HealtyTaxiCell.swift */,
-			);
-			path = HealtyTaxiCell;
 			sourceTree = "<group>";
 		};
 		22FEFEF624D57426001AE0C2 /* StoryBoards */ = {
@@ -485,7 +463,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2250A44A24E12D870002E5D5 /* HealtyDrivers.swift in Sources */,
 				22044C0024C5E2A2001FC245 /* User.swift in Sources */,
 				221CE75D24D2A447006085D6 /* StopsDriverDetail.swift in Sources */,
 				221CE74D24D0228F006085D6 /* UserInfoHeader.swift in Sources */,
@@ -497,7 +474,6 @@
 				221C14EB24D977E000C36BC1 /* FavoriteTaxiCell.swift in Sources */,
 				2291CDD024C731D600A2B6BB /* DriverAnnotation.swift in Sources */,
 				221C14E824D977AB00C36BC1 /* FavoriteTaxi.swift in Sources */,
-				2250A45024E1576E0002E5D5 /* HealtyTaxiCell.swift in Sources */,
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,

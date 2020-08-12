@@ -57,7 +57,7 @@ class HomeController : UIViewController{
     }()
     private let healtyTaxiButton : UIButton = {
         let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(healtyHomePressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(hpPressed), for: .touchUpInside)
         button.setImage(UIImage(systemName: "staroflife.fill"), for: .normal)
         return button
     }()
@@ -68,23 +68,6 @@ class HomeController : UIViewController{
         label.textColor = .black
         return label
     }()
-    private let HighPointDrivers : UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(hpPressed), for: .touchUpInside)
-        button.setImage(UIImage(systemName: "star.fill"), for: .normal)
-        return button
-    }()
-    private let highpointDriverlabel : UILabel = {
-        let label = UILabel()
-        label.text = "Yüksek Puanlı Taksiler"
-        label.font = UIFont(name: "Avenir-Light", size: 10)
-        label.textColor = .black
-        return label
-    }()
-    
-
-    
-    
      var user : User? {
         didSet{
             locationInputView.user = user
@@ -125,12 +108,6 @@ class HomeController : UIViewController{
                 self.presentRideActionView(shouldShow: false)
             }
         }
-    }
-    @objc fileprivate func healtyHomePressed(){
-        let vc = HealtyDrivers()
-        vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = self
-        present(vc, animated: true, completion: nil)
     }
     @objc fileprivate func hpPressed(){
         let vc = HighHPDrivers()
@@ -203,17 +180,6 @@ class HomeController : UIViewController{
         hplabel.anchor(top: healtyTaxiButton.bottomAnchor,
                        right: view.rightAnchor,
                        paddingRight: 20)
-        view.addSubview(HighPointDrivers)
-        HighPointDrivers.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                                right: healtyTaxiButton.leftAnchor,
-                                paddingTop: 16,
-                                paddingRight: 18,
-                                width: 40,
-                                height: 40)
-        view.addSubview(highpointDriverlabel)
-        highpointDriverlabel.anchor(top: HighPointDrivers.bottomAnchor,
-                                    right: hplabel.leftAnchor,
-                                    paddingRight: 0)
         
         
         view.addSubview(inputActivationView)
