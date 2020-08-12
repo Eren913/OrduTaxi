@@ -71,6 +71,15 @@ class DriverSignUp: UIViewController{
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return view
     }()
+    private let plakaTextField : UITextField = {
+        return UITextField().phoneTextField(withPlaceholder: "Plakanız")
+    }()
+    
+    private lazy var plakaContainer : UIView = {
+        let view = UIView().inputContainerView(image: (UIImage(systemName: "tag.fill")!.withTintColor(.white)), textField: plakaTextField)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return view
+    }()
     //MARK:-
     private let signUpButton  :UIButton = {
         let button = UIButton(type: .system)
@@ -153,6 +162,7 @@ class DriverSignUp: UIViewController{
                                                 telNoContainer,
                                                 passwordContainer,
                                                 stopTextFieldContainer,
+                                                plakaContainer,
                                                 signUpButton])
         sv.axis = .vertical
         sv.distribution = .fillEqually
@@ -188,20 +198,22 @@ class DriverSignUp: UIViewController{
         guard let fullnameText = fullNameTextField.text else {return}
         guard let telNoText = telNoTextField.text else {return}
         guard let pickerindex = stopsTextField.text else {return}
+        guard let plaka = plakaTextField.text else {return}
         
-        if emailTextField.text != "" && passwordTextField.text != "" && fullNameTextField.text != "" && telNoTextField.text != "" && stopsTextField.text != ""{
+        if emailTextField.text != "" && passwordTextField.text != "" && fullNameTextField.text != "" && telNoTextField.text != "" && stopsTextField.text != "" && plakaTextField.text != ""{
             Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
                 if let error = error {
                     self.presentAlertController(withTitle: "Kayıt Olurken Hata Meydana Geldi", message: error.localizedDescription)
                     return
                 }
                 guard let uid = result?.user.uid else { return }
-                let values = [EMAİL_FREF       :emailtext,
-                              FULLNAME_FREF    :fullnameText,
-                              TEL_NO_FREF      :telNoText,
+                let values = [EMAİL_FREF       : emailtext,
+                              FULLNAME_FREF    : fullnameText,
+                              TEL_NO_FREF      : telNoText,
                               DURAK_ISMI_FREF  : pickerindex,
                               ACCOUNT_TYPE_FREF: 1,
-                              USER_ID_FREF     : uid] as [String : Any]
+                              USER_ID_FREF     : uid,
+                              PLAKA_FREF       : plaka] as [String : Any]
                 self.updateValues(uid: uid, values: values)
                 
                 let container = ContainerController()

@@ -22,6 +22,9 @@ class FavoriteTaxi: UIViewController{
         configureTableView()
         configureNavigation(title: "Favori Taksiciler")
         fetchingFavorites()
+        if favoritesDriver.count <= 0 {
+            self.presentAlertController(withTitle: "Favori Takssiciniz Yok", message: "Duraktaki Taksicileri Favorilerine Ekleyebilirsiniz")
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         self.favoritesDriver.removeAll()
@@ -34,6 +37,16 @@ class FavoriteTaxi: UIViewController{
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
+    }
+    fileprivate func callNumber(phoneNumber:String) {
+        if let phone = URL(string: "tel://\(phoneNumber)"){
+            if UIApplication.shared.canOpenURL(phone){
+                UIApplication.shared.open(phone, options: [:], completionHandler: nil)
+                print("DEBUG: fav successs Call")
+            }
+        }else{
+            print("DEBUG: fav Fail Call")
+        }
     }
     //MARK:-Api
     fileprivate func fetchingFavorites(){
@@ -67,5 +80,10 @@ extension FavoriteTaxi: UITableViewDelegate,UITableViewDataSource{
         cell.emailLabel.text = favoritesDriver[indexPath.row].email
         cell.initialLabel.text = favoritesDriver[indexPath.row].firstInitial
         return cell
+    }
+}
+extension FavoriteTaxi: FavoriteCellDelegate{
+    func favCallButton(_ sender: UIButton) {
+        callNumber(phoneNumber: favoritesDriver[0].telNo)
     }
 }

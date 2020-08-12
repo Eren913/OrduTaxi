@@ -70,13 +70,10 @@ class SettingsController: UITableViewController {
         configureTableView()
         configureNavigationBar()
         
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(choosePicture))
-        infoHeader.uploadImageView.addGestureRecognizer(gestureRecognizer)
-        getProfilePhoto()
     }
     override func viewWillAppear(_ animated: Bool) {
+        getProfilePhoto()
         tableView.reloadData()
-        
     }
     
     // MARK: - Selectors
@@ -156,7 +153,9 @@ class SettingsController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Ayarlar"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Düzenle", style: .plain, target: self, action: #selector(choosePicture))
+        if user.accountType.rawValue == 1 {
+             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Düzenle", style: .plain, target: self, action: #selector(choosePicture))
+        }
     }
 }
 

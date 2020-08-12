@@ -45,19 +45,19 @@ enum CommunicationSection: Int,CaseIterable,SectionType{
         switch self{
         case .favorite : return true
         case .phone: return false
-        case .carModel: return false
+        case .plaka: return false
         }
     }
     
     case favorite
     case phone
-    case carModel
+    case plaka
     
     var description: String{
         switch self {
         case .favorite: return "Favorilere Ekle"
         case .phone: return "Tel No:"
-        case .carModel: return "Arac Model: Dacia Duster"
+        case .plaka: return "Plaka: "
         }
     }
 }
@@ -104,6 +104,11 @@ class SettingsCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
+    let plakaLabel : UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -124,6 +129,11 @@ class SettingsCell: UITableViewCell {
         callLabel.isHidden = true
         callLabel.centerY(inView: self)
         callLabel.anchor(left: leftAnchor,paddingLeft: 80)
+        
+        addSubview(plakaLabel)
+        plakaLabel.isHidden = true
+        plakaLabel.centerY(inView: self)
+        plakaLabel.anchor(left: leftAnchor,paddingLeft: 70)
     }
     
     required init?(coder aDecoder: NSCoder) {

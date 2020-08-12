@@ -23,6 +23,8 @@ let FAVORITES_TAXI_FSREF = "FavoriTaksiciler"
 let LIKECOUNT = "LikeCount"
 
 
+let PLAKA_FREF = "Plaka"
+
 let IMAGEURL_REF_FS = "ImageUrl"
 let PROFILEPHOTO_REF = "ProfilePhoto"
 

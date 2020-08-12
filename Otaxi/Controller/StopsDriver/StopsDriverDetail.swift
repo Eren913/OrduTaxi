@@ -212,6 +212,9 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
             cell.callButton.isHidden = false
             cell.callLabel.isHidden = false
             cell.callLabel.text = selectedDriver.telNo
+        }else if indexPath.row == 2{
+            cell.plakaLabel.isHidden = false
+            cell.plakaLabel.text = selectedDriver.plaka
         }
         switch section {
         case .Social:
@@ -239,7 +242,6 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         sender.isSelected = !sender.isSelected
         sender.tintColor = .clear
         if sender.isSelected{
-            sender.setTitle("Tamam", for: .selected)
             requestReview()
         }else{
         }

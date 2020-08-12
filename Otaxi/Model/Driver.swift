@@ -17,8 +17,9 @@ class Rating{
     private(set) var accountType: Int
     private(set) var telNo: String
     private(set) var useruid: String?
+    private(set) var plaka: String?
     var firstInitial: String { return String((fullname.prefix(1))) }
-    init(uid: String,fullname: String,email: String,healthpoint: Double,stop: String,accountType: Int,firstInitial: String? = nil,telNo: String,useruid: String?){
+    init(uid: String,fullname: String,email: String,healthpoint: Double,stop: String,accountType: Int,firstInitial: String? = nil,telNo: String,useruid: String?,plaka: String?){
         self.uid = uid
         self.fullname = fullname
         self.email = email
@@ -27,6 +28,7 @@ class Rating{
         self.accountType = accountType
         self.telNo = telNo
         self.useruid = useruid
+        self.plaka = plaka
     }
     class func fetchRating(snapshot: QuerySnapshot?) -> [Rating]{
         var ratings = [Rating]()
@@ -39,8 +41,9 @@ class Rating{
             let tel = document.get(TEL_NO_FREF) as? String ?? "Tel No yok"
             let userIDfsref = document.get(USER_ID_FREF) as? String ?? "useridFref"
             let accoubtType = document.get(ACCOUNT_TYPE_FREF) as? Int ?? 0
+            let plaka = document.get(PLAKA_FREF) as? String ?? "Plaka Yok"
             let uid = document.documentID
-            let driverInfo = Rating(uid: uid, fullname: username, email: email, healthpoint: healt, stop: stop, accountType: accoubtType, firstInitial: nil, telNo: tel, useruid: userIDfsref)
+            let driverInfo = Rating(uid: uid, fullname: username, email: email, healthpoint: healt, stop: stop, accountType: accoubtType, firstInitial: nil, telNo: tel, useruid: userIDfsref, plaka: plaka)
             ratings.append(driverInfo)
         }
         return ratings

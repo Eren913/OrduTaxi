@@ -6,10 +6,16 @@
 //
 
 import UIKit
+@objc protocol FavoriteCellDelegate: class {
+    func favCallButton(_ sender: UIButton)
+}
 
 class FavoriteTaxiCell: UITableViewCell {
     
     // MARK: - Properties
+    
+    weak var delegate: FavoriteCellDelegate?
+    
     lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .black
@@ -42,6 +48,12 @@ class FavoriteTaxiCell: UITableViewCell {
         img.isUserInteractionEnabled = true
         return img
     }()
+    lazy var callButton : UIButton = {
+        let btn = UIButton(type: .system)
+        btn.addTarget(delegate, action: #selector(delegate?.favCallButton(_:)), for: .touchUpInside)
+        btn.setImage(UIImage(systemName: "phone.fill")!.withTintColor(.white), for: .normal)
+        return btn
+    }()
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,6 +71,11 @@ class FavoriteTaxiCell: UITableViewCell {
         addSubview(emailLabel)
         emailLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 10).isActive = true
         emailLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 12).isActive = true
+        
+        addSubview(callButton)
+        callButton.centerY(inView: self)
+        callButton.anchor(right: rightAnchor,paddingRight: 12)
+        
         configureInitalLabel()
         configureImageView()
     }
