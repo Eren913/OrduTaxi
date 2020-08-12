@@ -19,7 +19,6 @@ class RideActionView: UIView{
             titleLabel.text = destination?.name
             adressLabel.text = destination?.address
             _ = distance(to: destination!.coordinate, distance: uberXLabel)
-           //distancecalcutor()
         }
     }
     var currentCoordinate: CLLocationCoordinate2D?

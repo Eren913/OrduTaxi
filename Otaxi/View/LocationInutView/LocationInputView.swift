@@ -20,7 +20,6 @@ class LocationInputView: UIView {
             titlelabel.text = user?.fullname
         }
     }
-    
     weak var delegate : LocationInputViewDelegate?
     
     private let backButton : UIButton = {
@@ -141,11 +140,6 @@ class LocationInputView: UIView {
                            paddingTop: 4,
                            paddingBottom: 4,
                            width: 0.5)
-        
-        
-        
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
