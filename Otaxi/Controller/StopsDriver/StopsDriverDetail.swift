@@ -33,6 +33,22 @@ class StopsDriverDetail: UIViewController {
     let fireStore = Firestore.firestore()
     let app = UIApplication.shared
     
+    lazy var addphotoButton: UIButton = {
+        let add = UIButton()
+        add.setTitle("Ekle", for: .normal)
+        add.setTitleColor(.white, for: .normal)
+        add.layer.cornerRadius = 10
+        add.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
+        return add
+    }()
+    lazy var handleEditButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Düzenle", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.layer.cornerRadius = 10
+        btn.addTarget(self, action: #selector(handleDuzenleTapped), for: .touchUpInside)
+        return btn
+    }()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -156,7 +172,17 @@ class StopsDriverDetail: UIViewController {
             print("DEBUG: Fail Call")
         }
     }
-    
+    //MARK:-Selector
+    @objc fileprivate func addPhoto(_ sender: UIButton){
+        
+    }
+    @objc fileprivate func handleDuzenleTapped(sender: UIButton){
+        sender.isSelected = !sender.isSelected
+        sender.tintColor = .clear
+        if sender.isSelected{
+            requestReview()
+        }
+    }
 }
 //MARK:-UITableViewDelegate,UITableViewDataSource
 extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
@@ -168,16 +194,16 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         let view = UIView()
         view.backgroundColor = .blue
         
-        let btn = UIButton()
-        btn.setTitle("Düzenle", for: .normal)
-        btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 10
-        btn.addTarget(self, action: #selector(handleDuzenleTapped), for: .touchUpInside)
-        
         if section == 0{
-            view.addSubview(btn)
-            btn.centerY(inView: view)
-            btn.anchor(right: view.rightAnchor,paddingRight: 12)
+            view.addSubview(handleEditButton)
+            handleEditButton.centerY(inView: view)
+            handleEditButton.anchor(right: view.rightAnchor,paddingRight: 12)
+        }else if section == 2{
+            if selectedDriver.accountType == 1 {
+                view.addSubview(addphotoButton)
+                addphotoButton.centerY(inView: view)
+                addphotoButton.anchor(right: view.rightAnchor,paddingRight: 12)
+            }
         }
         let title = UILabel()
         title.font = UIFont.boldSystemFont(ofSize: 16)
@@ -197,6 +223,7 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case .Social: return SocialSection.allCases.count
         case .Communication: return CommunicationSection.allCases.count
+        case .General: return 0
         }
     }
     
@@ -225,6 +252,8 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
             let communication = CommunicationSection(rawValue: indexPath.row)
             cell.sectionType = communication
             cell.cosmosView.isHidden = true
+        case .General: break
+            //
         }
         return cell
     }
@@ -235,19 +264,10 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
             print(SocialSection(rawValue: indexPath.row)!)
         case .Communication:
             print(CommunicationSection(rawValue: indexPath.row)!)
+        case .General: break
         }
         
     }
-    @objc func handleDuzenleTapped(sender: UIButton){
-        sender.isSelected = !sender.isSelected
-        sender.tintColor = .clear
-        if sender.isSelected{
-            requestReview()
-        }else{
-        }
-    }
-    
-    
 }
 //MARK:-JXReviewControllerDelegate
 extension StopsDriverDetail: JXReviewControllerDelegate {

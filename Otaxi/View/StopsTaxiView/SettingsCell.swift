@@ -20,11 +20,13 @@ protocol SectionType: CustomStringConvertible {
 enum SettingsSection: Int,CaseIterable,CustomStringConvertible{
     case Social
     case Communication
+    case General
     
     var description: String{
         switch self {
         case .Social: return "Sağlık Ve Güvenlik"
         case .Communication: return "Bilgiler"
+        case .General: return "Araç Bilgileri"
         }
     }
 }
