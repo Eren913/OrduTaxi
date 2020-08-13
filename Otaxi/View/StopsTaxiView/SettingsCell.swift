@@ -91,7 +91,6 @@ class SettingsCell: UITableViewCell {
     }()
     lazy var swicthControl: UISwitch = {
        let sw = UISwitch()
-        sw.isOn = false
         sw.addTarget(delegate, action: #selector(delegate?.swicthSender(_:)), for: .valueChanged)
         return sw
     }()

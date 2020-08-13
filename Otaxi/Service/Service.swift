@@ -40,10 +40,10 @@ struct Service {
         ]
         USER_FSREF.document(uid).setData(value, merge: true, completion: completion)
     }
-    func getProfilePhotoFS(uid: String, imageView: UIImageView){
+    func getProfilePhotoFS(collection: String,uid: String, imageView: UIImageView){
         var profilPhoto = [ProfilPhoto]()
         let db = Firestore.firestore().collection(USER_FREF)
-        let ref = db.document(uid).collection(PROFILEPHOTO_REF)
+        let ref = db.document(uid).collection(collection)
         ref.addSnapshotListener { (snapshot, error) in
             if snapshot?.isEmpty == false && snapshot != nil {
                 profilPhoto = ProfilPhoto.fetchProfilephoto(snapshot: snapshot)

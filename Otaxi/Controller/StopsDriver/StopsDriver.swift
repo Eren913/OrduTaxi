@@ -81,7 +81,7 @@ extension StopsDriver: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewIdentifer, for: indexPath) as! StopsDriverCell
         cell.selectionStyle = .none
-        _ = Service.shared.getProfilePhotoFS(uid: drivers[indexPath.row].uid, imageView: cell.uploadImageView)
+        _ = Service.shared.getProfilePhotoFS(collection: PROFILEPHOTO_REF, uid: drivers[indexPath.row].uid, imageView: cell.uploadImageView)
         cell.nameLabel.text = drivers[indexPath.row].fullname
         cell.initialLabel.text = drivers[indexPath.row].firstInitial
         cell.accessoryType = .disclosureIndicator

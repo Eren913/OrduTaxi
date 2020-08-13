@@ -28,6 +28,8 @@ let PLAKA_FREF = "Plaka"
 let IMAGEURL_REF_FS = "ImageUrl"
 let PROFILEPHOTO_REF = "ProfilePhoto"
 
+let CARPHOTOS_FREF = "CarPhotos"
+
 
 let DRIVER_ANNO_REUSE_ID = "DriverAnnotation"
 

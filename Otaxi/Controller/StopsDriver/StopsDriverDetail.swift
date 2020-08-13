@@ -28,6 +28,7 @@ class StopsDriverDetail: UIViewController {
     
     var tableView: UITableView!
     var userInfoHeader: DetailInfoHeader!
+    var footerView: SDDetailFooterView!
     let settingCell: SettingsCell? = nil
     var selectedDriver : Rating!
     let fireStore = Firestore.firestore()
@@ -129,9 +130,14 @@ class StopsDriverDetail: UIViewController {
     }
     
     func fetchImage(){
-        _ = Service.shared.getProfilePhotoFS(uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
+        _ = Service.shared.getProfilePhotoFS(collection: PROFILEPHOTO_REF, uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
     }
     // MARK: - Helper Functions
+    fileprivate func configureUI() {
+        settingCell?.delegate = self
+        configureTableView()
+        configureNavigation()
+    }
     fileprivate func configureTableView() {
         tableView = UITableView()
         tableView.delegate = self
@@ -144,12 +150,8 @@ class StopsDriverDetail: UIViewController {
         let frame = CGRect(x: 0, y: 100, width: tableView.frame.width, height: 100)
         userInfoHeader = DetailInfoHeader(frame: frame)
         tableView.tableHeaderView = userInfoHeader
+        tableView.tableFooterView = footerView
         tableView.canCancelContentTouches = true
-    }
-    fileprivate func configureUI() {
-        settingCell?.delegate = self
-        configureTableView()
-        configureNavigation()
     }
     fileprivate func configureNavigation(){
         navigationController?.isNavigationBarHidden = false
@@ -174,7 +176,7 @@ class StopsDriverDetail: UIViewController {
     }
     //MARK:-Selector
     @objc fileprivate func addPhoto(_ sender: UIButton){
-        
+        navigationController?.pushViewController(DetailCarPhotoAdd(), animated: true)
     }
     @objc fileprivate func handleDuzenleTapped(sender: UIButton){
         sender.isSelected = !sender.isSelected
@@ -186,6 +188,16 @@ class StopsDriverDetail: UIViewController {
 }
 //MARK:-UITableViewDelegate,UITableViewDataSource
 extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = SDDetailFooterView()
+        return view
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 2{
+            return tableView.bounds.height
+        }
+        return 0
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return SettingsSection.allCases.count

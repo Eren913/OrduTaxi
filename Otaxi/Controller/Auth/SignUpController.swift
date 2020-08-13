@@ -63,7 +63,6 @@ class SignUpController : UIViewController{
         button.layer.cornerRadius = 10
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.addTarget(self, action: #selector(signUpClicked), for: .touchUpInside)
-        
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         return button
     }()

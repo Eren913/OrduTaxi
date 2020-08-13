@@ -121,7 +121,7 @@ class SettingsController: UITableViewController {
     }
     //MARK:-Api
     func getProfilePhoto(){
-        _ = Service.shared.getProfilePhotoFS(uid: user.uid, imageView: infoHeader.uploadImageView)
+        _ = Service.shared.getProfilePhotoFS(collection: PROFILEPHOTO_REF, uid: user.uid, imageView: infoHeader.uploadImageView)
     }
     
     // MARK: - Helper Functions

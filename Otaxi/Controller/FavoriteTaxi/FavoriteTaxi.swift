@@ -22,9 +22,6 @@ class FavoriteTaxi: UIViewController{
         configureTableView()
         configureNavigation(title: "Favori Taksiciler")
         fetchingFavorites()
-        if favoritesDriver.count <= 0 {
-            self.presentAlertController(withTitle: "Favori Takssiciniz Yok", message: "Duraktaki Taksicileri Favorilerine Ekleyebilirsiniz")
-        }
     }
     override func viewWillAppear(_ animated: Bool) {
         self.favoritesDriver.removeAll()
@@ -57,6 +54,9 @@ class FavoriteTaxi: UIViewController{
                 } else {
                     if snapshot?.isEmpty == false && snapshot != nil {
                         self.favoritesDriver = Rating.fetchRating(snapshot: snapshot)
+                        if self.favoritesDriver.count == 0 {
+                            self.presentAlertController(withTitle: "Favori Takssiciniz Yok", message: "Duraktaki Taksicileri Favorilerine Ekleyebilirsiniz")
+                        }
                         self.tableView.reloadData()
                     }
                 }
@@ -75,7 +75,7 @@ extension FavoriteTaxi: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! FavoriteTaxiCell
         cell.selectionStyle = .none
-        _ = Service.shared.getProfilePhotoFS(uid: favoritesDriver[indexPath.row].uid, imageView: cell.uploadImageView)
+        _ = Service.shared.getProfilePhotoFS(collection: PROFILEPHOTO_REF, uid: favoritesDriver[indexPath.row].uid, imageView: cell.uploadImageView)
         cell.usernameLabel.text = favoritesDriver[indexPath.row].fullname
         cell.emailLabel.text = favoritesDriver[indexPath.row].email
         cell.initialLabel.text = favoritesDriver[indexPath.row].firstInitial
