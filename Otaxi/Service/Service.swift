@@ -115,6 +115,33 @@ struct Service {
         }
         return fav
     }
+    //MARK:- Detail Car Photo
+    func getDetailCarPhoto(imageView1: UIImageView,imageView2: UIImageView,imageView3: UIImageView,view: UIViewController) {
+        view.shouldPresentLoadingView(true, message: "Yükleniyor")
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        USER_FSREF.document(uid).collection(CARPHOTOS_FREF).document(uid).addSnapshotListener { (document, error) in
+            if let error = error {
+                print("DEBUG: Error Getting car detail photo snapshot data - \(error.localizedDescription)")
+                return
+            }
+            if let document = document, document.exists {
+                let data = document.data()
+                
+                let image0 = data!["Goruntu_URL0"] as? String ?? "goruntu0 Yok"
+                let image1 = data!["Goruntu_URL1"] as? String ?? "goruntu1 Yok"
+                let image2 = data!["Goruntu_URL2"] as? String ?? "goruntu2 Yok"
+                
+                imageView1.sd_setImage(with: URL(string: image0), completed: nil)
+                imageView2.sd_setImage(with: URL(string: image1), completed: nil)
+                imageView3.sd_setImage(with: URL(string: image2), completed: nil)
+                view.shouldPresentLoadingView(false, message: nil)
+            }else {
+                 view.presentAlertController(withTitle: "Hata", message: "Fotoğraf bulunamadı")
+                 view.shouldPresentLoadingView(false, message: "Görüntü yok")
+                 print("DEBUG: Car Detail Photo Document snapShot Empty")
+            }
+        }
+    }
     
     
     

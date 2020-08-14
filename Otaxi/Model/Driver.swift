@@ -114,17 +114,9 @@ class Favorites{
     }
 }
 
-struct CarPhotoM{
-    //kullanıcı bilgilerinin saklaınıdığı yer
-    var kullaniciID : String
-    var goruntuURL1 : String?
-    var goruntuURL2 : String?
-    var goruntuURL3 : String?
-    //İnit olusuturup kullanıcı
-    init(bilgiler : [String : Any]){
-        self.goruntuURL1 = bilgiler["Goruntu_URL"] as? String
-        self.goruntuURL2 = bilgiler["Goruntu_URL2"] as? String
-        self.goruntuURL3 = bilgiler["Goruntu_URL3"] as? String
-        self.kullaniciID = bilgiler[USER_ID_FREF] as? String ?? ""
-    }
+class CarPhoto: NSObject{
+     var kullaniciID : NSString?
+     var goruntuURL1 : NSString?
+     var goruntuURL2 : NSString?
+     var goruntuURL3 : NSString?
 }

@@ -249,7 +249,7 @@ extension UIViewController {
             label.font = UIFont.systemFont(ofSize: 20)
             label.textColor = .white
             label.textAlignment = .center
-            label.alpha = 0.87
+            label.alpha = 0.9
             
             view.addSubview(loadingView)
             loadingView.addSubview(indicator)

@@ -19,13 +19,11 @@ class DetailCarPhotoAdd: UIViewController{
     var user: User!
     let db = Firestore.firestore().collection(USER_FREF)
     
-
-    
-    var CarPhoto : CarPhotoM!
-    var CarPhotoMArray : [CarPhotoM] = []
-    
     var imagePicker = UIImagePickerController()
     var selectedView: UIView!
+    
+    
+    var carPhoto : CarPhoto = CarPhoto()
     
     
     let imageView1: UIImageView = {
@@ -111,35 +109,52 @@ class DetailCarPhotoAdd: UIViewController{
         }
     }
     
-    func getSnapsFromFirebase() {
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        db.document(uid).collection(CARPHOTOS_FREF).document(uid).getDocument() { (document, error) in
-          if let document = document {
-            let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-            print("DEBUG:Cached document data: \(dataDescription)")
-          } else {
-            print("DEBUG:Document does not exist in cache")
-          }
+    fileprivate func getSnapsFromFirebase() {
+        _ = Service.shared.getDetailCarPhoto(imageView1: imageView1, imageView2: imageView2, imageView3: imageView3, view: self)
+    }
+    fileprivate func uploadImage(){
+        self.shouldPresentLoadingView(true, message: "Yükleniyor")
+        let goruntuAdi = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/CarPhoto/\(goruntuAdi)")
+        guard let veri = (selectedView as? UIImageView)?.image?.jpegData(compressionQuality: 0.5) else {return}
+        ref.putData(veri, metadata: nil) { (nil, error) in
+            if let error = error{
+                print("DEBUG: Goruntu yüklenirken hata meydana geldi\(error.localizedDescription)")
+                return
+            }
+            ref.downloadURL { (url, error) in
+                if let error = error{
+                    print("DEBUG: Goruntu Url Alınamadı \(error.localizedDescription)");return
+                }
+                guard let urlstring = url?.absoluteString else {return}
+                if self.selectedView == self.imageView1{
+                    self.carPhoto.goruntuURL1 = urlstring as NSString
+                }else if self.selectedView == self.imageView2{
+                    self.carPhoto.goruntuURL2 = urlstring as NSString
+                }else if self.selectedView == self.imageView3{
+                    self.carPhoto.goruntuURL3 = urlstring as NSString
+                }
+            }
+             self.shouldPresentLoadingView(false, message: nil)
         }
     }
+    
     //MARK:-Selectors
     @objc fileprivate func addedClicked(){
         print("DEBUG: Veriler Kaydediliyor")
         guard let uid = Auth.auth().currentUser?.uid else{return}
-        print("DEBUG: q-- \(String(describing:  CarPhoto?.goruntuURL1 ))")
-        let veriler : [String :  Any] = [
-            "KullaniciID"  : uid,
-            "Goruntu_URL"  : CarPhoto?.goruntuURL1 ??  "veri yok" ,
-            "Goruntu_URL2" : CarPhoto?.goruntuURL2 ?? "veri yok" ,
-            "Goruntu_URL3" : CarPhoto?.goruntuURL3 ?? "veri yok" ,
-        ]
+        let veriler = [
+            USER_ID_FREF    : uid,
+            "Goruntu_URL0"  : carPhoto.goruntuURL1 ??  "veri yok" ,
+            "Goruntu_URL1"  : carPhoto.goruntuURL2 ??  "veri yok" ,
+            "Goruntu_URL2"  : carPhoto.goruntuURL3 ??  "veri yok"] as [String : Any]
         db.document(uid).collection(CARPHOTOS_FREF).document(uid).setData(veriler) { (error) in
-            if let hata = error{
-                print("DEBUG: Kullanıcı Bilgilerini kayıt Ederken hata meydana geldi \(hata.localizedDescription)")
+            if let error = error{
+                print("DEBUG: Taksici Detay Fotoğraflarını Kayıt Ederken hata Meydana Geldi :\(error.localizedDescription)")
+                return
             }
             self.dismiss(animated: true)
         }
-        
     }
     @objc func chooseImage(_ gesture: UITapGestureRecognizer) {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
@@ -154,37 +169,11 @@ extension DetailCarPhotoAdd: UIImagePickerControllerDelegate, UINavigationContro
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         (selectedView as? UIImageView)?.image = info[.originalImage] as? UIImage
         dismiss(animated: true) {
-            uploadImage()
+            self.uploadImage()
         }
         
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             dismiss(animated: true)
-        }
-        
-        func uploadImage(){
-            let goruntuAdi = UUID().uuidString
-            let ref = Storage.storage().reference(withPath: "/CarPhoto/\(goruntuAdi)")
-            guard let veri = (selectedView as? UIImageView)?.image?.jpegData(compressionQuality: 0.5) else {return}
-            ref.putData(veri, metadata: nil) { (nil, error) in
-                if let error = error{
-                    print("DEBUG: Goruntu yüklenirken hata meydana geldi\(error.localizedDescription)")
-                    return
-                }
-                ref.downloadURL { (url, error) in
-                    if let error = error{
-                        print("DEBUG: Goruntu Url Alınamadı \(error.localizedDescription)");return
-                    }
-                    guard let urlstring = url?.absoluteString else {return}
-                    if self.selectedView == self.imageView1 {
-                        self.CarPhoto?.goruntuURL1 = urlstring
-                         print("DEBUG: url1 \(String(describing: self.CarPhoto?.goruntuURL1))")
-                    } else if  self.selectedView == self.imageView2{
-                        self.CarPhoto?.goruntuURL2 = urlstring
-                    } else if self.selectedView == self.imageView3{
-                        self.CarPhoto?.goruntuURL3 = urlstring
-                    }
-                }
-            }
         }
     }
 }
