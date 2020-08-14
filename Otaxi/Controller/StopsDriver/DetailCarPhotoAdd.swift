@@ -35,14 +35,7 @@ class DetailCarPhotoAdd: UIViewController{
         return UIImageView().configureImageView()
     }()
     fileprivate let addButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Ekle", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
-        button.layer.cornerRadius = 10
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.addTarget(self, action: #selector(addedClicked), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return button
+        return UIButton().configButton(title: "Ekle", selector: #selector(addedClicked))
     }()
     
     //MARK:-LifeCycle
@@ -78,7 +71,7 @@ class DetailCarPhotoAdd: UIViewController{
     
     //MARK:-HelperFuncs
     fileprivate func configureUI(){
-        configureNavigation(title: "Fotoğraf Ekle")
+        configureNavigation(title: "Fotoğraf Ekle", style: .default)
         configureGesture()
         
         view.addSubview(imageView1)

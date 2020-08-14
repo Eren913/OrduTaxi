@@ -20,6 +20,11 @@ class LoginController: UIViewController {
         label.textColor = UIColor(white: 1, alpha: 0.8)
         return label
     }()
+    private let linkingView : UIView = {
+       let view = UIView()
+        view.backgroundColor = .lightGray
+        return view
+    }()
     private lazy var emailcontainerView : UIView = {
         let view = UIView().inputContainerView(image:#imageLiteral(resourceName: "ic_mail_outline_white_2x.png"), textField: emailTextField )
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -38,30 +43,15 @@ class LoginController: UIViewController {
         return UITextField().textField(withPlaceholder: "Şifre", isSecureTextEntry: true)
     }()
     private let loginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Giriş Yap", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
-        button.layer.cornerRadius = 10
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.addTarget(self, action: #selector(handlesignIn), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        return button
+        return UIButton().configButton(title: "Giriş Yap", selector: #selector(handlesignIn))
     }()
     private let dontHaveaAccountButton: UIButton = {
-        let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Hesabınız Yokmu ? ",attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        attributeTitle.append(NSAttributedString(string: "Kayıt Ol",attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
-        ]))
-        button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
-        button.setAttributedTitle(attributeTitle, for: .normal)
-        return button
+        return UIButton().stringButton(title: "Hesabınız Yokmu ? ", buttonTitle: "Kayıt Ol", selector: #selector(handleShowSignUp))
     }()
+    private let forgotPassword: UIButton = {
+        return UIButton().stringButton(title: "", buttonTitle: "Şifemi Unuttum", selector: #selector(handleforgotPassword))
+    }()
+    
     //MARK:-Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,9 +86,14 @@ class LoginController: UIViewController {
             return
         }
     }
-    //MARK:-HelperFunc
+    @objc fileprivate func handleforgotPassword(){
+        let vc = PasswordResetScreen()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    //MARK:-Helper Func
     fileprivate func configureUI() {
         configureNavigationBar()
+        self.hideKeyboard()
         view.backgroundColor = .backgroundColor
         
         view.addSubview(titleLabel)
@@ -117,6 +112,15 @@ class LoginController: UIViewController {
                      paddingTop: 40,
                      paddingLeft: 16,
                      paddingRight: 16)
+        view.addSubview(linkingView)
+        linkingView.centerX(inView: view)
+        linkingView.anchor(top:stack.bottomAnchor,
+                           paddingTop: 70,
+                           width: view.bounds.width / 1,height: 0.5)
+        
+        view.addSubview(forgotPassword)
+        forgotPassword.anchor(bottom: linkingView.topAnchor,right: view.rightAnchor,paddingBottom: 10,paddingRight: 20)
+        
         
         view.addSubview(dontHaveaAccountButton)
         dontHaveaAccountButton.centerX(inView: view)

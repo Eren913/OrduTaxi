@@ -20,7 +20,7 @@ class FavoriteTaxi: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        configureNavigation(title: "Favori Taksiciler")
+        configureNavigation(title: "Favori Taksiciler", style: .default)
         fetchingFavorites()
     }
     override func viewWillAppear(_ animated: Bool) {

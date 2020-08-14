@@ -20,6 +20,11 @@ class SignUpController : UIViewController{
         label.textColor = UIColor(white: 1, alpha: 0.8)
         return label
     }()
+    private let linkingView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        return view
+    }()
     private let emailTextField : UITextField = {
         return UITextField().textField(withPlaceholder: "Email", isSecureTextEntry: false)
     }()
@@ -46,6 +51,14 @@ class SignUpController : UIViewController{
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return view
     }()
+    private let passwordTextField1 : UITextField = {
+        return UITextField().textField(withPlaceholder: "Şifreyi Onayla", isSecureTextEntry: true)
+    }()
+    private lazy var passwordContainer1: UIView = {
+        let view = UIView().inputContainerView(image:#imageLiteral(resourceName: "ic_lock_outline_white_2x.png") , textField: passwordTextField1)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return view
+    }()
     private let telNoTextField : UITextField = {
         return UITextField().phoneTextField(withPlaceholder: "Telefon Numarası")
     }()
@@ -56,49 +69,17 @@ class SignUpController : UIViewController{
         return view
     }()
     private let signUpButton  :UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Kayıt Ol", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
-        button.backgroundColor = .mainBlueTint
-        button.layer.cornerRadius = 10
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.addTarget(self, action: #selector(signUpClicked), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return button
+        return UIButton().configButton(title: "Kayıt Ol", selector: #selector(signUpClicked))
     }()
     private let alreadyHaveAccountButton : UIButton  = {
-        let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Hesabınız Varmı ? ",attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        attributeTitle.append(NSAttributedString(string: "Giriş Yap",attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
-        ]))
-        button.addTarget(self, action: #selector(handleShowSignIn), for: .touchUpInside)
-        button.setAttributedTitle(attributeTitle, for: .normal)
-        return button
+        return UIButton().stringButton(title: "Hesabınız Varmı ? ", buttonTitle: "Giriş Yap", selector: #selector(handleShowSignIn))
     }()
     private let alreadyHaveADriver : UIButton  = {
-        let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Taksicimisiniz? ",attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        attributeTitle.append(NSAttributedString(string: "Kayıt Ol",attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
-        ]))
-        button.addTarget(self, action: #selector(handleDriverSignUp), for: .touchUpInside)
-        button.setAttributedTitle(attributeTitle, for: .normal)
-        return button
+        return UIButton().stringButton(title: "Taksicimisiniz ? ", buttonTitle: "Kayıt Ol", selector: #selector(handleDriverSignUp))
     }()
     
     
     //MARK:- Lifecycle
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -108,6 +89,7 @@ class SignUpController : UIViewController{
     }
     fileprivate func configureUI() {
         view.backgroundColor = .backgroundColor
+        self.hideKeyboard()
         view.addSubview(titleLabel)
         titleLabel.centerX(inView: view)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -117,6 +99,7 @@ class SignUpController : UIViewController{
                                                 fullNameContainer,
                                                 telNoContainer,
                                                 passwordContainer,
+                                                passwordContainer1,
                                                 signUpButton])
         sv.axis = .vertical
         sv.distribution = .fillEqually
@@ -130,10 +113,14 @@ class SignUpController : UIViewController{
                   paddingLeft: 16,
                   paddingRight: 16)
         
+        view.addSubview(linkingView)
+        linkingView.centerX(inView: view)
+        linkingView.anchor(top:sv.bottomAnchor,
+                           paddingTop: 70,
+                           width: view.bounds.width / 1,height: 0.5)
         
         view.addSubview(alreadyHaveADriver)
-        alreadyHaveADriver.centerX(inView: view)
-        alreadyHaveADriver.anchor(top: sv.bottomAnchor, paddingTop: 10)
+        alreadyHaveADriver.anchor(bottom: linkingView.topAnchor,right: view.rightAnchor,paddingBottom: 10,paddingRight: 20)
         
         view.addSubview(alreadyHaveAccountButton)
         alreadyHaveAccountButton.centerX(inView: view)
@@ -150,30 +137,35 @@ class SignUpController : UIViewController{
         let dri = DriverSignUp()
         navigationController?.pushViewController(dri, animated: true)
     }
-    @objc func signUpClicked(){
+    @objc fileprivate func signUpClicked(){
         guard let emailtext = emailTextField.text else {return}
         guard let passwordtext = passwordTextField.text else {return}
+        guard let passwordtext1 = passwordTextField1.text else {return}
         guard let fullnameText = fullNameTextField.text else {return}
         guard let telNoText = telNoTextField.text else {return}
         
         if emailTextField.text != "" && passwordTextField.text != "" && fullNameTextField.text != "" && telNoTextField.text != "" {
-            Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
-                if let error = error {
-                    self.presentAlertController(withTitle: "Kayıt Olurken Hata Meydana Geldi", message: error.localizedDescription)
-                    return
+            if passwordtext == passwordtext1{
+                Auth.auth().createUser(withEmail: emailtext, password: passwordtext) { [self] (result, error) in
+                    if let error = error {
+                        self.presentAlertController(withTitle: "Kayıt Olurken Hata Meydana Geldi", message: error.localizedDescription)
+                        return
+                    }
+                    guard let uid = result?.user.uid else { return }
+                    let values = [EMAİL_FREF:emailtext,
+                                  FULLNAME_FREF:fullnameText,
+                                  TEL_NO_FREF:telNoText,
+                                  ACCOUNT_TYPE_FREF: 0,
+                                  USER_ID_FREF : uid] as [String : Any]
+                    self.updateValues(uid: uid, values: values)
+                    
+                    let container = ContainerController()
+                    container.configure()
+                    self.navigationController?.pushViewController(container, animated: true)
+                    self.navigationController?.modalPresentationStyle = .fullScreen
                 }
-                guard let uid = result?.user.uid else { return }
-                let values = [EMAİL_FREF:emailtext,
-                              FULLNAME_FREF:fullnameText,
-                              TEL_NO_FREF:telNoText,
-                              ACCOUNT_TYPE_FREF: 0,
-                              USER_ID_FREF : uid] as [String : Any]
-                self.updateValues(uid: uid, values: values)
-                
-                let container = ContainerController()
-                container.configure()
-                self.navigationController?.pushViewController(container, animated: true)
-                self.navigationController?.modalPresentationStyle = .fullScreen
+            }else{
+                presentAlertController(withTitle: "Hata Meydana Geldi", message: "Şifre Alanları Uyuşmuyor")
             }
         }else{
             self.presentAlertController(withTitle: "Boş Alan Bırakılamaz", message: "Lütfen Tüm Alanları Doldurunuz")
@@ -181,7 +173,7 @@ class SignUpController : UIViewController{
         }
     }
     //MARK:-HelperFunctions
-    func updateValues(uid: String, values: [String : Any] ){
+    fileprivate func updateValues(uid: String, values: [String : Any] ){
         Firestore.firestore().collection("Users").document(uid).setData(values) { (error) in
             if let error = error{
                 debugPrint("DEBUG: FireStore Updata Data Error -- \(error.localizedDescription)")

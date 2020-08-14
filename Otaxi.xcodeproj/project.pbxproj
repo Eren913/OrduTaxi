@@ -44,6 +44,7 @@
 		22E611C324E52CDD00329D1F /* DetailCarPhotoAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E611C224E52CDD00329D1F /* DetailCarPhotoAdd.swift */; };
 		22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7E91524C84F8900F59FDE /* RideActionView.swift */; };
 		22E9A41324D70BD000929768 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E9A41224D70BD000929768 /* Driver.swift */; };
+		22EDADC024E6D2E700C13FC2 /* PasswordResetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EDADBF24E6D2E700C13FC2 /* PasswordResetScreen.swift */; };
 		22FEFF0124D574A5001AE0C2 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0024D574A5001AE0C2 /* LocationCell.swift */; };
 		22FEFF0524D5F8BB001AE0C2 /* HighHPDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0424D5F8BB001AE0C2 /* HighHPDrivers.swift */; };
 		22FEFF0824D5FA57001AE0C2 /* HighHPDriversCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEFF0724D5FA57001AE0C2 /* HighHPDriversCell.swift */; };
@@ -92,6 +93,7 @@
 		22E611C224E52CDD00329D1F /* DetailCarPhotoAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCarPhotoAdd.swift; sourceTree = "<group>"; };
 		22E7E91524C84F8900F59FDE /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		22E9A41224D70BD000929768 /* Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
+		22EDADBF24E6D2E700C13FC2 /* PasswordResetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetScreen.swift; sourceTree = "<group>"; };
 		22FEFF0024D574A5001AE0C2 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		22FEFF0424D5F8BB001AE0C2 /* HighHPDrivers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighHPDrivers.swift; sourceTree = "<group>"; };
 		22FEFF0724D5FA57001AE0C2 /* HighHPDriversCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighHPDriversCell.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				22044C0724C5E2AC001FC245 /* LoginController.swift */,
+				22EDADBF24E6D2E700C13FC2 /* PasswordResetScreen.swift */,
 				22044C0824C5E2AC001FC245 /* SignUpController.swift */,
 				229CD15A24DE846500031C5E /* DriverSignUpScreen.swift */,
 			);
@@ -497,6 +500,7 @@
 				22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */,
 				221CE74524D02120006085D6 /* MenuController.swift in Sources */,
 				221CE76324D2A67E006085D6 /* DetailInfo.swift in Sources */,
+				22EDADC024E6D2E700C13FC2 /* PasswordResetScreen.swift in Sources */,
 				22044C1624C5E2B9001FC245 /* Referance.swift in Sources */,
 				22438E0D24C5E13D0001D289 /* SceneDelegate.swift in Sources */,
 				22E7E91624C84F8900F59FDE /* RideActionView.swift in Sources */,

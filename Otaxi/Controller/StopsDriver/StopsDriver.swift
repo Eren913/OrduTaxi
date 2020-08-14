@@ -21,7 +21,7 @@ class StopsDriver: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        self.configureNavigation(title: navigationTitle)
+        self.configureNavigation(title: navigationTitle, style: .default)
         fetchAllUserData()
     }
     override func viewWillAppear(_ animated: Bool) {

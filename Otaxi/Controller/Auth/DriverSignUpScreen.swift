@@ -72,7 +72,7 @@ class DriverSignUp: UIViewController{
         return view
     }()
     private let plakaTextField : UITextField = {
-        return UITextField().phoneTextField(withPlaceholder: "Plakanız")
+        return UITextField().textField(withPlaceholder: "Plakanız", isSecureTextEntry: false)
     }()
     
     private lazy var plakaContainer : UIView = {
@@ -105,38 +105,14 @@ class DriverSignUp: UIViewController{
     }()
     //MARK:-
     private let alreadyHaveAccountButton : UIButton  = {
-        let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Hesabınız Varmı ? ",attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        attributeTitle.append(NSAttributedString(string: "Giriş Yap",attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
-        ]))
-        button.addTarget(self, action: #selector(handleShowSignIn), for: .touchUpInside)
-        button.setAttributedTitle(attributeTitle, for: .normal)
-        return button
+        return UIButton().stringButton(title: "Yolcumusunuz ? ", buttonTitle: "Kayıt Ol", selector: #selector(handleShowSignUp))
     }()
     private let alreadyHaveADriver : UIButton  = {
-        let button = UIButton(type: .system)
-        let attributeTitle = NSMutableAttributedString(string: "Yolcumusunuz ? ",attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        attributeTitle.append(NSAttributedString(string: "Kayıt Ol",attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
-        ]))
-        button.addTarget(self, action: #selector(handleShowSignIn), for: .touchUpInside)
-        button.setAttributedTitle(attributeTitle, for: .normal)
-        return button
+        return UIButton().stringButton(title: "Hesabınız Varmı ? ", buttonTitle: "Giriş Yap", selector: #selector(handleShowSignIn))
     }()
     
     
     //MARK:- Lifecycle
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -151,6 +127,7 @@ class DriverSignUp: UIViewController{
     
     fileprivate func configureUI() {
         createToolbar()
+        self.hideKeyboard()
         view.backgroundColor = .backgroundColor
         view.addSubview(titleLabel)
         titleLabel.centerX(inView: view)
@@ -186,11 +163,15 @@ class DriverSignUp: UIViewController{
         alreadyHaveAccountButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor)
     }
     //MARK:- Selectors
-    @objc func dismissKeyboard() {
+    @objc fileprivate func dismissKeyboard() {
         view.endEditing(true)
     }
-    @objc fileprivate func handleShowSignIn(){
+    @objc fileprivate func handleShowSignUp(){
         navigationController?.popViewController(animated: true)
+    }
+    @objc fileprivate func handleShowSignIn(){
+        let vc = LoginController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     @objc func signUpClicked(){
         guard let emailtext = emailTextField.text else {return}
@@ -228,7 +209,7 @@ class DriverSignUp: UIViewController{
     }
     //MARK:-HelperFunctions
     func updateValues(uid: String, values: [String : Any] ){
-        Firestore.firestore().collection("Users").document(uid).setData(values) { (error) in
+        USER_FSREF.document(uid).setData(values) { (error) in
             if let error = error{
                 debugPrint("DEBUG: FireStore Updata Data Error -- \(error.localizedDescription)")
             }

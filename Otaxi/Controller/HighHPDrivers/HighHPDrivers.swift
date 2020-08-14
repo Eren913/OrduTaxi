@@ -34,7 +34,7 @@ class HighHPDrivers: UIViewController{
             view.backgroundColor = .white
             tableView.frame = CGRect(x: 0, y: +120, width: view.bounds.width, height: view.bounds.height)
         }
-        configureNavigation(title: "Sağlıklı Taksiciler")
+        configureNavigation(title: "Sağlıklı Taksiciler", style: .default)
         fetchAllUserData()
         
     }

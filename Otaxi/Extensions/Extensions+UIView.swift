@@ -10,7 +10,7 @@
 import UIKit
 import MapKit
 import SwiftPhoneNumberFormatter
-
+//MARK:-UIColor
 extension UIColor {
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor.init(red: red/255, green: green/255, blue: blue/255, alpha: 1.0)
@@ -27,6 +27,7 @@ extension UIColor {
     
     
 }
+//MARK:-CALayer
 extension CALayer{
     static func gradientLayer(frame: CGRect) -> CALayer{
         let gradient = CAGradientLayer()
@@ -37,7 +38,34 @@ extension CALayer{
         return gradient
     }
 }
-
+//MARK:-UIButton
+extension UIButton{
+    func configButton(title: String, selector: Selector) -> UIButton{
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
+        button.layer.cornerRadius = 12
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        return button
+    }
+    func stringButton(title: String,buttonTitle: String,selector: Selector) -> UIButton{
+        let button = UIButton(type: .system)
+        let attributeTitle = NSMutableAttributedString(string: title,attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor: UIColor.lightGray
+        ])
+        attributeTitle.append(NSAttributedString(string: buttonTitle,attributes: [
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint
+        ]))
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        button.setAttributedTitle(attributeTitle, for: .normal)
+        return button
+    }
+}
+//MARK:-UIView
 extension UIView {
     func addHorizontalGradientLayer() {
         let gradient = CAGradientLayer()
@@ -50,7 +78,7 @@ extension UIView {
         gradient.endPoint = CGPoint(x: 1, y: 1)
         self.sendSubviewToBack(self)
         self.bringSubviewToFront(self)
-        self.layer.insertSublayer(gradient, at: 1)
+        self.layer.insertSublayer(gradient, at: 0)
     }
     
     func inputContainerView(image: UIImage, textField: UITextField? = nil,
@@ -159,6 +187,7 @@ extension UIView {
         layer.masksToBounds = false
     }
 }
+//MARK:-UIIMageView
 extension UIImageView{
     func configureImageView() -> UIImageView{
         let img = UIImageView()
@@ -170,7 +199,7 @@ extension UIImageView{
         return img
     }
 }
-
+//MARK:-UITextField
 extension UITextField {
     func textField(withPlaceholder placeholder: String, isSecureTextEntry: Bool) -> UITextField {
         let tf = UITextField()
@@ -196,7 +225,7 @@ extension UITextField {
     }
     
 }
-
+//MARK:-MKPlaceMark
 extension MKPlacemark {
     var address: String? {
         get {
@@ -209,7 +238,7 @@ extension MKPlacemark {
         }
     }
 }
-
+//MARK:-MKMapView
 extension MKMapView {
     func zoomToFit(annotations: [MKAnnotation]) {
         var zoomRect = MKMapRect.null
@@ -232,16 +261,24 @@ extension MKMapView {
         selectAnnotation(annotation, animated: true)
     }
 }
-
+//MARK:-UIViewController
 extension UIViewController {
-    func configureNavigation(title: String){
+    func hideKeyboard(){
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
+        view.addGestureRecognizer(tap)
+    }
+    @objc func endEdit(){
+        view.endEditing(true)
+    }
+    func configureNavigation(title: String,style: UIBarStyle){
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barStyle = style
         navigationItem.title = title
     }
-    func presentAlertController(withTitle title: String, message: String) {
+    func presentAlertController(withTitle title: String, message: String ,completion: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Tamam", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Tamam", style: .cancel, handler: completion))
         present(alert, animated: true, completion: nil)
     }
     
