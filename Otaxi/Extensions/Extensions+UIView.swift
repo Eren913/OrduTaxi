@@ -39,6 +39,19 @@ extension CALayer{
 }
 
 extension UIView {
+    func addHorizontalGradientLayer() {
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = [
+            UIColor.startColor,
+            UIColor.endColor
+        ]
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        self.sendSubviewToBack(self)
+        self.bringSubviewToFront(self)
+        self.layer.insertSublayer(gradient, at: 1)
+    }
     
     func inputContainerView(image: UIImage, textField: UITextField? = nil,
                             segmentedControl: UISegmentedControl? = nil) -> UIView {
@@ -147,7 +160,7 @@ extension UIView {
     }
 }
 extension UIImageView{
-    func profileUploadImage() -> UIImageView{
+    func configureImageView() -> UIImageView{
         let img = UIImageView()
         img.layer.borderWidth = 1
         img.layer.masksToBounds = false

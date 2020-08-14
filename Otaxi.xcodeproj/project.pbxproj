@@ -154,6 +154,7 @@
 		22044C0D24C5E2B4001FC245 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				22A2B11424E696C100CB9F80 /* DetailCarphtoView */,
 				221C14E924D977BF00C36BC1 /* FavoriteTaxiCell */,
 				22FEFF0624D5FA3D001AE0C2 /* HighHPDriversView */,
 				221CE76524D2A971006085D6 /* StopsTaxiView */,
@@ -224,7 +225,6 @@
 			children = (
 				221CE75824D06728006085D6 /* StopsDriver.swift */,
 				221CE75C24D2A447006085D6 /* StopsDriverDetail.swift */,
-				229C047624E517220024B545 /* SDDetailFooterView.swift */,
 				22E611C224E52CDD00329D1F /* DetailCarPhotoAdd.swift */,
 			);
 			path = StopsDriver;
@@ -298,6 +298,14 @@
 				22044C0624C5E2AC001FC245 /* HomeController.swift */,
 			);
 			path = HomeController;
+			sourceTree = "<group>";
+		};
+		22A2B11424E696C100CB9F80 /* DetailCarphtoView */ = {
+			isa = PBXGroup;
+			children = (
+				229C047624E517220024B545 /* SDDetailFooterView.swift */,
+			);
+			path = DetailCarphtoView;
 			sourceTree = "<group>";
 		};
 		22FEFEF624D57426001AE0C2 /* StoryBoards */ = {

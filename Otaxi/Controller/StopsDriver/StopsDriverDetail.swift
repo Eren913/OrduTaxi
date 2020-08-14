@@ -189,7 +189,7 @@ class StopsDriverDetail: UIViewController {
 //MARK:-UITableViewDelegate,UITableViewDataSource
 extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = SDDetailFooterView()
+        let view = SDDetailFooterView(user: selectedDriver, frame: tableView.bounds)
         return view
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -205,13 +205,14 @@ extension StopsDriverDetail: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .blue
+        guard let useruid = Auth.auth().currentUser?.uid else {return nil}
         
         if section == 0{
             view.addSubview(handleEditButton)
             handleEditButton.centerY(inView: view)
             handleEditButton.anchor(right: view.rightAnchor,paddingRight: 12)
         }else if section == 2{
-            if selectedDriver.accountType == 1 {
+            if selectedDriver.uid == useruid {
                 view.addSubview(addphotoButton)
                 addphotoButton.centerY(inView: view)
                 addphotoButton.anchor(right: view.rightAnchor,paddingRight: 12)

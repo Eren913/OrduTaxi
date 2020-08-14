@@ -17,25 +17,24 @@ class DetailCarPhotoAdd: UIViewController{
     //MARK:-Properties
     
     var user: User!
-    let db = Firestore.firestore().collection(USER_FREF)
+    fileprivate let db = Firestore.firestore().collection(USER_FREF)
     
-    var imagePicker = UIImagePickerController()
-    var selectedView: UIView!
+    fileprivate var imagePicker = UIImagePickerController()
+    fileprivate var selectedView: UIView!
     
     
     var carPhoto : CarPhoto = CarPhoto()
     
-    
-    let imageView1: UIImageView = {
-        return UIImageView().profileUploadImage()
+    fileprivate let imageView1: UIImageView = {
+        return UIImageView().configureImageView()
     }()
-    let imageView2: UIImageView = {
-        return UIImageView().profileUploadImage()
+    fileprivate let imageView2: UIImageView = {
+        return UIImageView().configureImageView()
     }()
-    let imageView3: UIImageView = {
-        return UIImageView().profileUploadImage()
+    fileprivate let imageView3: UIImageView = {
+        return UIImageView().configureImageView()
     }()
-    let addButton : UIButton = {
+    fileprivate let addButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Ekle", for: .normal)
         button.setTitleColor(UIColor(white: 1, alpha: 1), for: .normal)
@@ -51,14 +50,12 @@ class DetailCarPhotoAdd: UIViewController{
         super.viewDidLoad()
         view.backgroundColor = .backgroundColor
         configureUI()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.barStyle = .black
         getUser()
-        getSnapsFromFirebase()
+        getDetailPhotoFirestore()
     }
     override func viewDidLayoutSubviews() {
         addButton.layer.insertSublayer(CALayer.gradientLayer(frame: addButton.bounds), at: 0)
@@ -74,7 +71,10 @@ class DetailCarPhotoAdd: UIViewController{
             self.user = us
         })
     }
-    
+    fileprivate func getDetailPhotoFirestore() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        _ = Service.shared.getDetailCarPhoto(imageView1: imageView1, imageView2: imageView2, imageView3: imageView3, view: self, uid: uid)
+    }
     
     //MARK:-HelperFuncs
     fileprivate func configureUI(){
@@ -107,10 +107,6 @@ class DetailCarPhotoAdd: UIViewController{
             $0.isUserInteractionEnabled = true
             $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(chooseImage)))
         }
-    }
-    
-    fileprivate func getSnapsFromFirebase() {
-        _ = Service.shared.getDetailCarPhoto(imageView1: imageView1, imageView2: imageView2, imageView3: imageView3, view: self)
     }
     fileprivate func uploadImage(){
         self.shouldPresentLoadingView(true, message: "Yükleniyor")
@@ -153,10 +149,10 @@ class DetailCarPhotoAdd: UIViewController{
                 print("DEBUG: Taksici Detay Fotoğraflarını Kayıt Ederken hata Meydana Geldi :\(error.localizedDescription)")
                 return
             }
-            self.dismiss(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }
     }
-    @objc func chooseImage(_ gesture: UITapGestureRecognizer) {
+    @objc fileprivate func chooseImage(_ gesture: UITapGestureRecognizer) {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             pickerFunctions(sourceType: .photoLibrary)
             selectedView = gesture.view
@@ -165,9 +161,10 @@ class DetailCarPhotoAdd: UIViewController{
     }
     
 }
+//MARK:-Extension: UIImagePickerControllerDelegate
 extension DetailCarPhotoAdd: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        (selectedView as? UIImageView)?.image = info[.originalImage] as? UIImage
+        (selectedView as? UIImageView)?.image = info[.editedImage] as? UIImage
         dismiss(animated: true) {
             self.uploadImage()
         }

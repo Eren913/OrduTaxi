@@ -44,7 +44,7 @@ class FavoriteTaxiCell: UITableViewCell {
         return label
     }()
     lazy var uploadImageView : UIImageView = {
-        let img = UIImageView().profileUploadImage()
+        let img = UIImageView().configureImageView()
         img.isUserInteractionEnabled = true
         return img
     }()
