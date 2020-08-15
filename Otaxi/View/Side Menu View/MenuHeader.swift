@@ -8,11 +8,14 @@
 
 import UIKit
 import SDWebImage
+import Firebase
 
 class MenuHeader: UIView {
     
     // MARK: - Properties
     
+    let db = Firestore.firestore()
+    fileprivate var statusArray: [Bool] = []
     
     let user : User?
     private lazy var profileImageView: UIView = {
@@ -45,6 +48,19 @@ class MenuHeader: UIView {
         img.isUserInteractionEnabled = true
         return img
     }()
+    private let status: UISwitch = {
+        let s = UISwitch()
+        s.tintColor = .white
+        s.onTintColor = .mainBlueTint
+        s.addTarget(self, action: #selector(handleStatus(_:)), for: .valueChanged)
+        return s
+    }()
+    let pickupModeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(white: 1.0, alpha: 0.9)
+        label.font = UIFont.systemFont(ofSize: 15)
+        return label
+    }()
     // MARK: - Lifecycle
     
     init(user: User, frame: CGRect) {
@@ -75,6 +91,14 @@ class MenuHeader: UIView {
                       leftAnchor: profileImageView.rightAnchor,
                       paddingLeft: 12)
         
+        if user.status != nil{
+            user.status == true ? configureSwitch(enabled: true) : configureSwitch(enabled: false)
+        }else{
+            configureSwitch(enabled: false)
+        }
+        
+        getStatusState()
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -82,9 +106,39 @@ class MenuHeader: UIView {
     }
     
     // MARK: - Selectors
+    @objc fileprivate func handleStatus(_ sender: UISwitch){
+        if status.isOn{
+            configureSwitch(enabled: true)
+            self.setStatus(status: true)
+        }else{
+            configureSwitch(enabled: false)
+            self.setStatus(status: false)
+        }
+    }
+    
+    // MARK: - Api
+    fileprivate func getStatusState(){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        _ = Service.shared.fetchStatus(uid: uid)
+    }
+    fileprivate func setStatus(status: Bool){
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        db.collection(USER_FREF).document(uid).setData(["Status": status], merge: true) { (error) in
+            if let error = error{
+                print("DEBUG: Fatal error updating status \(error.localizedDescription)")
+                return
+            }
+        }
+        USER_REF.child(uid).updateChildValues(["Status": status]) { (error, ref) in
+            if let error = error{
+                debugPrint("DEBUG: RealtimeDatabase Updata Data Error -- \(error.localizedDescription)")
+            }
+        }
+        
+    }
     
     //MARK:-Helper function
-    func configureImageView(){
+    fileprivate func configureImageView(){
         addSubview(uploadImageView)
         uploadImageView.centerX(inView: profileImageView)
         uploadImageView.centerY(inView: profileImageView)
@@ -92,9 +146,19 @@ class MenuHeader: UIView {
         uploadImageView.layer.cornerRadius = 65 / 2
         uploadImageView.frame.size = CGSize(width: profileImageView.frame.size.width, height: profileImageView.frame.size.height)
     }
-    func configureInitalLabel(){
+    fileprivate func configureInitalLabel(){
         profileImageView.addSubview(initialLabel)
         initialLabel.centerX(inView: profileImageView)
         initialLabel.centerY(inView: profileImageView)
+    }
+    func configureSwitch(enabled: Bool) {
+        if user?.accountType == .driver {
+            addSubview(pickupModeLabel)
+            pickupModeLabel.anchor(left: leftAnchor,bottom: bottomAnchor,paddingLeft: 16, paddingBottom: 17)
+            addSubview(status)
+            status.isOn = enabled
+            status.anchor(left: pickupModeLabel.rightAnchor,bottom: bottomAnchor,paddingLeft: 14,paddingBottom: 10)
+            pickupModeLabel.text = enabled ? "Durumunuz: Müsait" : "Durumunuz: Meşgul"
+        }
     }
 }

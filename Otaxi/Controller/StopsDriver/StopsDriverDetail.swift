@@ -31,6 +31,7 @@ class StopsDriverDetail: UIViewController {
     var footerView: SDDetailFooterView!
     let settingCell: SettingsCell? = nil
     var selectedDriver : Rating!
+    
     let fireStore = Firestore.firestore()
     let app = UIApplication.shared
     
@@ -70,7 +71,7 @@ class StopsDriverDetail: UIViewController {
     }
     
     //MARK:-Api
-    func begeniGetir(){
+    fileprivate func begeniGetir(){
         //likeArray.removeAll(keepingCapacity: false)
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let begeniSorgu = fireStore.collection(USER_FREF).document(self.selectedDriver.uid).collection(BEGENI_FSREF).whereField(USER_ID_FREF, isEqualTo: uid)
@@ -78,7 +79,7 @@ class StopsDriverDetail: UIViewController {
             self.likeArray = Begeni.BegenileriGetir(snapshot: snapshot)
         }
     }
-    func setRating(){
+    fileprivate func setRating(){
         guard let uid = Auth.auth().currentUser?.uid else {return}
         fireStore.runTransaction({ (transection, errorPointer) -> Any? in
             let selectedRatingPoint : DocumentSnapshot
@@ -129,7 +130,7 @@ class StopsDriverDetail: UIViewController {
         tableView.reloadData()
     }
     
-    func fetchImage(){
+    fileprivate func fetchImage(){
         _ = Service.shared.getProfilePhotoFS(collection: PROFILEPHOTO_REF, uid: selectedDriver.uid, imageView: userInfoHeader.uploadImageView)
     }
     // MARK: - Helper Functions
@@ -148,7 +149,7 @@ class StopsDriverDetail: UIViewController {
         view.addSubview(tableView)
         tableView.frame = view.frame
         let frame = CGRect(x: 0, y: 100, width: tableView.frame.width, height: 100)
-        userInfoHeader = DetailInfoHeader(frame: frame)
+        userInfoHeader = DetailInfoHeader(user: selectedDriver, frame: frame)
         tableView.tableHeaderView = userInfoHeader
         tableView.tableFooterView = footerView
         tableView.canCancelContentTouches = true

@@ -22,6 +22,7 @@ struct User {
     var homeLocation: String?
     var workLocation: String?
     var photo: String?
+    var status: Bool?
     var firstInitial: String { return String(fullname.prefix(1)) }
     
     
@@ -30,6 +31,7 @@ struct User {
         self.fullname = dictionary[FULLNAME_FREF] as? String ?? ""
         self.email = dictionary[EMAİL_FREF] as? String ?? ""
         self.photo = dictionary[IMAGEURL_REF_FS] as? String ?? ""
+        self.status = dictionary["Status"] as? Bool ?? nil
         
         if let home = dictionary["homeLocation"] as? String {
             self.homeLocation = home

@@ -141,6 +141,18 @@ struct Service {
             }
         }
     }
+    //MARK:-Status
+    func fetchStatus(uid: String) -> [Bool]{
+        var statusArray = [Bool]()
+        FS_REF.collection(USER_FREF).document(uid).addSnapshotListener { (snapshot, error) in
+            if snapshot?.exists != nil{
+                let data = snapshot?.data()
+                let status = data?["Status"] as? Bool ?? false
+                statusArray.append(status)
+            }
+        }
+        return statusArray
+    }
     
     
     

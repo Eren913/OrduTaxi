@@ -18,6 +18,7 @@
 		22044C1624C5E2B9001FC245 /* Referance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C1524C5E2B9001FC245 /* Referance.swift */; };
 		22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22044C1724C5E301001FC245 /* GoogleService-Info.plist */; };
 		22065E5B24E7C3C60076785E /* SDHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22065E5A24E7C3C60076785E /* SDHeader.swift */; };
+		22065E5E24E7E7A20076785E /* Circular Progress Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22065E5D24E7E7A20076785E /* Circular Progress Bar.swift */; };
 		221C14E824D977AB00C36BC1 /* FavoriteTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */; };
 		221C14EB24D977E000C36BC1 /* FavoriteTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */; };
 		221C14FB24D9A55200C36BC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 221C14F824D9A55100C36BC1 /* Main.storyboard */; };
@@ -66,6 +67,7 @@
 		22044C1524C5E2B9001FC245 /* Referance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referance.swift; sourceTree = "<group>"; };
 		22044C1724C5E301001FC245 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		22065E5A24E7C3C60076785E /* SDHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDHeader.swift; sourceTree = "<group>"; };
+		22065E5D24E7E7A20076785E /* Circular Progress Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Circular Progress Bar.swift"; sourceTree = "<group>"; };
 		221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxi.swift; sourceTree = "<group>"; };
 		221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxiCell.swift; sourceTree = "<group>"; };
 		221C14F824D9A55100C36BC1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -187,6 +189,15 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		22065E5C24E7E78A0076785E /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				22E611C224E52CDD00329D1F /* DetailCarPhotoAdd.swift */,
+				22065E5D24E7E7A20076785E /* Circular Progress Bar.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		221C14E624D9778C00C36BC1 /* FavoriteTaxi */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,7 +250,7 @@
 			children = (
 				221CE75824D06728006085D6 /* StopsDriver.swift */,
 				221CE75C24D2A447006085D6 /* StopsDriverDetail.swift */,
-				22E611C224E52CDD00329D1F /* DetailCarPhotoAdd.swift */,
+				22065E5C24E7E78A0076785E /* Detail */,
 			);
 			path = StopsDriver;
 			sourceTree = "<group>";
@@ -523,6 +534,7 @@
 				221CE75524D06239006085D6 /* TaksiDurakları.swift in Sources */,
 				221CE74B24D0214D006085D6 /* AddLocationController.swift in Sources */,
 				2250A44824E125220002E5D5 /* CircularTransition.swift in Sources */,
+				22065E5E24E7E7A20076785E /* Circular Progress Bar.swift in Sources */,
 				221CE74424D02120006085D6 /* ContainerController.swift in Sources */,
 				221CE74A24D0214D006085D6 /* SettingsController.swift in Sources */,
 				22FEFF0124D574A5001AE0C2 /* LocationCell.swift in Sources */,
