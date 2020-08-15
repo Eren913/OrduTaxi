@@ -7,7 +7,7 @@
 
 import MapKit
 
-class DriverAnnotation: NSObject,   MKAnnotation{
+class DriverAnnotation: NSObject, MKAnnotation{
     
     dynamic var coordinate: CLLocationCoordinate2D
     var uid : String
@@ -28,11 +28,15 @@ class CustomAnnotation: NSObject, MKAnnotation {
     @objc dynamic var coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
+    var telNo: String?
+    var adress: String?
     
-    init(title:String?,subtitle: String?,coordinate: CLLocationCoordinate2D?) {
+    init(title:String?,subtitle: String?,coordinate: CLLocationCoordinate2D?,telNo: String?,adress: String?) {
         self.title = title
         self.subtitle = subtitle
         self.coordinate = coordinate ?? CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
+        self.telNo = telNo
+        self.adress = adress
         super.init()
     }
 }

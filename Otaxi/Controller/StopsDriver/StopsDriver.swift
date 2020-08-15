@@ -17,6 +17,14 @@ class StopsDriver: UIViewController{
     var navigationTitle : String = ""
     var user: User?
     private var Listener : ListenerRegistration!
+    var selectedAnnotation: CustomAnnotation?
+    
+    private lazy var infoHeader: SDHeader = {
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+        let view = SDHeader(stop: selectedAnnotation!, frame: frame)
+        return view
+    }()
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,11 +54,13 @@ class StopsDriver: UIViewController{
             }
         }
     }
-    func configureTableView(){
+    //MARK:-HelperFunc
+    fileprivate func configureTableView(){
         tableView.frame = view.bounds
         tableView.register(StopsDriverCell.self, forCellReuseIdentifier: tableViewIdentifer)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableHeaderView = infoHeader
         view.addSubview(tableView)
         tableView.tableFooterView = UIView()
     }

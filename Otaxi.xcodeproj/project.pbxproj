@@ -17,6 +17,7 @@
 		22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */; };
 		22044C1624C5E2B9001FC245 /* Referance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22044C1524C5E2B9001FC245 /* Referance.swift */; };
 		22044C1824C5E301001FC245 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22044C1724C5E301001FC245 /* GoogleService-Info.plist */; };
+		22065E5B24E7C3C60076785E /* SDHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22065E5A24E7C3C60076785E /* SDHeader.swift */; };
 		221C14E824D977AB00C36BC1 /* FavoriteTaxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */; };
 		221C14EB24D977E000C36BC1 /* FavoriteTaxiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */; };
 		221C14FB24D9A55200C36BC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 221C14F824D9A55100C36BC1 /* Main.storyboard */; };
@@ -64,6 +65,7 @@
 		22044C0F24C5E2B4001FC245 /* LocationInputViewActivationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInputViewActivationView.swift; sourceTree = "<group>"; };
 		22044C1524C5E2B9001FC245 /* Referance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referance.swift; sourceTree = "<group>"; };
 		22044C1724C5E301001FC245 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		22065E5A24E7C3C60076785E /* SDHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDHeader.swift; sourceTree = "<group>"; };
 		221C14E724D977AB00C36BC1 /* FavoriteTaxi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxi.swift; sourceTree = "<group>"; };
 		221C14EA24D977E000C36BC1 /* FavoriteTaxiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTaxiCell.swift; sourceTree = "<group>"; };
 		221C14F824D9A55100C36BC1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -157,9 +159,9 @@
 			isa = PBXGroup;
 			children = (
 				22A2B11424E696C100CB9F80 /* DetailCarphtoView */,
+				221CE76524D2A971006085D6 /* StopsTaxiView */,
 				221C14E924D977BF00C36BC1 /* FavoriteTaxiCell */,
 				22FEFF0624D5FA3D001AE0C2 /* HighHPDriversView */,
-				221CE76524D2A971006085D6 /* StopsTaxiView */,
 				22FEFF0224D5F6C6001AE0C2 /* LocationInutView */,
 				221CE75724D066B6006085D6 /* Side Menu View */,
 				2250A44B24E1330B0002E5D5 /* RideAction */,
@@ -174,6 +176,15 @@
 				2240024824C6DD340086DA98 /* LocationHandler.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		22065E5924E7BD570076785E /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				221CE76224D2A67E006085D6 /* DetailInfo.swift */,
+				221CE75E24D2A468006085D6 /* SettingsCell.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		221C14E624D9778C00C36BC1 /* FavoriteTaxi */ = {
@@ -236,9 +247,9 @@
 		221CE76524D2A971006085D6 /* StopsTaxiView */ = {
 			isa = PBXGroup;
 			children = (
+				22065E5924E7BD570076785E /* Detail */,
+				22065E5A24E7C3C60076785E /* SDHeader.swift */,
 				221CE75A24D06EB1006085D6 /* StopsDriverCell.swift */,
-				221CE76224D2A67E006085D6 /* DetailInfo.swift */,
-				221CE75E24D2A468006085D6 /* SettingsCell.swift */,
 			);
 			path = StopsTaxiView;
 			sourceTree = "<group>";
@@ -495,6 +506,7 @@
 				22044C1124C5E2B4001FC245 /* LocationInputView.swift in Sources */,
 				2240024924C6DD340086DA98 /* LocationHandler.swift in Sources */,
 				22044C0324C5E2A6001FC245 /* Service.swift in Sources */,
+				22065E5B24E7C3C60076785E /* SDHeader.swift in Sources */,
 				221CE75924D06728006085D6 /* StopsDriver.swift in Sources */,
 				22E9A41324D70BD000929768 /* Driver.swift in Sources */,
 				22044C1224C5E2B4001FC245 /* LocationInputViewActivationView.swift in Sources */,

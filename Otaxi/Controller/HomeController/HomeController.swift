@@ -287,7 +287,7 @@ class HomeController : UIViewController{
     }
     func fetchDurakOnMap(_ duraklar: [TaksiDurak]) {
         for durak in duraklar {
-            let annotations = CustomAnnotation(title: durak.name, subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: durak.lattitude, longitude: durak.longtitude))
+            let annotations = CustomAnnotation(title: durak.name, subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: durak.lattitude, longitude: durak.longtitude), telNo: durak.telNo, adress: durak.adress)
             mapView.addAnnotation(annotations)
         }
     }
@@ -385,7 +385,9 @@ extension HomeController: MKMapViewDelegate{
     //MARK:-MapView Selectors
     @objc func handleDetailDisclosure(){
         guard let selectedtitle = selectedAnnotation?.title else {return}
+        guard let selectedAnoo = selectedAnnotation else {return}
         let detail = StopsDriver()
+        detail.selectedAnnotation = selectedAnoo
         detail.navigationTitle = selectedtitle
         detail.navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.pushViewController(detail, animated: true)

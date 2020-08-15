@@ -139,7 +139,7 @@ class DetailCarPhotoAdd: UIViewController{
             "Goruntu_URL2"  : carPhoto.goruntuURL3 ??  "veri yok"] as [String : Any]
         db.document(uid).collection(CARPHOTOS_FREF).document(uid).setData(veriler) { (error) in
             if let error = error{
-                print("DEBUG: Taksici Detay Fotoğraflarını Kayıt Ederken hata Meydana Geldi :\(error.localizedDescription)")
+                print("DEBUG: Taksici Detay Fotoğraflarını Kayıt Ederken Hata Meydana Geldi :\(error.localizedDescription)")
                 return
             }
             self.navigationController?.popViewController(animated: true)

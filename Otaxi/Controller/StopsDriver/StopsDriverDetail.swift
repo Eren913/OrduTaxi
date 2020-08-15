@@ -154,6 +154,7 @@ class StopsDriverDetail: UIViewController {
         tableView.canCancelContentTouches = true
     }
     fileprivate func configureNavigation(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(handlePlus))
         navigationController?.isNavigationBarHidden = false
     }
     fileprivate func requestReview() {
@@ -184,6 +185,16 @@ class StopsDriverDetail: UIViewController {
         if sender.isSelected{
             requestReview()
         }
+    }
+    @objc fileprivate func handlePlus(){
+        let alert = UIAlertController(title: nil,
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Konumunu Paylaş", style: .default, handler: { _ in
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Vazgeç", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 //MARK:-UITableViewDelegate,UITableViewDataSource

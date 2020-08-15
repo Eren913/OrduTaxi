@@ -42,6 +42,11 @@ class DetailInfoHeader: UIView {
         img.isUserInteractionEnabled = true
         return img
     }()
+    let status: UIView = {
+        let view = UIView()
+        view.backgroundColor = .green
+        return view
+    }()
     
     // MARK: - Init
     
@@ -66,6 +71,10 @@ class DetailInfoHeader: UIView {
         
         configureInitalLabel()
         configureImageView()
+        addSubview(status)
+        status.centerY(inView: self)
+        status.anchor(right: rightAnchor, paddingRight: 25, width: 10, height: 10)
+        status.layer.cornerRadius = 10/2
     }
     
     required init?(coder aDecoder: NSCoder) {
